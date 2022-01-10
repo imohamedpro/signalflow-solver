@@ -44,3 +44,15 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+
+#Not needed files for remote repo
+.browserslistrc
+.editorconfig
+angular.json
+karma.conf.js
+package-lock.json
+package.json
+README.md
+tsconfig.app.json
+tsconfig.json
+tsconfig.spec.json
