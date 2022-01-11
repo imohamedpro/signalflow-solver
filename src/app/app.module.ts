@@ -9,6 +9,7 @@ import { ToolbarComponent } from './Components/toolbar/toolbar.component';
 import { SketchComponent } from './Components/sketch/sketch.component';
 import { QueueComponent } from './Components/queue/queue.component';
 import { MachineComponent } from './Components/machine/machine.component';
+import { EdgeComponent } from './Components/edge/edge.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { MachineComponent } from './Components/machine/machine.component';
     ToolbarComponent,
     SketchComponent,
     QueueComponent,
-    MachineComponent
+    MachineComponent,
+    EdgeComponent
   ],
   imports: [
     BrowserModule,
