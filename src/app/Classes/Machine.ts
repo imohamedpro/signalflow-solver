@@ -7,12 +7,18 @@ export class Machine extends Drawable{
     machineNumber!: number;
     hasRightEdge!: boolean;
     hasLeftEdge!: boolean;
+    fillColor!: string;
 
     constructor(id: number, machineNumber: number, center: Point){
         super(id, 'machine', center);
         this.machineNumber = machineNumber;
         this.hasRightEdge = false;
         this.hasLeftEdge = false;
+        this.fillColor = 'rgb(255,255,255)'
+    }
+
+    setFillColor(fillColor: string){
+        this.fillColor = fillColor;
     }
 
 }

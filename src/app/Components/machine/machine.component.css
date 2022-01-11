@@ -1,7 +1,7 @@
 circle{
     stroke: black;
     stroke-width: 2;
-    fill: white;
+    fill: rgb(rgb(255, 0, 0), green, blue);
 }
 
 text{
