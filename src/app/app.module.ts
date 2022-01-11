@@ -10,6 +10,7 @@ import { SketchComponent } from './Components/sketch/sketch.component';
 import { QueueComponent } from './Components/queue/queue.component';
 import { MachineComponent } from './Components/machine/machine.component';
 import { EdgeComponent } from './Components/edge/edge.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { EdgeComponent } from './Components/edge/edge.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

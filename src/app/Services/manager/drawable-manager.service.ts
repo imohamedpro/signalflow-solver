@@ -14,8 +14,11 @@ export class DrawableManagerService {
   selectedDrawables: Array<Drawable>
   edgePoints: Array<Point>;
   nextId: number;
+  factory: DrawableFactoryService;
+  chosenQID!: number;
   
-  constructor(private factory: DrawableFactoryService) {
+  constructor(factory: DrawableFactoryService) {
+    this.factory = factory;
     this.drawables = new Map<number, Drawable>();
     this.selectedDrawables = new Array<Drawable>();
     this.edgePoints = new Array<Point>();
@@ -91,4 +94,11 @@ export class DrawableManagerService {
     this.factory.nextQueueNumber = 0;
   }
 
+  getInitialQueue(queueNumber: number){
+    this.drawables.forEach((drawable: Drawable) => {
+      if(drawable instanceof Queue){
+        if(drawable.queueNumber == queueNumber) this.chosenQID = drawable.id;
+      }
+    });
+  }
 }

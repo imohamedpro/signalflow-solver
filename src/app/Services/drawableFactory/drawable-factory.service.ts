@@ -19,6 +19,7 @@ export class DrawableFactoryService {
 
   createDrawable(type: string, id: number, center: Point): Drawable{
     if(type == 'queue'){
+      sessionStorage.setItem('nextQueueNumber', JSON.stringify(this.nextQueueNumber + 1));
       return new Queue(id,this.nextQueueNumber++, center);
     }
     return new Machine(id,this.nextMachineNumber++, center);

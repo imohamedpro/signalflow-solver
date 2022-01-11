@@ -11,6 +11,8 @@ import { DrawableManagerService } from 'src/app/Services/manager/drawable-manage
 export class SketchComponent implements OnInit {
   _state!: string;
   manager!: DrawableManagerService;
+  isQNumberChosen: boolean;
+  initialQ: number;
 
   @Input() set state(value: string){
     this._state = value;
@@ -18,10 +20,18 @@ export class SketchComponent implements OnInit {
     if(this._state == 'new'){
       this.manager.reset();
     }
+    else if(this._state == 'run'){
+      //api call with parameter this.manager.chosenQID
+    }
+    else if(this._state == 'replay'){
+      //api call with parameter this.manager.chosenQID
+    }
   }
-
+  
   constructor( manager: DrawableManagerService) {
     this.manager = manager;
+    this.isQNumberChosen = false;
+    this.initialQ = 0;
    }
 
   
@@ -47,6 +57,18 @@ export class SketchComponent implements OnInit {
   select(drawable: Drawable, e: MouseEvent){
     if(this._state == 'connect'){
       this.manager.select(drawable, e);
+    }
+  }
+
+  changeQ(e: any){
+    this.initialQ = e.target.value;
+  }
+
+  selectQ(){
+    if(this.manager.factory.nextQueueNumber != 0){
+      this.isQNumberChosen = true;
+      this.manager.getInitialQueue(this.initialQ);
+      console.log(this.manager.chosenQID);
     }
   }
 
