@@ -4,9 +4,10 @@ import { Queue } from "./Queue";
 
 export class Machine extends Drawable{
     nextQueue!: Queue;
-
-    constructor(id: number, center: Point){
+    machineNumber!: number;
+    constructor(id: number,machineNumber: number, center: Point){
         super(id, 'machine', center);
+        this.machineNumber = machineNumber;
     }
 
 }

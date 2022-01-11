@@ -8,8 +8,10 @@ import { Queue } from 'src/app/Classes/Queue';
   providedIn: 'root'
 })
 export class DrawableFactoryService {
-
-  constructor() { }
+  nextMachineNumber!: number;
+  constructor() {
+    this.nextMachineNumber = 0;
+   }
 
   createDrawable(type: string, id: number, center: Point): Drawable{
     let drawable: Drawable = new Queue(id, center);
@@ -18,7 +20,7 @@ export class DrawableFactoryService {
         drawable = new Queue(id, center);
         break;
       case 'machine':
-        drawable = new Machine(id, center);
+        drawable = new Machine(id,this.nextMachineNumber++, center);
         break;
     }
     return drawable;

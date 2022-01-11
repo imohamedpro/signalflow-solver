@@ -4,8 +4,10 @@
     <svg:g *ngFor='let drawable of this.manager.drawables | keyvalue; index as i'
             [ngSwitch]='drawable.value.getType()'
             [id]='drawable.key'>
+            
         <svg:g *ngSwitchCase="'queue'" drawable='queue' [queue]='drawable.value'/>
 
+        <svg:g *ngSwitchCase="'machine'" drawable='machine' [machine]='drawable.value'/>
 
     </svg:g>
 

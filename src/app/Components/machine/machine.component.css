@@ -1,0 +1,10 @@
+circle{
+    stroke: black;
+    stroke-width: 2;
+    fill: white;
+}
+
+text{
+    font-weight: bold;
+    font-size: 20px;
+}

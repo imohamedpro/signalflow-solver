@@ -4,7 +4,7 @@ import { Point } from "./Point";
 
 export class Queue extends Drawable{
     numberOfProducts: number;
-    nextMachine!: Array<Machine>
+    nextMachine!: Array<Machine>;
 
     constructor(id: number, center: Point){
         super(id, 'queue', center);

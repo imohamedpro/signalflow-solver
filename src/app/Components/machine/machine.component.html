@@ -1,1 +1,7 @@
-<p>machine works!</p>
+<svg xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <circle [attr.cx]='machine.center.x - 14' [attr.cy]='machine.center.y - 75' r='30' ></circle>
+      <text [attr.x]='machine.center.x - 14' [attr.y]='machine.center.y - 75'
+       alignment-baseline="middle" text-anchor="middle">M{{machine.machineNumber}}</text>
+    </g>
+</svg>

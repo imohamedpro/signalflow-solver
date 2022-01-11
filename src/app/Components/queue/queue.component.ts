@@ -7,7 +7,7 @@ import { Drawable } from 'src/app/Classes/Drawable';
   styleUrls: ['./queue.component.css']
 })
 export class QueueComponent implements OnInit {
-  @Input() queue!:  Drawable;
+  @Input() queue!:  any;
   constructor() { }
 
   ngOnInit(): void {
