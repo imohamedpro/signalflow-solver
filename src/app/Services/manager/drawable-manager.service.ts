@@ -103,9 +103,9 @@ export class DrawableManagerService {
   }
   //To be called when machine is loaded with products
   setMachineFillColor(fillColor: string, id: number){
-    this.drawables.forEach((drawable: Drawable) => {
+    this.drawables.forEach((drawable: Drawable, key: number) => {
       if(drawable instanceof Machine){
-        if(drawable.id == id) drawable.setFillColor(fillColor);
+        if(key == id) drawable.setFillColor(fillColor);
       }
     });
   }
