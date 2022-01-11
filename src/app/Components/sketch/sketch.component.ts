@@ -8,10 +8,19 @@ import { DrawableManagerService } from 'src/app/Services/drawableManager/drawabl
   styleUrls: ['./sketch.component.css']
 })
 export class SketchComponent implements OnInit {
+  _state!: string;
+  manager!: DrawableManagerService;
 
-  @Input() state!: string;
+  @Input() set state(value: string){
+    this._state = value;
 
-  constructor(public manager: DrawableManagerService) {
+    if(this._state == 'new'){
+      this.manager.reset();
+    }
+  }
+
+  constructor( manager: DrawableManagerService) {
+    this.manager = manager;
    }
 
   
@@ -19,7 +28,7 @@ export class SketchComponent implements OnInit {
   }
 
   handleClick(e: MouseEvent){
-    switch(this.state){
+    switch(this._state){
       case 'addQ':
         console.log('queue id ' + this.manager.nextId);
         console.log(e.clientX);

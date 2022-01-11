@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Drawable } from 'src/app/Classes/Drawable';
 
 @Component({
   selector: '[drawable=queue]',

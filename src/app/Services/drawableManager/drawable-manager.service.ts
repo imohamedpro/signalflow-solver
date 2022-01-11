@@ -21,4 +21,10 @@ export class DrawableManagerService {
     ++this.nextId;
   }
 
+  reset(){
+    this.drawables.clear();
+    this.nextId = 0;
+    this.factory.nextMachineNumber = 0;
+  }
+
 }
