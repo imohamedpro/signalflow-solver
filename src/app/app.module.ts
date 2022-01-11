@@ -7,6 +7,8 @@ import { InfoComponent } from './Components/info/info.component';
 import { HomeComponent } from './Components/home/home.component';
 import { ToolbarComponent } from './Components/toolbar/toolbar.component';
 import { SketchComponent } from './Components/sketch/sketch.component';
+import { QueueComponent } from './Components/queue/queue.component';
+import { MachineComponent } from './Components/machine/machine.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { SketchComponent } from './Components/sketch/sketch.component';
     InfoComponent,
     HomeComponent,
     ToolbarComponent,
-    SketchComponent
+    SketchComponent,
+    QueueComponent,
+    MachineComponent
   ],
   imports: [
     BrowserModule,

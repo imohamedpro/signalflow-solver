@@ -1,1 +1,14 @@
-<p>sketch works!{{state}}</p>
+<!--<p>sketch works!{{state}}</p> -->
+<svg width='100%' height='100%' (click)='handleClick($event)' class='container'>
+
+    <svg:g *ngFor='let drawable of this.manager.drawables | keyvalue; index as i'
+            [ngSwitch]='drawable.value.getType()'
+            [id]='drawable.key'>
+        <svg:g *ngSwitchCase="'queue'" drawable='queue' [queue]='drawable.value'/>
+
+
+    </svg:g>
+
+
+
+</svg>
