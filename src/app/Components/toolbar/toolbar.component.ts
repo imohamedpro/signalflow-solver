@@ -18,12 +18,5 @@ export class ToolbarComponent implements OnInit {
     this.actionEmitter.emit(action);
   }
 
-  run(){
-    //api -> start simulation
-  }
-
-  replay(){
-    //api -> replay the simulation
-  }
 
 }
