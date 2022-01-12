@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { Drawable } from '../../Classes/Drawable';
 import { Edge } from '../../Classes/Edge';
 import { Machine } from '../../Classes/Machine';
@@ -17,14 +18,14 @@ export class DrawableManagerService {
   factory: DrawableFactoryService;
   chosenQID!: number;
   edges!: Array<Edge>;
-
+  serverSentEvent!: Subscription;
   constructor(factory: DrawableFactoryService, private controller: ControllerService) {
     this.factory = factory;
     this.drawables = new Array<Drawable>();
     this.selectedDrawables = new Array<Drawable>();
     this.edgePoints = new Array<Point>();
     this.edges = new Array<Edge>();
-    this.controller.getServerSentEvent().subscribe(data => {
+    this.serverSentEvent = this.controller.getServerSentEvent().subscribe(data => {
       console.log(data);
       let message = data.data.split(",");
       let id = Number(message[0]);
@@ -108,6 +109,21 @@ export class DrawableManagerService {
     this.edges = [] as Edge[];
     this.factory.nextMachineNumber = 0;
     this.factory.nextQueueNumber = 0;
+    this.controller.closeEventSource();
+    this.serverSentEvent.unsubscribe();
+    this.serverSentEvent = this.controller.getServerSentEvent().subscribe(data => {
+      console.log(data);
+      let message = data.data.split(",");
+      let id = Number(message[0]);
+      switch (data.type) {
+        case "Q":
+          this.setNumberOfProducts(id, Number(message[1]));
+          break;
+        case "M":
+          this.setMachineFillColor(id, message[1]);
+          break;
+      }
+    });
   }
 
   getInitialQueue(queueNumber: number) {

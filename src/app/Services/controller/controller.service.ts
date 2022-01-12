@@ -9,17 +9,23 @@ export class ControllerService {
   private readonly apiUrl = "http://localhost:8082"
 
   constructor(private http: HttpClient) { }
+  sseOpen: boolean = false;
+  eventSource!: EventSource;
 
   getServerSentEvent(): Observable<any> {
     return new Observable(observer => {
-      const eventSource = new EventSource(this.apiUrl + "/stream");
-      eventSource.addEventListener("Q", function (e) {
+      this.eventSource = new EventSource(this.apiUrl + "/stream");
+      this.eventSource.addEventListener("Q", function (e) {
         observer.next(e);
       })
-      eventSource.addEventListener("M", function (e) {
+      this.eventSource.addEventListener("M", function (e) {
         observer.next(e);
       })
     })
+  }
+
+  closeEventSource(){
+    this.eventSource.close();
   }
 
   config = { headers: new HttpHeaders().set('Content-Type', 'application/json') }
