@@ -42,18 +42,20 @@ export class SketchComponent implements OnInit {
   }
 
   handleClick(e: MouseEvent){
+    console.log(e.clientX);
+    console.log(e.clientY);
+    console.log(e.screenX);
+    console.log(e.screenY);
+    console.log(e.offsetX);
+    console.log(e.offsetY);
     switch(this._state){
       case 'addQ':
         console.log('queue id ' + this.manager.nextId);
-        console.log(e.clientX);
-        console.log(e.clientY);
-        this.manager.createDrawable('queue', new Point(e.clientX, e.clientY));
+        this.manager.createDrawable('queue', new Point(e.offsetX, e.offsetY));
         break;
       case 'addM':
         console.log('machine id '+ this.manager.nextId);
-        console.log(e.clientX);
-        console.log(e.clientY);
-        this.manager.createDrawable('machine', new Point(e.clientX, e.clientY));
+        this.manager.createDrawable('machine', new Point(e.offsetX, e.offsetY));
     }
   }
 

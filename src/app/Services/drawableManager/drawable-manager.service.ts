@@ -70,7 +70,7 @@ export class DrawableManagerService {
   select(drawable: Drawable, e: MouseEvent){
     if(this.selectedDrawables.length == 1){
       this.selectedDrawables.push(drawable);
-      this.edgePoints.push(this.shiftPoint(e));
+      this.edgePoints.push(new Point(e.offsetX, e.offsetY));
       console.log(this.selectedDrawables);
       if(this.selectedDrawables[0].getType() == this.selectedDrawables[1].getType()){
         this.selectedDrawables = [] as Drawable[];
@@ -118,14 +118,9 @@ export class DrawableManagerService {
       return;
     }else{
       this.selectedDrawables.push(drawable);
-      this.edgePoints.push(this.shiftPoint(e));
+      this.edgePoints.push(new Point(e.offsetX, e.offsetY));
       console.log(this.selectedDrawables);
     }
-  }
-
-  shiftPoint(e: MouseEvent): Point{
-    
-    return new Point(e.clientX - 15, e.clientY - 75);
   }
 
   reset(){

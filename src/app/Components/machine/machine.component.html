@@ -1,10 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg">
     <g>
-      <circle   [attr.cx]='machine.center.x - 15'
-                [attr.cy]='machine.center.y - 75'
+      <circle   [attr.cx]='machine.center.x'
+                [attr.cy]='machine.center.y'
                 [attr.fill]='machine.fillColor'
                 r='30' ></circle>
-      <text [attr.x]='machine.center.x - 15' [attr.y]='machine.center.y - 75'
+      <text [attr.x]='machine.center.x' [attr.y]='machine.center.y'
        alignment-baseline="middle" text-anchor="middle">M{{machine.machineNumber}}</text>
     </g>
 </svg>
