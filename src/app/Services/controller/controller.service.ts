@@ -40,8 +40,8 @@ export class ControllerService {
     return this.http.put(this.apiUrl + "/queue/delete", id, this.config)
   }
 
-  setStartQueue(id: number) {
-    return this.http.post(this.apiUrl + "/queue/strat", id, this.config)
+  setStartQueue(id: number){
+    return this.http.post(this.apiUrl + "/queue/start", id, this.config)
   }
 
   setInput(machineID: number, queueID: number) {
