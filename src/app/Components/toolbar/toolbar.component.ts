@@ -1,3 +1,4 @@
+import { ControllerService } from './../../services/controller/controller.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
@@ -7,7 +8,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
 
-  constructor() { }
+  constructor(private controller: ControllerService) { }
 
   @Output() actionEmitter = new EventEmitter<string>();
 
@@ -16,6 +17,10 @@ export class ToolbarComponent implements OnInit {
 
   emitAction(action: string) {
     this.actionEmitter.emit(action);
+  }
+
+  replay(){
+    this.controller.restart().subscribe();
   }
 
 }
