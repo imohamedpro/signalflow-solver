@@ -5,14 +5,12 @@ import { Queue } from "./Queue";
 export class Machine extends Drawable {
     nextQueue!: Queue;
     machineNumber!: number;
-    hasRightEdge!: boolean;
     hasLeftEdge!: boolean;
     fillColor!: string;
 
     constructor(id: number, machineNumber: number, center: Point) {
         super(id, 'machine', center);
         this.machineNumber = machineNumber;
-        this.hasRightEdge = false;
         this.hasLeftEdge = false;
         this.fillColor = '#ffffff'
     }
@@ -20,5 +18,5 @@ export class Machine extends Drawable {
     setFillColor(fillColor: string) {
         this.fillColor = fillColor;
     }
-    
+
 }

@@ -14,14 +14,13 @@
 
     </svg:g>
 
-    <svg:g *ngFor='let drawable of this.manager.drawables | keyvalue; index as i' [ngSwitch]='drawable.value.getType()'
-        [id]='drawable.key'>
+    <svg:g *ngFor='let drawable of this.manager.drawables' [ngSwitch]='drawable.getType()'>
 
-        <svg:g *ngSwitchCase="'queue'" drawable='queue' [queue]='drawable.value'
-            (click)='select(drawable.value, $event)' />
+        <svg:g *ngSwitchCase="'queue'" drawable='queue' [queue]='drawable'
+            (click)='select(drawable, $event)' />
 
-        <svg:g *ngSwitchCase="'machine'" drawable='machine' [machine]='drawable.value'
-            (click)='select(drawable.value, $event)' />
+        <svg:g *ngSwitchCase="'machine'" drawable='machine' [machine]='drawable'
+            (click)='select(drawable, $event)' />
 
     </svg:g>
 

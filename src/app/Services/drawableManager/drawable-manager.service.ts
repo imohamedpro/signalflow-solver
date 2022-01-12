@@ -11,21 +11,19 @@ import { DrawableFactoryService } from '../drawableFactory/drawable-factory.serv
   providedIn: 'root'
 })
 export class DrawableManagerService {
-  drawables: Map<number, Drawable>;
+  drawables: Array<Drawable>;
   selectedDrawables: Array<Drawable>
   edgePoints: Array<Point>;
-  nextId: number;
   factory: DrawableFactoryService;
   chosenQID!: number;
   edges!: Array<Edge>;
 
   constructor(factory: DrawableFactoryService, private controller: ControllerService) {
     this.factory = factory;
-    this.drawables = new Map<number, Drawable>();
+    this.drawables = new Array<Drawable>();
     this.selectedDrawables = new Array<Drawable>();
     this.edgePoints = new Array<Point>();
     this.edges = new Array<Edge>();
-    this.nextId = 0;
     this.controller.getServerSentEvent().subscribe(data => {
       console.log(data);
       let message = data.data.split(",");
@@ -47,17 +45,13 @@ export class DrawableManagerService {
       case "queue":
         this.controller.addQueue().subscribe(data => {
           id = data;
-          this.drawables.set(this.nextId, this.factory.createDrawable(type, id, center));
-          this.nextId++;
-          console.log(this.drawables);
+          this.drawables.push(this.factory.createDrawable(type, id, center));
         })
         break;
       case "machine":
         this.controller.addMachine().subscribe(data => {
           id = data;
-          this.drawables.set(this.nextId, this.factory.createDrawable(type, id, center));
-          this.nextId++;
-          console.log(this.drawables);
+          this.drawables.push(this.factory.createDrawable(type, id, center));
         })
         break;
     }
@@ -67,25 +61,20 @@ export class DrawableManagerService {
     if (this.selectedDrawables.length == 1) {
       this.selectedDrawables.push(drawable);
       this.edgePoints.push(new Point(e.offsetX, e.offsetY));
-      console.log(this.selectedDrawables);
       if (this.selectedDrawables[0].getType() == this.selectedDrawables[1].getType()) {
         this.selectedDrawables = [] as Drawable[];
         this.edgePoints = [] as Point[];
         return;
       }
       else if (this.selectedDrawables[0] instanceof Machine && this.selectedDrawables[1] instanceof Queue) {
-        if (this.selectedDrawables[0].center.x < this.selectedDrawables[1].center.x
-          && this.selectedDrawables[0].hasRightEdge == false) {
+        if (this.selectedDrawables[0].center.x < this.selectedDrawables[1].center.x) {
           this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
-          ++this.nextId;
-          this.selectedDrawables[0].hasRightEdge = true;
           this.selectedDrawables[1].nextMachine.push(this.selectedDrawables[0]);
           this.controller.setInput(this.selectedDrawables[0].id, this.selectedDrawables[1].id).subscribe();
         }
         else if (this.selectedDrawables[0].center.x > this.selectedDrawables[1].center.x
           && this.selectedDrawables[0].hasLeftEdge == false) {
           this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
-          ++this.nextId;
           this.selectedDrawables[0].hasLeftEdge = true;
           this.selectedDrawables[0].nextQueue = this.selectedDrawables[1];
           this.controller.setOutput(this.selectedDrawables[0].id, this.selectedDrawables[1].id).subscribe();
@@ -95,16 +84,12 @@ export class DrawableManagerService {
         if (this.selectedDrawables[1].center.x > this.selectedDrawables[0].center.x
           && this.selectedDrawables[1].hasLeftEdge == false) {
           this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
-          ++this.nextId;
           this.selectedDrawables[1].hasLeftEdge = true;
           this.selectedDrawables[1].nextQueue = this.selectedDrawables[0];
           this.controller.setOutput(this.selectedDrawables[1].id, this.selectedDrawables[0].id).subscribe();
         }
-        else if (this.selectedDrawables[1].center.x < this.selectedDrawables[0].center.x
-          && this.selectedDrawables[1].hasRightEdge == false) {
+        else if (this.selectedDrawables[1].center.x < this.selectedDrawables[0].center.x) {
           this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
-          ++this.nextId;
-          this.selectedDrawables[1].hasRightEdge = true;
           this.selectedDrawables[0].nextMachine.push(this.selectedDrawables[1]);
           this.controller.setInput(this.selectedDrawables[1].id, this.selectedDrawables[0].id).subscribe();
         }
@@ -115,14 +100,12 @@ export class DrawableManagerService {
     } else {
       this.selectedDrawables.push(drawable);
       this.edgePoints.push(new Point(e.offsetX, e.offsetY));
-      console.log(this.selectedDrawables);
     }
   }
 
   reset() {
-    this.drawables.clear();
+    this.drawables = [] as Drawable[];
     this.edges = [] as Edge[];
-    this.nextId = 0;
     this.factory.nextMachineNumber = 0;
     this.factory.nextQueueNumber = 0;
   }
@@ -136,7 +119,7 @@ export class DrawableManagerService {
   }
 
   setMachineFillColor(id: number, fillColor: string) {
-    this.drawables.forEach((drawable: Drawable, key: number) => {
+    this.drawables.forEach((drawable: Drawable) => {
       if (drawable instanceof Machine) {
         if (drawable.id == id) drawable.setFillColor(fillColor);
       }
@@ -144,7 +127,7 @@ export class DrawableManagerService {
   }
 
   setNumberOfProducts(id: number, numberOfProducts: number) {
-    this.drawables.forEach((drawable: Drawable, key: number) => {
+    this.drawables.forEach((drawable: Drawable) => {
       if (drawable instanceof Queue) {
         if (drawable.id == id) drawable.setNumberOfProducts(numberOfProducts);
       }
