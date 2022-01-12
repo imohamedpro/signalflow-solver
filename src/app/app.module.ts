@@ -7,6 +7,7 @@ import { InfoComponent } from './Components/info/info.component';
 import { HomeComponent } from './Components/home/home.component';
 import { ToolbarComponent } from './Components/toolbar/toolbar.component';
 import { SketchComponent } from './Components/sketch/sketch.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { SketchComponent } from './Components/sketch/sketch.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

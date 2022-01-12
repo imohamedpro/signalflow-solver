@@ -10,13 +10,13 @@ export class InfoComponent implements OnInit {
 
   constructor(private controller: ControllerService) { }
   //constructor(){}
-  text: string[] = [];
+  //text: string[] = [];
   ngOnInit(): void {
-    this.controller.getServerSentEvent().subscribe( data =>{
-      this.text.push(data.data);
-      console.log(data);
-    }
-    )
+    // this.controller.getServerSentEvent().subscribe( data =>{
+    //   this.text.push(data.data);
+    //   console.log(data);
+    // }
+    // )
   }
 
 }
