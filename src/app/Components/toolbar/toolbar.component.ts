@@ -22,5 +22,12 @@ export class ToolbarComponent implements OnInit {
   replay(){
     this.controller.restart().subscribe();
   }
+  
+  isRunning(): boolean{
+    if(JSON.parse(sessionStorage.getItem('isRunning') as string) == true){
+      return true;
+    }
+    return false;
+  }
 
 }

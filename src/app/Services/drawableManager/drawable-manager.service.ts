@@ -38,6 +38,7 @@ export class DrawableManagerService {
           break;
       }
     });
+    sessionStorage.setItem('isRunning',JSON.stringify(false));
   }
 
   createDrawable(type: string, center: Point) {
@@ -124,6 +125,7 @@ export class DrawableManagerService {
           break;
       }
     });
+    sessionStorage.setItem('isRunning',JSON.stringify(false));
   }
 
   getInitialQueue(queueNumber: number) {
@@ -156,10 +158,19 @@ export class DrawableManagerService {
 
   run(totalProducts: number) {
     this.controller.start(totalProducts).subscribe();
+    sessionStorage.setItem('isRunning',JSON.stringify(true));
   }
 
   replay(totalProducts: number) {
+    this.drawables.forEach((drawable: Drawable) => {
+      if (drawable instanceof Queue) {
+        drawable.numberOfProducts = 0;
+      }else if(drawable instanceof Machine){
+        drawable.fillColor = '#ffffff';
+      }
+    });
     this.controller.restart().subscribe();
+    sessionStorage.setItem('isRunning',JSON.stringify(true));
   }
 
 }
