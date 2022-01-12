@@ -1,6 +1,6 @@
 <div class="container">
     <button (click)="emitAction('new')">New</button>
-    <button (click)="emitAction('run')">Run</button>
+    <button (click)="emitAction('run')" [disabled]='isRunning()'>Run</button>
     <button (click)="replay()">Replay</button>
     <button (click)="emitAction('addM')" [disabled]='isRunning()'>Add Machine</button>
     <button (click)="emitAction('addQ')" [disabled]='isRunning()'>Add Queue</button>

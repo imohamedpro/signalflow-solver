@@ -1,4 +1,4 @@
-import { ControllerService } from './../../services/controller/controller.service';
+import { ControllerService } from "../../Services/controller/controller.service";
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
