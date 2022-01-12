@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
-  selector: '[drawable=edge]',
+  selector: '[edge]',
   templateUrl: './edge.component.html',
   styleUrls: ['./edge.component.css']
 })

@@ -7,9 +7,9 @@
 <h3 *ngIf="isQNumberChosen == true" style="margin-top: -10px;">Chosen intial queue: Q{{initialQ}}</h3>
 <svg width='100%' height='100%' (click)='handleClick($event)' class='container'>
 
-    <svg:g *ngFor='let drawable of this.manager.drawables | keyvalue; index as i' [id]='drawable.key'>
+    <svg:g *ngFor='let edge of this.manager.edges'>
 
-        <svg:g *ngIf="drawable.value.getType() == 'edge'" drawable='edge' [edge]='drawable.value' />
+        <svg:g   [edge]='edge' edge/>
 
     </svg:g>
 

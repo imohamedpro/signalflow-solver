@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Drawable } from 'src/app/Classes/Drawable';
+import { Edge } from 'src/app/Classes/Edge';
 import { Machine } from 'src/app/Classes/Machine';
 import { Point } from 'src/app/Classes/Point';
 import { Queue } from 'src/app/Classes/Queue';
@@ -17,13 +18,14 @@ export class DrawableManagerService {
   nextId: number;
   factory: DrawableFactoryService;
   chosenQID!: number;
-
+  edges!: Array<Edge>;
   
   constructor(factory: DrawableFactoryService, private controller: ControllerService) {
     this.factory = factory;
     this.drawables = new Map<number, Drawable>();
     this.selectedDrawables = new Array<Drawable>();
     this.edgePoints = new Array<Point>();
+    this.edges = new Array<Edge>();
     this.nextId = 0;
     this.controller.getServerSentEvent().subscribe( data =>{
       console.log(data);
@@ -73,14 +75,14 @@ export class DrawableManagerService {
       else if(this.selectedDrawables[0] instanceof Machine && this.selectedDrawables[1] instanceof Queue){
         if(this.selectedDrawables[0].center.x < this.selectedDrawables[1].center.x
           && this.selectedDrawables[0].hasRightEdge == false){
-            this.drawables.set(this.nextId, this.factory.connectDrawables(this.nextId,this.edgePoints[0], this.edgePoints[1]));
+            this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
             ++this.nextId;
             this.selectedDrawables[0].hasRightEdge = true;
             this.selectedDrawables[1].nextMachine.push(this.selectedDrawables[0]); 
           }
         else if(this.selectedDrawables[0].center.x > this.selectedDrawables[1].center.x
           && this.selectedDrawables[0].hasLeftEdge == false){
-            this.drawables.set(this.nextId, this.factory.connectDrawables(this.nextId,this.edgePoints[0], this.edgePoints[1]));
+            this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
             ++this.nextId;
             this.selectedDrawables[0].hasLeftEdge = true;
             this.selectedDrawables[0].nextQueue = this.selectedDrawables[1];
@@ -89,14 +91,14 @@ export class DrawableManagerService {
       else if(this.selectedDrawables[1] instanceof Machine && this.selectedDrawables[0] instanceof Queue){
         if(this.selectedDrawables[1].center.x > this.selectedDrawables[0].center.x
           && this.selectedDrawables[1].hasLeftEdge  == false){
-            this.drawables.set(this.nextId, this.factory.connectDrawables(this.nextId,this.edgePoints[0], this.edgePoints[1]));
+            this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
             ++this.nextId;
             this.selectedDrawables[1].hasLeftEdge = true;
             this.selectedDrawables[1].nextQueue = this.selectedDrawables[0];
           }
         else if(this.selectedDrawables[1].center.x < this.selectedDrawables[0].center.x
           && this.selectedDrawables[1].hasRightEdge == false){
-            this.drawables.set(this.nextId, this.factory.connectDrawables(this.nextId,this.edgePoints[0], this.edgePoints[1]));
+            this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
             ++this.nextId;
             this.selectedDrawables[1].hasRightEdge = true;
             this.selectedDrawables[0].nextMachine.push(this.selectedDrawables[1]); 
@@ -119,10 +121,10 @@ export class DrawableManagerService {
 
   reset(){
     this.drawables.clear();
+    this.edges = [] as Edge[];
     this.nextId = 0;
     this.factory.nextMachineNumber = 0;
     this.factory.nextQueueNumber = 0;
-
   }
 
   getInitialQueue(queueNumber: number){
