@@ -73,7 +73,7 @@ export class ControllerService {
   }
 
   start(productsCount: number){
-    return this.http.put(this.apiUrl + "/start", null, this.config)
+    return this.http.put(this.apiUrl + "/start", productsCount, this.config)
   }
 
   stop(){

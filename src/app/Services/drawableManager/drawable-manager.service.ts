@@ -148,7 +148,7 @@ export class DrawableManagerService {
   setMachineFillColor(id: number, fillColor: string){
     this.drawables.forEach((drawable: Drawable, key: number) => {
       if(drawable instanceof Machine){
-        if(key == id) drawable.setFillColor(fillColor);
+        if(drawable.id == id) drawable.setFillColor(fillColor);
       }
     });
   }
@@ -157,7 +157,7 @@ export class DrawableManagerService {
   setNumberOfProducts(id: number, numberOfProducts: number){
     this.drawables.forEach((drawable: Drawable, key: number) => {
       if(drawable instanceof Queue){
-        if(key == id) drawable.setNumberOfProducts(numberOfProducts);
+        if(drawable.id == id) drawable.setNumberOfProducts(numberOfProducts);
       }
     });
   }
