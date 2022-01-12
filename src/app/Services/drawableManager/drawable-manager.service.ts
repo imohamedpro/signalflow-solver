@@ -143,6 +143,13 @@ export class DrawableManagerService {
   }
 
   replay(totalProducts: number) {
+    this.drawables.forEach((drawable: Drawable) => {
+      if (drawable instanceof Queue) {
+        drawable.numberOfProducts = 0;
+      }else if(drawable instanceof Machine){
+        drawable.fillColor = '#ffffff';
+      }
+    });
     this.controller.restart().subscribe();
   }
 
