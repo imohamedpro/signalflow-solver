@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Drawable } from 'src/app/Classes/Drawable';
 import { Point } from 'src/app/Classes/Point';
-import { DrawableManagerService } from 'src/app/Services/manager/drawable-manager.service';
+import { DrawableManagerService } from 'src/app/services/manager/drawable-manager.service';
 
 @Component({
   selector: 'app-sketch',

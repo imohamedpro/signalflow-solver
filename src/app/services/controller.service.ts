@@ -12,7 +12,7 @@ export class ControllerService {
 
   getServerSentEvent(): Observable<any>{
     return new Observable(observer => {
-      const eventSource = new EventSource(this.apiUrl + "/stream-sse");
+      const eventSource = new EventSource(this.apiUrl + "/stream");
       eventSource.addEventListener("TEXT", function(e){
         observer.next(e);
       })
