@@ -6,7 +6,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
-  
+
   constructor() { }
 
   @Output() actionEmitter = new EventEmitter<string>();
@@ -14,9 +14,8 @@ export class ToolbarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  emitAction(action: string){
+  emitAction(action: string) {
     this.actionEmitter.emit(action);
   }
-
 
 }

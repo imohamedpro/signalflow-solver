@@ -6,7 +6,8 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./queue.component.css']
 })
 export class QueueComponent implements OnInit {
-  @Input() queue!:  any;
+  @Input() queue!: any;
+
   constructor() { }
 
   ngOnInit(): void {

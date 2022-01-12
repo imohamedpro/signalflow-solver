@@ -5,10 +5,10 @@ import { InfoComponent } from './Components/info/info.component';
 import { AccessHomeGuard } from './Services/guard/access-home.guard';
 
 const routes: Routes = [
-  {path: '', redirectTo: 'info', pathMatch:'full'},
-  {path: 'info', component: InfoComponent},
-  {path: 'home', component: HomeComponent, canActivate:[AccessHomeGuard]},
-  {path: '**', redirectTo: 'info'}
+  { path: '', redirectTo: 'info', pathMatch: 'full' },
+  { path: 'info', component: InfoComponent },
+  { path: 'home', component: HomeComponent, canActivate: [AccessHomeGuard] },
+  { path: '**', redirectTo: 'info' }
 ];
 
 @NgModule({

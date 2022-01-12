@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  changeState(newState: string){
+  changeState(newState: string) {
     this.data = newState;
   }
 
