@@ -92,6 +92,7 @@ export class DrawableManagerService {
     this.nextId = 0;
     this.factory.nextMachineNumber = 0;
     this.factory.nextQueueNumber = 0;
+
   }
 
   getInitialQueue(queueNumber: number){
@@ -108,5 +109,9 @@ export class DrawableManagerService {
         if(key == id) drawable.setFillColor(fillColor);
       }
     });
+  }
+
+  getTotalProducts(){
+    return JSON.parse(sessionStorage.getItem('numberOfProducts') as string);
   }
 }

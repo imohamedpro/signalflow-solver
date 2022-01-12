@@ -19,12 +19,14 @@ export class SketchComponent implements OnInit {
 
     if(this._state == 'new'){
       this.manager.reset();
+      this.isQNumberChosen = false;
+      this.initialQ = 0;
     }
     else if(this._state == 'run'){
-      //api call with parameter this.manager.chosenQID
+      //api call with parameter this.manager.chosenQID and the second parameter is this.manager.getTotalProducts()
     }
     else if(this._state == 'replay'){
-      //api call with parameter this.manager.chosenQID
+      //api call with parameter this.manager.chosenQID and the second parameter is this.manager.getTotalProducts()
     }
   }
   
@@ -65,7 +67,7 @@ export class SketchComponent implements OnInit {
   }
 
   selectQ(){
-    if(this.manager.factory.nextQueueNumber != 0){
+    if(this.manager.factory.nextQueueNumber != 0 && (this.initialQ >=0 && this.initialQ < this.manager.factory.nextQueueNumber)){
       this.isQNumberChosen = true;
       this.manager.getInitialQueue(this.initialQ);
       console.log(this.manager.chosenQID);

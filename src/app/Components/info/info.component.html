@@ -1,1 +1,5 @@
-<p>info works!</p>
+<div class="container">
+    <p>Enter the total number of products</p>
+    <input type="number" [(ngModel)]="numberOfProducts" (input)=changeNumberOfProducts($event) min="0"/>
+    <button (click)="submit()">Next</button>
+</div>
