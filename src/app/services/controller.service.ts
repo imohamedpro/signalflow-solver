@@ -13,7 +13,10 @@ export class ControllerService {
   getServerSentEvent(): Observable<any>{
     return new Observable(observer => {
       const eventSource = new EventSource(this.apiUrl + "/stream");
-      eventSource.addEventListener("TEXT", function(e){
+      eventSource.addEventListener("Q", function(e){
+        observer.next(e);
+      })
+      eventSource.addEventListener("M", function(e){
         observer.next(e);
       })
     })
@@ -22,7 +25,7 @@ export class ControllerService {
   config = {headers: new HttpHeaders().set('Content-Type', 'application/json')} //used in requests
 
   addMachine(){
-    return this.http.put(this.apiUrl + "/machine/add", null, this.config)
+    return this.http.put<number>(this.apiUrl + "/machine/add", null, this.config)
   }
 
   deleteMachine(id: number){
@@ -30,11 +33,29 @@ export class ControllerService {
   }
 
   addQueue(){
-    return this.http.put(this.apiUrl + "/queue/add", null, this.config)
+    return this.http.put<number>(this.apiUrl + "/queue/add", null, this.config)
   }
 
   deleteQueue(id: number){
     return this.http.put(this.apiUrl + "/queue/delete", id, this.config)
+  }
+
+  setStartQueue(id: number){
+    return this.http.post(this.apiUrl + "/queue/strat", id, this.config)
+  }
+
+  setInput(machineID: number, queueID: number){
+    let params = new HttpParams().append("machineID", machineID).append("queueID", queueID);
+    let conf = {headers: new HttpHeaders().set('Content-Type', 'application/json'),
+                params: params}
+    return this.http.put(this.apiUrl + "/set-input", null, conf)
+  }
+
+  setOutput(machineID: number, queueID: number){
+    let params = new HttpParams().append("machineID", machineID).append("queueID", queueID);
+    let conf = {headers: new HttpHeaders().set('Content-Type', 'application/json'),
+                params: params}
+    return this.http.put(this.apiUrl + "/set-output", null, conf)
   }
 
   removeInput(machineID: number, queueID: number){
@@ -51,7 +72,7 @@ export class ControllerService {
     return this.http.put(this.apiUrl + "/remove/input", null, conf)
   }
 
-  start(){
+  start(productsCount: number){
     return this.http.put(this.apiUrl + "/start", null, this.config)
   }
 

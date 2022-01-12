@@ -3,6 +3,7 @@ import { Drawable } from 'src/app/Classes/Drawable';
 import { Machine } from 'src/app/Classes/Machine';
 import { Point } from 'src/app/Classes/Point';
 import { Queue } from 'src/app/Classes/Queue';
+import { ControllerService } from '../controller.service';
 import { DrawableFactoryService } from '../drawableFactory/drawable-factory.service';
 
 @Injectable({
@@ -16,18 +17,47 @@ export class DrawableManagerService {
   nextId: number;
   factory: DrawableFactoryService;
   chosenQID!: number;
+
   
-  constructor(factory: DrawableFactoryService) {
+  constructor(factory: DrawableFactoryService, private controller: ControllerService) {
     this.factory = factory;
     this.drawables = new Map<number, Drawable>();
     this.selectedDrawables = new Array<Drawable>();
     this.edgePoints = new Array<Point>();
     this.nextId = 0;
+    this.controller.getServerSentEvent().subscribe( data =>{
+      console.log(data);
+      let message = data.data.split(",");
+      let id = Number(message[0]);
+      switch(data.type){
+        case "Q":
+          this.setNumberOfProducts(id, Number(message[1]));
+          break;
+        case "M":
+          this.setMachineFillColor(id, message[1]);
+          break;
+      }
+    }
+    )
   }
 
   createDrawable(type: string, center: Point){
-    this.drawables.set(this.nextId, this.factory.createDrawable(type, this.nextId, center));
-    ++this.nextId;
+    // this.drawables.set(this.nextId, this.factory.createDrawable(type, this.nextId, center));
+    // ++this.nextId;
+    let id: number = 0;
+    switch (type){
+      case "queue":
+        this.controller.addQueue().subscribe(data =>{
+          id = data;
+        })
+        break;
+      case "machine":
+        this.controller.addMachine().subscribe(data => {
+          id = data;
+        })
+        break;
+    }
+    this.drawables.set(id, this.factory.createDrawable(type, id, center));
   }
 
   select(drawable: Drawable, e: MouseEvent){
@@ -125,12 +155,12 @@ export class DrawableManagerService {
     return JSON.parse(sessionStorage.getItem('numberOfProducts') as string);
   }
 
-  run(totalProducts: number){ //API call here
-    //this.chosenQID for the initial Queue ID
+  run(totalProducts: number){
+    this.controller.start(totalProducts).subscribe();
   }
   
-  replay(totalProducts: number){ //API call here
-    //this.chosenQID for the initial Queue ID
+  replay(totalProducts: number){
+    this.controller.restart().subscribe();
   }
   
 }

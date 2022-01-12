@@ -1,3 +1,4 @@
+import { ControllerService } from './../../services/controller.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { Drawable } from 'src/app/Classes/Drawable';
 import { Point } from 'src/app/Classes/Point';
@@ -30,7 +31,7 @@ export class SketchComponent implements OnInit {
     }
   }
   
-  constructor( manager: DrawableManagerService) {
+  constructor(manager: DrawableManagerService,private controller: ControllerService) {
     this.manager = manager;
     this.isQNumberChosen = false;
     this.initialQ = 0;
@@ -70,6 +71,7 @@ export class SketchComponent implements OnInit {
     if(this.manager.factory.nextQueueNumber != 0 && (this.initialQ >=0 && this.initialQ < this.manager.factory.nextQueueNumber)){
       this.isQNumberChosen = true;
       this.manager.getInitialQueue(this.initialQ);
+      this.controller.setStartQueue(this.initialQ).subscribe();
       console.log(this.manager.chosenQID);
     }
   }
