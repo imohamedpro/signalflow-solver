@@ -86,8 +86,7 @@ export class DrawableManagerService {
   }
 
   shiftPoint(e: MouseEvent): Point{
-    
-    return new Point(e.clientX - 15, e.clientY - 75);
+    return new Point(e.pageX - 15, e.pageY - 75);
   }
 
   reset(){

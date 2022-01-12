@@ -46,13 +46,15 @@ export class SketchComponent implements OnInit {
         console.log('queue id ' + this.manager.nextId);
         console.log(e.clientX);
         console.log(e.clientY);
-        this.manager.createDrawable('queue', new Point(e.clientX, e.clientY));
+        console.log(e.screenX);
+        console.log(e.screenY);
+        this.manager.createDrawable('queue', new Point(e.screenX, e.screenY));
         break;
       case 'addM':
         console.log('machine id '+ this.manager.nextId);
         console.log(e.clientX);
         console.log(e.clientY);
-        this.manager.createDrawable('machine', new Point(e.clientX, e.clientY));
+        this.manager.createDrawable('machine', new Point(e.screenX, e.screenY));
     }
   }
 
