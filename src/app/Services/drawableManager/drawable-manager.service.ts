@@ -92,10 +92,10 @@ export class DrawableManagerService {
 
   reset(){
     this.drawables.clear();
+    this.edges = [] as Edge[];
     this.nextId = 0;
     this.factory.nextMachineNumber = 0;
     this.factory.nextQueueNumber = 0;
-
   }
 
   getInitialQueue(queueNumber: number){
