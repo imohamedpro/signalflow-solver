@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Drawable } from 'src/app/Classes/Drawable';
 import { Point } from 'src/app/Classes/Point';
-import { DrawableManagerService } from 'src/app/Services/manager/drawable-manager.service';
+import { DrawableManagerService } from 'src/app/Services/drawableManager/drawable-manager.service';
 
 @Component({
   selector: 'app-sketch',
@@ -23,10 +23,10 @@ export class SketchComponent implements OnInit {
       this.initialQ = 0;
     }
     else if(this._state == 'run'){
-      //api call with parameter this.manager.chosenQID and the second parameter is this.manager.getTotalProducts()
+      this.manager.run(this.manager.getTotalProducts());
     }
     else if(this._state == 'replay'){
-      //api call with parameter this.manager.chosenQID and the second parameter is this.manager.getTotalProducts()
+      this.manager.replay(this.manager.getTotalProducts());
     }
   }
   

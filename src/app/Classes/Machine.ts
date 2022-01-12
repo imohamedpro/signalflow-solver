@@ -14,7 +14,7 @@ export class Machine extends Drawable{
         this.machineNumber = machineNumber;
         this.hasRightEdge = false;
         this.hasLeftEdge = false;
-        this.fillColor = 'rgb(255,255,255)'
+        this.fillColor = '#ffffff'
     }
 
     setFillColor(fillColor: string){
