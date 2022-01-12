@@ -102,11 +102,21 @@ export class DrawableManagerService {
       }
     });
   }
-  //To be called when machine is loaded with products
-  setMachineFillColor(fillColor: string, id: number){
+
+  //To be called to change machine color (product)
+  setMachineFillColor(id: number, fillColor: string){
     this.drawables.forEach((drawable: Drawable, key: number) => {
       if(drawable instanceof Machine){
         if(key == id) drawable.setFillColor(fillColor);
+      }
+    });
+  }
+  
+  //To be called to change queue size 
+  setNumberOfProducts(id: number, numberOfProducts: number){
+    this.drawables.forEach((drawable: Drawable, key: number) => {
+      if(drawable instanceof Queue){
+        if(key == id) drawable.setNumberOfProducts(numberOfProducts);
       }
     });
   }
@@ -114,4 +124,13 @@ export class DrawableManagerService {
   getTotalProducts(){
     return JSON.parse(sessionStorage.getItem('numberOfProducts') as string);
   }
+
+  run(totalProducts: number){ //API call here
+    //this.chosenQID for the initial Queue ID
+  }
+  
+  replay(totalProducts: number){ //API call here
+    //this.chosenQID for the initial Queue ID
+  }
+  
 }

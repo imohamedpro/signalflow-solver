@@ -13,5 +13,9 @@ export class Queue extends Drawable{
         this.queueNumber = queueNumber;
         this.nextMachine = Array<Machine>();
     }
+
+    setNumberOfProducts(numberOfProducts: number){
+        this.numberOfProducts = numberOfProducts;
+    }
     
 }
