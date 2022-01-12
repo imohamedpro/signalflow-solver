@@ -51,15 +51,20 @@ export class DrawableManagerService {
       case "queue":
         this.controller.addQueue().subscribe(data =>{
           id = data;
+          this.drawables.set(this.nextId, this.factory.createDrawable(type, id, center));
+          this.nextId++;
+          console.log(this.drawables);
         })
         break;
       case "machine":
         this.controller.addMachine().subscribe(data => {
           id = data;
+          this.drawables.set(this.nextId, this.factory.createDrawable(type, id, center));
+          this.nextId++;
+          console.log(this.drawables);
         })
         break;
     }
-    this.drawables.set(id, this.factory.createDrawable(type, id, center));
   }
 
   select(drawable: Drawable, e: MouseEvent){
@@ -79,6 +84,7 @@ export class DrawableManagerService {
             ++this.nextId;
             this.selectedDrawables[0].hasRightEdge = true;
             this.selectedDrawables[1].nextMachine.push(this.selectedDrawables[0]); 
+            this.controller.setInput(this.selectedDrawables[0].id, this.selectedDrawables[1].id).subscribe();
           }
         else if(this.selectedDrawables[0].center.x > this.selectedDrawables[1].center.x
           && this.selectedDrawables[0].hasLeftEdge == false){
@@ -86,6 +92,7 @@ export class DrawableManagerService {
             ++this.nextId;
             this.selectedDrawables[0].hasLeftEdge = true;
             this.selectedDrawables[0].nextQueue = this.selectedDrawables[1];
+            this.controller.setOutput(this.selectedDrawables[0].id, this.selectedDrawables[1].id).subscribe();
           }
       }
       else if(this.selectedDrawables[1] instanceof Machine && this.selectedDrawables[0] instanceof Queue){
@@ -95,6 +102,7 @@ export class DrawableManagerService {
             ++this.nextId;
             this.selectedDrawables[1].hasLeftEdge = true;
             this.selectedDrawables[1].nextQueue = this.selectedDrawables[0];
+            this.controller.setOutput(this.selectedDrawables[1].id, this.selectedDrawables[0].id).subscribe();
           }
         else if(this.selectedDrawables[1].center.x < this.selectedDrawables[0].center.x
           && this.selectedDrawables[1].hasRightEdge == false){
@@ -102,6 +110,7 @@ export class DrawableManagerService {
             ++this.nextId;
             this.selectedDrawables[1].hasRightEdge = true;
             this.selectedDrawables[0].nextMachine.push(this.selectedDrawables[1]); 
+            this.controller.setInput(this.selectedDrawables[1].id, this.selectedDrawables[0].id).subscribe();
           }
       }
       this.selectedDrawables = [] as Drawable[];
