@@ -23,7 +23,7 @@ export class SketchComponent implements OnInit {
       this.isQNumberChosen = false;
       this.initialQ = 0;
     }
-    else if (this._state == 'run') {
+    else if (this._state == 'run' && this.isQNumberChosen == true ) {
       this.manager.run(this.manager.getTotalProducts());
     }
     else if (this._state == 'replay') {
@@ -66,7 +66,6 @@ export class SketchComponent implements OnInit {
       this.isQNumberChosen = true;
       this.manager.getInitialQueue(this.initialQ);
       this.controller.setStartQueue(this.initialQ).subscribe();
-      console.log(this.manager.chosenQID);
     }
   }
 

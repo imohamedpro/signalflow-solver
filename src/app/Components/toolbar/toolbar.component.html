@@ -2,7 +2,7 @@
     <button (click)="emitAction('new')">New</button>
     <button (click)="emitAction('run')">Run</button>
     <button (click)="emitAction('replay')">Replay</button>
-    <button (click)="emitAction('addM')">Add Machine</button>
-    <button (click)="emitAction('addQ')">Add Queue</button>
-    <button (click)="emitAction('connect')">Connect</button>
+    <button (click)="emitAction('addM')" [disabled]='isRunning()'>Add Machine</button>
+    <button (click)="emitAction('addQ')" [disabled]='isRunning()'>Add Queue</button>
+    <button (click)="emitAction('connect')" [disabled]='isRunning()'>Connect</button>
 </div>

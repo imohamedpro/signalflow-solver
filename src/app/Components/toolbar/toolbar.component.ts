@@ -18,4 +18,11 @@ export class ToolbarComponent implements OnInit {
     this.actionEmitter.emit(action);
   }
 
+  isRunning(): boolean{
+    if(JSON.parse(sessionStorage.getItem('isRunning') as string) == true){
+      return true;
+    }
+    return false;
+  }
+
 }
