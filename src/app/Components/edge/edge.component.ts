@@ -9,8 +9,8 @@ import { Point } from 'src/app/Classes/Point';
 export class EdgeComponent implements OnInit {
   @Input() edge!: any;
   path_value!: string;
-  rx: number = 380;
-  ry: number = 100
+  rx: number = 0;
+  ry: number = 0;
   // sweepFlag: number = 0;
   cx: number = 0;
   cy: number = 0;
