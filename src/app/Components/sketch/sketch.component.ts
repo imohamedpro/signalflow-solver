@@ -41,8 +41,14 @@ export class SketchComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  handleClick(e: MouseEvent) {
-    switch (this._state) {
+  handleClick(e: MouseEvent){
+    // console.log(e.clientX);
+    // console.log(e.clientY);
+    // console.log(e.screenX);
+    // console.log(e.screenY);
+    // console.log(e.offsetX);
+    // console.log(e.offsetY);
+    switch(this._state){
       case 'addQ':
         this.manager.createDrawable('queue', new Point(e.offsetX, e.offsetY));
         break;

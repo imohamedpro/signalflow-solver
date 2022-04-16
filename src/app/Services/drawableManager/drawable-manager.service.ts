@@ -17,44 +17,30 @@ export class DrawableManagerService {
   edgePoints: Array<Point>;
   factory: DrawableFactoryService;
   chosenQID!: number;
-  edges!: Array<Edge>;
   serverSentEvent!: Subscription;
-  constructor(factory: DrawableFactoryService, private controller: ControllerService) {
+  nextId: number;
+  nextEdgeId: number;
+  edges!: Map<number, Edge>;
+  
+  constructor(factory: DrawableFactoryService, controller: ControllerService) {
     this.factory = factory;
     this.drawables = new Array<Drawable>();
     this.selectedDrawables = new Array<Drawable>();
     this.edgePoints = new Array<Point>();
-    this.edges = new Array<Edge>();
-    this.serverSentEvent = this.controller.getServerSentEvent().subscribe(data => {
-      console.log(data);
-      let message = data.data.split(",");
-      let id = Number(message[0]);
-      switch (data.type) {
-        case "Q":
-          this.setNumberOfProducts(id, Number(message[1]));
-          break;
-        case "M":
-          this.setMachineFillColor(id, message[1]);
-          break;
-      }
-    });
     sessionStorage.setItem('isRunning',JSON.stringify(false));
+    this.edges = new Map<number, Edge>();
+    this.nextId = 0;
+    this.nextEdgeId = 0;
   }
 
   createDrawable(type: string, center: Point) {
     let id: number = 0;
     switch (type) {
       case "queue":
-        this.controller.addQueue().subscribe(data => {
-          id = data;
-          this.drawables.push(this.factory.createDrawable(type, id, center));
-        })
+          this.drawables.push(this.factory.createDrawable(type, this.nextId++, center));
         break;
       case "machine":
-        this.controller.addMachine().subscribe(data => {
-          id = data;
-          this.drawables.push(this.factory.createDrawable(type, id, center));
-        })
+          this.drawables.push(this.factory.createDrawable(type, this.nextId++, center));
         break;
     }
   }
@@ -70,30 +56,26 @@ export class DrawableManagerService {
       }
       else if (this.selectedDrawables[0] instanceof Machine && this.selectedDrawables[1] instanceof Queue) {
         if (this.selectedDrawables[0].center.x < this.selectedDrawables[1].center.x) {
-          this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
+          this.edges.set(this.nextEdgeId,this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1], this.nextEdgeId++));
           this.selectedDrawables[1].nextMachine.push(this.selectedDrawables[0]);
-          this.controller.setInput(this.selectedDrawables[0].id, this.selectedDrawables[1].id).subscribe();
         }
         else if (this.selectedDrawables[0].center.x > this.selectedDrawables[1].center.x
           && this.selectedDrawables[0].hasLeftEdge == false) {
-          this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
+          this.edges.set(this.nextEdgeId, this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1], this.nextEdgeId++));
           this.selectedDrawables[0].hasLeftEdge = true;
           this.selectedDrawables[0].nextQueue = this.selectedDrawables[1];
-          this.controller.setOutput(this.selectedDrawables[0].id, this.selectedDrawables[1].id).subscribe();
         }
       }
       else if (this.selectedDrawables[1] instanceof Machine && this.selectedDrawables[0] instanceof Queue) {
         if (this.selectedDrawables[1].center.x > this.selectedDrawables[0].center.x
           && this.selectedDrawables[1].hasLeftEdge == false) {
-          this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
+          this.edges.set(this.nextEdgeId ,this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1], this.nextEdgeId++));
           this.selectedDrawables[1].hasLeftEdge = true;
           this.selectedDrawables[1].nextQueue = this.selectedDrawables[0];
-          this.controller.setOutput(this.selectedDrawables[1].id, this.selectedDrawables[0].id).subscribe();
         }
         else if (this.selectedDrawables[1].center.x < this.selectedDrawables[0].center.x) {
-          this.edges.push(this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1]));
+          this.edges.set(this.nextEdgeId, this.factory.connectDrawables(this.edgePoints[0], this.edgePoints[1], this.nextEdgeId++));
           this.selectedDrawables[0].nextMachine.push(this.selectedDrawables[1]);
-          this.controller.setInput(this.selectedDrawables[1].id, this.selectedDrawables[0].id).subscribe();
         }
       }
       this.selectedDrawables = [] as Drawable[];
@@ -107,24 +89,11 @@ export class DrawableManagerService {
 
   reset() {
     this.drawables = [] as Drawable[];
-    this.edges = [] as Edge[];
+    this.edges.clear();
+    this.nextId = 0;
     this.factory.nextMachineNumber = 0;
     this.factory.nextQueueNumber = 0;
-    this.controller.closeEventSource();
     this.serverSentEvent.unsubscribe();
-    this.serverSentEvent = this.controller.getServerSentEvent().subscribe(data => {
-      console.log(data);
-      let message = data.data.split(",");
-      let id = Number(message[0]);
-      switch (data.type) {
-        case "Q":
-          this.setNumberOfProducts(id, Number(message[1]));
-          break;
-        case "M":
-          this.setMachineFillColor(id, message[1]);
-          break;
-      }
-    });
     sessionStorage.setItem('isRunning',JSON.stringify(false));
   }
 
@@ -157,7 +126,6 @@ export class DrawableManagerService {
   }
 
   run(totalProducts: number) {
-    this.controller.start(totalProducts).subscribe();
     sessionStorage.setItem('isRunning',JSON.stringify(true));
   }
 
@@ -169,7 +137,6 @@ export class DrawableManagerService {
         drawable.fillColor = '#ffffff';
       }
     });
-    this.controller.restart().subscribe();
     sessionStorage.setItem('isRunning',JSON.stringify(true));
   }
 

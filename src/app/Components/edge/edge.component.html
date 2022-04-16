@@ -1,4 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg">
-      <line [attr.x1]='edge.center1.x' [attr.y1]='edge.center1.y' [attr.x2]='edge.center2.x' [attr.y2]='edge.center2.y'>
-      </line>
+<svg xmlns="http://www.w3.org/2000/svg" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)">
+
+      <path [attr.id]="id" [attr.d]='path_value'
+            style = "stroke: #000000; stroke-width: 3; fill: none;"></path>
+
+      <!-- <circle [attr.cx]='cx' [attr.cy]='cy' r='5' style="stroke:#006600; fill:#00cc00; cursor: move;" /> -->
+      <polygon [attr.points]="triangle_points" style="fill:black;stroke:purple;stroke-width:1;cursor: move;" (mousedown)="mouseDown($event)"/>
 </svg>

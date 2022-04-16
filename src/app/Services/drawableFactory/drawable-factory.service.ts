@@ -25,8 +25,8 @@ export class DrawableFactoryService {
     return new Machine(id, this.nextMachineNumber++, center);
   }
 
-  connectDrawables(center1: Point, center2: Point): Edge {
-    return new Edge(center1, center2);
+  connectDrawables(center1: Point, center2: Point, id: number): Edge{
+    return new Edge(center1, center2, id);
   }
 
 }
