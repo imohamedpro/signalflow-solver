@@ -31,7 +31,7 @@ export class EdgeComponent implements OnInit {
 
   updatePath() {
     return new Promise<void>((resolve, reject) => {
-      this.path_value = "M" + this.edge.center1.x + "," + this.edge.center1.y + " Q" + this.rx + " " + this.ry + " " + this.edge.center2.x + "," + this.edge.center2.y;
+      this.path_value = "M" + this.edge.endPoint1.x + "," + this.edge.endPoint1.y + " Q" + this.rx + " " + this.ry + " " + this.edge.endPoint2.x + "," + this.edge.endPoint2.y;
       resolve();
     });
   }

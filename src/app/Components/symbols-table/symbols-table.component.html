@@ -1,0 +1,18 @@
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Symbol</th>
+                <th scope="col">Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let edge of this.manager?.edges | keyvalue">
+                <td>{{edge.key + 1}}</td>
+                <td>{{edge.value.symbol}}</td>
+                <td>{{edge.value.gain}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
