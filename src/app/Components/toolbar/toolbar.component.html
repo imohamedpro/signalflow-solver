@@ -1,8 +1,18 @@
 <h1 class="title">Signal Flow Graph Solver</h1>
 <hr>
 <div class="container">
-    <button (click)="emitAction('clear')">Clear</button>
-    <button (click)="emitAction('solve')">Solve</button>
-    <button (click)="emitAction('addNode')">Add Node</button>
-    <button (click)="emitAction('addEdge')">Add Edge</button>
+    <div>
+        <button class="notClicked clear" (click)="emitAction('clear')">Clear</button>
+    </div>
+    <div>
+        <button class="notClicked solve" (click)="emitAction('solve')">Solve</button>
+    </div>
+    <div>
+        <button class="notClicked addNode" (click)="emitAction('addNode')" 
+        [ngClass] = "{'clicked': state == 'addNode', 'notClicked': state != 'addNode'}">Add Node</button>
+        <button class="notClicked addEdge" (click)="emitAction('addEdge')"
+        [ngClass] = "{'clicked': state == 'addEdge', 'notClicked': state != 'addEdge'}">Add Edge</button>
+        <button class="notClicked delete" (click)="emitAction('delete')"
+        [ngClass] = "{'clicked': state == 'delete', 'notClicked': state != 'delete'}">Delete</button>
+    </div>
 </div>
