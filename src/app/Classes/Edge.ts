@@ -2,15 +2,21 @@ import { Point } from "./Point";
 
 export class Edge {
     id!: number;
-    edgeNumber!: number;
-    center1!: Point;
-    center2!: Point;
+    symbol!: string;
+    endPoint1!: Point;
+    endPoint2!: Point;
+    gain!: number;
 
-    constructor(id: number, edgeNumber: number, center1: Point, center2: Point) {
+    constructor(id: number, endPoint1: Point, endPoint2: Point, isForward: Boolean, gain: number) {
         this.id = id;
-        this.edgeNumber = edgeNumber;
-        this.center1 = center1;
-        this.center2 = center2;
+        this.endPoint1 = endPoint1;
+        this.endPoint2 = endPoint2;
+        this.gain = gain;
+        if(isForward){
+            this.symbol = 'g' + id;
+        } else {
+            this.symbol = 'h' + id;
+        }
     }
 
 }

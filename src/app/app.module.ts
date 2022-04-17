@@ -9,6 +9,7 @@ import { NodeComponent } from './Components/node/node.component';
 import { EdgeComponent } from './Components/edge/edge.component';
 import { FormsModule } from '@angular/forms';
 import { AnswerComponent } from './Components/answer/answer.component';
+import { SymbolsTableComponent } from './Components/symbols-table/symbols-table.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { AnswerComponent } from './Components/answer/answer.component';
     NodeComponent,
     EdgeComponent,
     AnswerComponent,
+    SymbolsTableComponent,
   ],
   imports: [
     BrowserModule,

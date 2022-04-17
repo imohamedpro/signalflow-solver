@@ -13,8 +13,6 @@ export class ManagerService {
   selectedNode!: Node | null;
   nextEdgeId!: number; // for test purposes (api should get the edge id)
   nextNodeId!: number; // for test purposes (api should get the node id)
-  nextEdgeNumber!: number;
-  nextNodeNumber!: number;
   answer!: string;
 
   constructor(controller: ControllerService) {
@@ -22,36 +20,48 @@ export class ManagerService {
     this.nodes = new Map<number, Node>();
     this.nextEdgeId = 0;
     this.nextNodeId = 0;
-    this.nextEdgeNumber = 0;
-    this.nextNodeNumber = 0;
     this.answer = 'Answer should be here';
   }
 
-  createEdge(id: number, center1: Point, center2: Point) {
-    this.edges.set(this.nextEdgeId++, new Edge(this.nextEdgeId, this.nextEdgeNumber++, center1, center2));
+  createEdge(id: number, endPoint1: Point, endPoint2: Point, gain: number) {
+    if(endPoint1.x < endPoint2.x){
+      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, endPoint1, endPoint2, true, gain));
+    } else {
+      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, endPoint1, endPoint2, false, gain));
+    }
+    ++this.nextEdgeId;
   }
 
   createNode(center: Point) {
-    this.nodes.set(this.nextNodeId++, new Node(this.nextNodeId, this.nextNodeNumber++, center));
+    this.nodes.set(this.nextNodeId, new Node(this.nextNodeId, center));
+    ++this.nextNodeId;
   }
 
   select(node: Node) {
     if(this.selectedNode == null){
       this.selectedNode = node;
     } else {
-      this.createEdge(this.nextEdgeId++, this.selectedNode.center, node.center);
-      this.selectedNode = null;
+      let gain: any;
+      gain = prompt('please enter the gain:');
+      if(isNaN(gain) || gain == null){ 
+        alert("Invalid input!");
+        this.selectedNode = null;
+      } else {
+        this.createEdge(this.nextEdgeId, this.selectedNode.center, node.center, gain);
+        console.log(this.edges.get(0));
+        this.selectedNode = null;
+      }
     }
   }
 
   clear() {
-    this.edges.clear();
-    this.nodes.clear();
-    this.nextEdgeId = 0;
-    this.nextNodeId = 0;
-    this.nextEdgeNumber = 0;
-    this.nextNodeNumber = 0;
-    this.selectedNode = null;
+    if(confirm('Are you sure ?')){
+      this.edges.clear();
+      this.nodes.clear();
+      this.nextEdgeId = 0;
+      this.nextNodeId = 0;
+      this.selectedNode = null;
+    }
   }
 
 }
