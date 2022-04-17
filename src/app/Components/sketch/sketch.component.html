@@ -1,26 +1,14 @@
-<div *ngIf="isQNumberChosen == false">
-    <label>Select initial queue number: </label>
-    <input [(ngModel)]="initialQ" (input)="changeQ($event)" type="number" min="0"
-        [max]="manager.factory.nextQueueNumber -1 ">
-    <button (click)="selectQ()">Select</button>
-</div>
-<h3 *ngIf="isQNumberChosen == true" style="margin-top: -10px;">Chosen intial queue: Q{{initialQ}}</h3>
-
 <svg width='100%' height='100%' (click)='handleClick($event)' class='container'>
 
-    <svg:g *ngFor='let edge of this.manager.edges | keyvalue; index as i'>
+    <svg:g *ngFor='let edge of this.manager.edges | keyvalue'>
 
-        <svg:g   [edge]='edge.value' edge/>
+        <svg:g [edge]='edge.value' edge />
 
     </svg:g>
 
-    <svg:g *ngFor='let drawable of this.manager.drawables' [ngSwitch]='drawable.getType()'>
+    <svg:g *ngFor='let node of this.manager.nodes | keyvalue'>
 
-        <svg:g *ngSwitchCase="'queue'" drawable='queue' [queue]='drawable'
-            (click)='select(drawable, $event)' />
-
-        <svg:g *ngSwitchCase="'machine'" drawable='machine' [machine]='drawable'
-            (click)='select(drawable, $event)' />
+        <svg:g [node]='node.value' (click)='selectNode(node.value)' node />
 
     </svg:g>
 

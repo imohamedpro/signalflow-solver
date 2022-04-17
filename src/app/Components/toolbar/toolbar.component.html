@@ -1,10 +1,8 @@
 <h1 class="title">Signal Flow Graph Solver</h1>
 <hr>
 <div class="container">
-    <button (click)="emitAction('new')">New</button>
-    <button (click)="emitAction('run')" [disabled]='isRunning()'>Run</button>
-    <button (click)="replay()">Replay</button>
-    <button (click)="emitAction('addM')" [disabled]='isRunning()'>Add Machine</button>
-    <button (click)="emitAction('addQ')" [disabled]='isRunning()'>Add Queue</button>
-    <button (click)="emitAction('connect')" [disabled]='isRunning()'>Connect</button>
+    <button (click)="emitAction('clear')">Clear</button>
+    <button (click)="emitAction('solve')">Solve</button>
+    <button (click)="emitAction('addNode')">Add Node</button>
+    <button (click)="emitAction('addEdge')">Add Edge</button>
 </div>

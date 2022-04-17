@@ -1,8 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ControllerService } from '../../Services/controller/controller.service';
-import { Drawable } from '../../Classes/Drawable';
 import { Point } from '../../Classes/Point';
-import { DrawableManagerService } from '../../Services/drawableManager/drawable-manager.service';
+import { Node } from '../../Classes/Node'
+import { ManagerService } from '../../Services/manager/manager.service';
 
 @Component({
   selector: 'app-sketch',
@@ -11,67 +10,34 @@ import { DrawableManagerService } from '../../Services/drawableManager/drawable-
 })
 export class SketchComponent implements OnInit {
   _state!: string;
-  manager!: DrawableManagerService;
-  isQNumberChosen: boolean;
-  initialQ: number;
+  manager!: ManagerService;
 
   @Input() set state(value: string) {
     this._state = value;
 
-    if (this._state == 'new') {
-      this.manager.reset();
-      this.isQNumberChosen = false;
-      this.initialQ = 0;
+    if (this._state == 'clear') {
+      this.manager.clear();
     }
-    else if (this._state == 'run' && this.isQNumberChosen == true ) {
-      this.manager.run(this.manager.getTotalProducts());
-    }
-    else if (this._state == 'replay') {
-      this.manager.replay(this.manager.getTotalProducts());
-    }
+
   }
 
-  constructor(manager: DrawableManagerService, private controller: ControllerService) {
+  constructor(manager: ManagerService) {
     this.manager = manager;
-    this.isQNumberChosen = false;
-    this.initialQ = 0;
   }
 
 
   ngOnInit(): void {
   }
 
-  handleClick(e: MouseEvent){
-    // console.log(e.clientX);
-    // console.log(e.clientY);
-    // console.log(e.screenX);
-    // console.log(e.screenY);
-    // console.log(e.offsetX);
-    // console.log(e.offsetY);
-    switch(this._state){
-      case 'addQ':
-        this.manager.createDrawable('queue', new Point(e.offsetX, e.offsetY));
-        break;
-      case 'addM':
-        this.manager.createDrawable('machine', new Point(e.offsetX, e.offsetY));
+  handleClick(e: MouseEvent) {
+    if (this._state == 'addNode') {
+      this.manager.createNode(new Point(e.offsetX, e.offsetY));
     }
   }
 
-  select(drawable: Drawable, e: MouseEvent) {
-    if (this._state == 'connect') {
-      this.manager.select(drawable, e);
-    }
-  }
-
-  changeQ(e: any) {
-    this.initialQ = e.target.value;
-  }
-
-  selectQ() {
-    if (this.manager.factory.nextQueueNumber != 0 && (this.initialQ >= 0 && this.initialQ < this.manager.factory.nextQueueNumber)) {
-      this.isQNumberChosen = true;
-      this.manager.getInitialQueue(this.initialQ);
-      this.controller.setStartQueue(this.initialQ).subscribe();
+  selectNode(node: Node) {
+    if (this._state == 'addEdge') {
+      this.manager.select(node);
     }
   }
 
