@@ -19,10 +19,13 @@ export class EdgeComponent implements OnInit {
   id!: string;
   initialClick!: Point;
   triangle_points!: string;
+  value: string = "";
+  isSelected: boolean = false;
   constructor() { }
 
   ngOnInit(): void {
     this.id = "path" + this.edge.id;
+    this.value = "G" + this.edge.id;
     this.updatePath().then(() => this.updateCircle());
   }
 
@@ -89,4 +92,9 @@ export class EdgeComponent implements OnInit {
     this.isDragging = false;
     this.updateCircle();
   }
+
+  avoidP(e: any) {
+    e.stopPropagation();
+  }
+
 }
