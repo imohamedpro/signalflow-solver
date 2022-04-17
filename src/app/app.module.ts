@@ -8,6 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NodeComponent } from './Components/node/node.component';
 import { EdgeComponent } from './Components/edge/edge.component';
 import { FormsModule } from '@angular/forms';
+import { AnswerComponent } from './Components/answer/answer.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { FormsModule } from '@angular/forms';
     ToolbarComponent,
     SketchComponent,
     NodeComponent,
-    EdgeComponent
+    EdgeComponent,
+    AnswerComponent,
   ],
   imports: [
     BrowserModule,

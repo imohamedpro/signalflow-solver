@@ -1,0 +1,11 @@
+.container {
+    position: absolute;
+    left: 55%;
+    top: 60%;
+    width: 659px;
+    height: 276px;
+    border: 1px solid black;
+    overflow: auto;
+    resize: both;
+    white-space: break-spaces;
+}

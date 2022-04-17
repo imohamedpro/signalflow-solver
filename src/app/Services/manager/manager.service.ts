@@ -15,6 +15,7 @@ export class ManagerService {
   nextNodeId!: number; // for test purposes (api should get the node id)
   nextEdgeNumber!: number;
   nextNodeNumber!: number;
+  answer!: string;
 
   constructor(controller: ControllerService) {
     this.edges = new Map<number, Edge>();
@@ -23,6 +24,7 @@ export class ManagerService {
     this.nextNodeId = 0;
     this.nextEdgeNumber = 0;
     this.nextNodeNumber = 0;
+    this.answer = 'Answer should be here';
   }
 
   createEdge(id: number, center1: Point, center2: Point) {
