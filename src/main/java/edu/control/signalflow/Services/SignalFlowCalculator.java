@@ -129,6 +129,7 @@ public class SignalFlowCalculator {
         for(Path p: paths){
             subDeterminant.add(calculateDeterminant(nonTouching, p));
         }
+        
 
     }
 } 
