@@ -95,24 +95,31 @@ public class Graph {
         }
     }
 
+    HashSet<Edge> visitedEdges = new HashSet<>();
+
 
     public void getPaths () {
         Vertex start = vertices.get(0);
         Vertex end = vertices.get(vertices.size()-1);
         ArrayList<Vertex> pathList = new ArrayList<>();
         HashSet<Vertex> visitedVertices = new HashSet<>();
-        HashSet<Edge> visitedEdges = new HashSet<>();
-        getAllPaths(start, end, pathList, visitedVertices, visitedEdges);
+        getAllPaths(start, end, pathList, visitedVertices);
+        printAllPaths();
+    }
+
+    private void printAllPaths(){
+        System.out.println("Created Path:");
+        for(ArrayList<Vertex> list:this.allPaths){
+            for(Vertex i:list){
+                System.out.print(i.id+"  ");
+            }   System.out.println();
+        }
+
     }
 
     ArrayList<ArrayList<Vertex>> allPaths = new ArrayList<>();
 
-    public void finalPaths(ArrayList<Vertex> pathList){
-        allPaths.add(pathList);
-    }
-
-    public void getAllPaths (Vertex start, Vertex end, ArrayList<Vertex> pathList,
-                             HashSet<Vertex> visitedVertices, HashSet<Edge> visitedEdges) {
+    public void getAllPaths (Vertex start, Vertex end, ArrayList<Vertex> pathList, HashSet<Vertex> visitedVertices) {
         pathList.add(start);
         if(start.equals(end)) {
             ArrayList<Vertex> finalPath = new ArrayList<>(pathList);
@@ -125,16 +132,12 @@ public class Graph {
         visitedVertices.add(start);
 
         for(Edge i: start.edges){
-            if(visitedVertices.contains(i.destination))
-                continue;
-            visitedEdges.add(i);
-            getAllPaths(i.destination, end, pathList, visitedVertices, visitedEdges);
-            visitedVertices.remove(start);
+            if(!visitedVertices.contains(i.destination)) {
+                getAllPaths(i.destination, end, pathList, visitedVertices);
+            }
         }
+        visitedVertices.remove(start);
         pathList.remove(start);
-
-
-
     }
 
 
@@ -145,7 +148,7 @@ public class Graph {
 class Test {
     public static void main(String[] args) {
         Graph graph = new Graph();
-        for(int i=0; i<6; i++){
+        for(int i=0; i<8; i++){
             graph.addVertex();
         }
 //        graph.addEdge();
@@ -159,9 +162,18 @@ class Test {
         graph.addEdge(3, 4, 5);
         graph.addEdge(4, 5, 5);
         graph.addEdge(5, 6, 5);
-        graph.addEdge(3, 5, 5);
-        graph.addEdge(4, 2, 5);
-        graph.addEdge(5, 3, 5);
+        graph.addEdge(6, 7, 5);
+        graph.addEdge(7, 8, 5);
+        graph.addEdge(2, 4, 5);
+        graph.addEdge(2, 7, 5);
+        graph.addEdge(7, 5, 5);
+        graph.addEdge(7, 7, 5);
+        graph.addEdge(7, 6, 5);
+        graph.addEdge(6, 5, 5);
+        graph.addEdge(5, 4, 5);
+        graph.addEdge(4, 3, 5);
+        graph.addEdge(3, 2, 5);
+
 
 //        graph.print();
 //        graph.removeVertex(4);
