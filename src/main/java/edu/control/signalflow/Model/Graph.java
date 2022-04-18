@@ -12,14 +12,14 @@ public class Graph {
         vertices.add(vertex);
     }
 
-    public void removeVertex(Vertex vertex){
+    public void removeVertex(int vertexID){
         /*
             To be implemented: removing all incident edges
         */
+        Vertex vertex = getVertexFromID(vertexID);
         for(int i=0; i<vertex.edges.size(); i++){
             vertex.edges.remove(vertex.edges.get(i));
         }
-
         vertices.remove(vertex);
     }
 
@@ -32,16 +32,28 @@ public class Graph {
         Vertex src = getVertexFromID(srcID);
         Vertex dest = getVertexFromID(destID);
 //      Initializing the new edge values:
-        edge.id = edgeID ++;
-        edge.source = src;
-        edge.destination = dest;
-        edge.gain = gain;
-//      Each vertex has a list of edges incident "from it"
-        src.edges.add(edge);
+        try {
+            edge.source = src;
+            edge.destination = dest;
+            edge.gain = gain;
+//          Each vertex has a list of edges incident "from it"
+            src.edges.add(edge);
+            edge.id = edgeID ++;
+        }
+        catch (NullPointerException e) {
+            System.out.print("Caught the NullPointerException");
+        }
     }
 
     public void removeEdge(Edge edge) {
-
+        Vertex vertex = edge.source;
+        for(int i=0; i<vertex.edges.size(); i++){
+            if(vertex.edges.get(i)==edge){
+                vertex.edges.remove(vertex.edges.get(i));
+                return;
+            }
+        }
+        System.out.println("Edge not found!");
     }
 
     private Vertex getVertexFromID(int id){
@@ -60,7 +72,22 @@ public class Graph {
         return vertices.get(m);
     }
 
+    public void print(){
+        for (Vertex vertex : vertices) {
+            System.out.println("Vertex " + vertex.id + ": ");
+
+            for (int j = 0; j < vertex.edges.size(); j++) {
+                System.out.print(vertex.edges.get(j).id);
+                if(j<vertex.edges.size()-1)
+                    System.out.print(" --> ");
+            }
+            System.out.println();
+        }
+    }
+
 }
+
+
 
 class Test {
     public static void main(String[] args) {
@@ -83,14 +110,13 @@ class Test {
         graph.addEdge(4, 2, 5);
         graph.addEdge(5, 3, 5);
 
-        for(int i=0; i<graph.vertices.size(); i++){
-            Vertex vertex = graph.vertices.get(i);
-            System.out.println("Vertex "+vertex.id+": ");
+        graph.print();
+        graph.removeVertex(4);
+        graph.print();
+        graph.addVertex();
+        graph.print();
 
-            for(int j=0; j<vertex.edges.size(); j++){
-                System.out.print(vertex.edges.get(j).id+"-->");
-            }   System.out.println();
-        }
+
 
     }
 }

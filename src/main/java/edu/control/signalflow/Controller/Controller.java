@@ -1,10 +1,12 @@
 package edu.control.signalflow.Controller;
 
+import edu.control.signalflow.Model.Graph;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin()
 public class Controller {
+    Graph graph = new Graph();
 
     /**
      * Takes a node data from front end
@@ -13,6 +15,7 @@ public class Controller {
      */
     @PutMapping("/node/add")
     public int addNode(@RequestBody Object node){
+        graph.addVertex();
         return 0;
     }
 
@@ -23,6 +26,7 @@ public class Controller {
      */
     @PutMapping("/path/add")
     public int addPath(@RequestBody Object path){
+
         return 0;
     }
 
