@@ -12,7 +12,11 @@
         [ngClass] = "{'clicked': state == 'addNode', 'notClicked': state != 'addNode'}">Add Node</button>
         <button class="notClicked addEdge" (click)="emitAction('addEdge')"
         [ngClass] = "{'clicked': state == 'addEdge', 'notClicked': state != 'addEdge'}">Add Edge</button>
+    </div>
+    <div>
         <button class="notClicked delete" (click)="emitAction('delete')"
         [ngClass] = "{'clicked': state == 'delete', 'notClicked': state != 'delete'}">Delete</button>
+        <button class="notClicked move" (click)="emitAction('move')"
+        [ngClass] = "{'clicked': state == 'move', 'notClicked': state != 'move'}">Move</button>
     </div>
 </div>

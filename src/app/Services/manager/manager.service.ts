@@ -43,7 +43,7 @@ export class ManagerService {
     } else {
       let gain: any;
       gain = prompt('please enter the gain:');
-      if(isNaN(gain) || gain == null){ 
+      if(isNaN(gain) || gain == null || gain == ""){ 
         alert("Invalid input!");
       } else {
         this.createEdge(this.nextEdgeId, this.selectedNode.center, node.center, gain);
@@ -55,7 +55,7 @@ export class ManagerService {
   editGain(edge: Edge){
     let gain: any;
     gain = prompt('please enter the new gain of '+ edge.symbol +' :');
-    if(isNaN(gain) || gain == null){ 
+    if(isNaN(gain) || gain == null || gain == ""){ 
       alert("Invalid input!");
     } else {
       edge.gain = gain;
