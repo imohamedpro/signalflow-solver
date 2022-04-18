@@ -8,11 +8,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let edge of this.manager?.edges | keyvalue">
-                <td>{{edge.key + 1}}</td>
+            <tr *ngFor="let edge of this.manager?.edges | keyvalue; let i = index;">
+                <td>{{i + 1}}</td>
                 <td>{{edge.value.symbol}}</td>
-                <td>{{edge.value.gain}}</td>
+                <td>{{edge.value.gain}}<span class="material-icons" (click)='this.manager.editGain(edge.value)'>edit</span></td>
             </tr>
         </tbody>
     </table>
+
 </div>

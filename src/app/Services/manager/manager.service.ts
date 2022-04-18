@@ -25,9 +25,9 @@ export class ManagerService {
 
   createEdge(id: number, endPoint1: Point, endPoint2: Point, gain: number) {
     if(endPoint1.x < endPoint2.x){
-      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, endPoint1, endPoint2, true, gain));
+      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, endPoint1, endPoint2, gain));
     } else {
-      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, endPoint1, endPoint2, false, gain));
+      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, endPoint1, endPoint2, gain));
     }
     ++this.nextEdgeId;
   }
@@ -45,12 +45,20 @@ export class ManagerService {
       gain = prompt('please enter the gain:');
       if(isNaN(gain) || gain == null){ 
         alert("Invalid input!");
-        this.selectedNode = null;
       } else {
         this.createEdge(this.nextEdgeId, this.selectedNode.center, node.center, gain);
-        console.log(this.edges.get(0));
-        this.selectedNode = null;
       }
+      this.selectedNode = null;
+    }
+  }
+
+  editGain(edge: Edge){
+    let gain: any;
+    gain = prompt('please enter the new gain of '+ edge.symbol +' :');
+    if(isNaN(gain) || gain == null){ 
+      alert("Invalid input!");
+    } else {
+      edge.gain = gain;
     }
   }
 

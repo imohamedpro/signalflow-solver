@@ -7,16 +7,12 @@ export class Edge {
     endPoint2!: Point;
     gain!: number;
 
-    constructor(id: number, endPoint1: Point, endPoint2: Point, isForward: Boolean, gain: number) {
+    constructor(id: number, endPoint1: Point, endPoint2: Point, gain: number) {
         this.id = id;
         this.endPoint1 = endPoint1;
         this.endPoint2 = endPoint2;
         this.gain = gain;
-        if(isForward){
-            this.symbol = 'g' + id;
-        } else {
-            this.symbol = 'h' + id;
-        }
+        this.symbol = 'e' + id;
     }
 
 }

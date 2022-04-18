@@ -16,6 +16,4 @@ export class SymbolsTableComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  
-
 }

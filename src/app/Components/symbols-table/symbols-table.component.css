@@ -21,3 +21,15 @@ thead {
     background-color: #41719C;
     color: white;
 }
+
+.material-icons{
+    position: absolute;
+    margin-top: -3px;
+    color: #41719C;
+}
+
+.material-icons:hover{
+    font-family: "Material Icons Outlined";
+    cursor: pointer;
+    color: rgb(195, 108, 32);
+}
