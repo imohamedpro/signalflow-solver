@@ -4,13 +4,20 @@ import java.util.HashSet;
 import java.util.List;
 
 public class Path {
-    List<Edge> edges;
-    HashSet<Integer> vertcies;
-    public Path(List<Edge> edges){
+    private int id;
+    private double gain;
+    private String representation;
+    boolean loop;
+    public List<Edge> edges;
+    public HashSet<Integer> vertcies;
+    public Path(List<Edge> edges, int id){
+        this.id = id;
+        this.gain = 0;
         this.edges = edges;
         for(Edge e: edges){
             vertcies.add(e.source.id);
         }
+        this.loop = edges.get(0).source == edges.get(edges.size() - 1).destination;
     }
     public boolean touches(Path p){
         for(Edge e: p.edges){
@@ -19,5 +26,26 @@ public class Path {
             }
         }
         return false;
+    }
+    public double calculateGain(){
+        if(this.gain == 0){
+            for(Edge e: edges){
+                this.gain *= e.gain;
+            }
+        }
+        return this.gain;
+    }
+    @Override
+    public String toString(){
+        return loop? "L" + id: "P" + id; 
+    }
+    public String edgesToString(){
+        if(representation == null){
+            for(Edge e: edges){
+                this.representation += e.toString() + ", ";
+            }
+            this.representation = this.representation.substring(0, this.representation.length() - 2);
+        }
+        return representation;
     }
 }
