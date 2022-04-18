@@ -34,6 +34,13 @@ class NonTouching{
         }
         return false;
     }
+    double gain(){
+        double gain = 1;
+        for(Path p: paths){
+            gain *= p.calculateGain();
+        }
+        return gain;
+    }
     HashMap<Integer, List<NonTouching>> powerSet(){
         if(powerSet == null){
             powerSet = new HashMap<Integer, List<NonTouching>>();
@@ -87,7 +94,7 @@ public class SignalFlowCalculator {
         }
         return nonTouching;
     }
-    private List<List<NonTouching>> calculateDeterminant(List<NonTouching> nonTouching){
+    private List<List<NonTouching>> calculateDeterminant(List<NonTouching> nonTouching, Path p){
         int i = 1;
         LinkedList<List<NonTouching>> determinant = new LinkedList<List<NonTouching>>();
         boolean end = false;
@@ -95,10 +102,12 @@ public class SignalFlowCalculator {
             end = true;
             LinkedList<NonTouching> touching = new LinkedList<NonTouching>();
             for(NonTouching x: nonTouching){
-                List<NonTouching> l = x.powerSet().get(i);
-                if(l != null){
-                    end = false;
-                    touching.addAll(l);
+                if(p == null || !x.touches(p)){
+                    List<NonTouching> l = x.powerSet().get(i);
+                    if(l != null){
+                        end = false;
+                        touching.addAll(l);
+                    }
                 }
             }
             if(!end)
@@ -108,7 +117,18 @@ public class SignalFlowCalculator {
 
         return determinant;
     }
+
+    // private List<List<NonTouching>> calculatesubDeterminant(List<List<NonTouching>> determinant, Path p){
+    //     List<List<NonTouching>> subDeterminant = new LinkedList<List<NonTouching>>();
+    //     for()
+    // }
     public void compute(List<Path> paths, List<Path> loops){
         List<NonTouching> nonTouching = FindNonTouching(loops);
+        List<List<NonTouching>> determinant = calculateDeterminant(nonTouching, null);
+        List<List<List<NonTouching>>> subDeterminant = new ArrayList<List<List<NonTouching>>>();
+        for(Path p: paths){
+            subDeterminant.add(calculateDeterminant(nonTouching, p));
+        }
+
     }
 } 
