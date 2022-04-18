@@ -1,4 +1,7 @@
 package edu.control.signalflow.Model;
+import java.lang.reflect.Array;
+import java.util.HashSet;
+
 
 import java.util.*;
 
@@ -92,6 +95,49 @@ public class Graph {
         }
     }
 
+
+    public void getPaths () {
+        Vertex start = vertices.get(0);
+        Vertex end = vertices.get(vertices.size()-1);
+        ArrayList<Vertex> pathList = new ArrayList<>();
+        HashSet<Vertex> visitedVertices = new HashSet<>();
+        HashSet<Edge> visitedEdges = new HashSet<>();
+        getAllPaths(start, end, pathList, visitedVertices, visitedEdges);
+    }
+
+    ArrayList<ArrayList<Vertex>> allPaths = new ArrayList<>();
+
+    public void finalPaths(ArrayList<Vertex> pathList){
+        allPaths.add(pathList);
+    }
+
+    public void getAllPaths (Vertex start, Vertex end, ArrayList<Vertex> pathList,
+                             HashSet<Vertex> visitedVertices, HashSet<Edge> visitedEdges) {
+        pathList.add(start);
+        if(start.equals(end)) {
+            ArrayList<Vertex> finalPath = new ArrayList<>(pathList);
+//            Collections.copy(finalPath, pathList);
+            this.allPaths.add(finalPath);
+            pathList.remove(start);
+            return;
+        }
+
+        visitedVertices.add(start);
+
+        for(Edge i: start.edges){
+            if(visitedVertices.contains(i.destination))
+                continue;
+            visitedEdges.add(i);
+            getAllPaths(i.destination, end, pathList, visitedVertices, visitedEdges);
+            visitedVertices.remove(start);
+        }
+        pathList.remove(start);
+
+
+
+    }
+
+
 }
 
 
@@ -117,10 +163,13 @@ class Test {
         graph.addEdge(4, 2, 5);
         graph.addEdge(5, 3, 5);
 
-        graph.print();
-        graph.removeVertex(4);
-        graph.print();
-        graph.addVertex();
-        graph.print();
+//        graph.print();
+//        graph.removeVertex(4);
+//        graph.print();
+//        graph.addVertex();
+//        graph.print();
+
+        graph.getPaths();
+
     }
 }
