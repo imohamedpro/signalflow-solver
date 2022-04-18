@@ -56,6 +56,13 @@ public class Graph {
         System.out.println("Edge not found!");
     }
 
+    public List<Vertex> allPaths () {
+        List<Vertex> list = new ArrayList<>();
+        
+
+        return list;
+    }
+
     private Vertex getVertexFromID(int id){
         int l = 0, r = vertices.size() - 1, m=0;
 
@@ -115,8 +122,5 @@ class Test {
         graph.print();
         graph.addVertex();
         graph.print();
-
-
-
     }
 }
