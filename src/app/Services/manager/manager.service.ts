@@ -117,7 +117,7 @@ export class ManagerService {
     edge.endPoint2 = temp;
     temp = edge.fromNode;
     edge.fromNode = edge.toNode;
-    edge.toNode = edge.fromNode;
+    edge.toNode = temp;
     edge.updatePath().then(() => edge.updateArrow());
   }
 
