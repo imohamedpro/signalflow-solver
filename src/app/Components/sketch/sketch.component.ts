@@ -1,4 +1,4 @@
-import { Component, DoCheck, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Point } from '../../Classes/Point';
 import { Node } from '../../Classes/Node'
 import { ManagerService } from '../../Services/manager/manager.service';
@@ -8,7 +8,7 @@ import { ManagerService } from '../../Services/manager/manager.service';
   templateUrl: './sketch.component.html',
   styleUrls: ['./sketch.component.css']
 })
-export class SketchComponent implements OnInit, DoCheck {
+export class SketchComponent implements OnInit {
   _state!: string;
   manager!: ManagerService;
 
@@ -29,9 +29,6 @@ export class SketchComponent implements OnInit, DoCheck {
   ngOnInit(): void {
   }
 
-  ngDoCheck() {
-    this.manager.handleStateChange();
-  }
 
   handleClick(e: MouseEvent) {
     if (this._state == 'addNode') {

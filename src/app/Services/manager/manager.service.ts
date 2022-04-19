@@ -53,9 +53,9 @@ export class ManagerService {
     } else {
       let gain: any;
       gain = prompt('please enter the gain:');
-      if(isNaN(gain) || gain == null || gain == ""){ 
+      if(isNaN(gain) || gain == ""){ 
         alert("Invalid input!");
-      } else {
+      } else if (gain != null) {
         const id = this.createEdge(this.nextEdgeId, this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
         if(this.selectedNode == node){
           node.addEdge(id);
@@ -71,9 +71,9 @@ export class ManagerService {
   editGain(edge: Edge){
     let gain: any;
     gain = prompt('please enter the new gain of '+ edge.symbol +' :');
-    if(isNaN(gain) || gain == null || gain == ""){ 
+    if(isNaN(gain) || gain == ''){ 
       alert("Invalid input!");
-    } else {
+    } else if (gain != null) {
       edge.gain = gain;
     }
   }
@@ -94,6 +94,7 @@ export class ManagerService {
       this.isEdgeMoving = false;
       this.isNodeMoving = false;
       this.movingID = -1;
+      this.selectedNode = null;
     }
     this.state = newState;
   }
@@ -189,14 +190,6 @@ export class ManagerService {
           edge.updateArrow();
         }
       })
-    }
-  }
-
-  handleStateChange(){
-    if(this.oldState !== this.state) {
-      console.log("shit i am in");
-      this.oldState = this.state;
-      this.selectedNode = null;
     }
   }
 
