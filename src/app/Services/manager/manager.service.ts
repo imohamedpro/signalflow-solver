@@ -55,8 +55,12 @@ export class ManagerService {
         alert("Invalid input!");
       } else {
         const id = this.createEdge(this.nextEdgeId, this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
-        this.selectedNode.addEdge(id);
-        node.addEdge(id);
+        if(this.selectedNode == node){
+          node.addEdge(id);
+        }else{
+          this.selectedNode.addEdge(id);
+          node.addEdge(id);
+        }
       }
       this.selectedNode = null;
     }
@@ -119,6 +123,7 @@ export class ManagerService {
 
   mouseDownNode(id: number, e: MouseEvent){
     console.log("Mouse Down Node")
+    console.log(this.nodes.get(id));
     if (e.button == 0 && this.state == "move") {
       this.isEdgeMoving = false;
       this.isNodeMoving = true;

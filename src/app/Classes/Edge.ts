@@ -21,7 +21,6 @@ export class Edge {
         this.toNode = toNode;
         this.endPoint1 = endPoint1;
         this.endPoint2 = endPoint2;
-        this.checkSelfLoop();
         let yrange = ((this.endPoint1.y + this.endPoint2.y)/2 - 30);
         this.curveCenter = new Point((this.endPoint1.x + this.endPoint2.x)/2, Math.floor(Math.random() * yrange));
         this.gain = gain;
@@ -34,18 +33,18 @@ export class Edge {
         this.updatePath();
     }
 
-    private checkSelfLoop(){
-        if((this.endPoint1.x == this.endPoint2.x) && (this.endPoint1.y == this.endPoint2.y)){
-            console.log("inside if");
-            this.endPoint1 = new Point(this.endPoint1.x-20, this.endPoint1.y);
-            this.endPoint2 = new Point(this.endPoint2.x+20, this.endPoint2.y);
-        }
+    private checkSelfLoop(): boolean{
+        return (this.endPoint1.x == this.endPoint2.x) && (this.endPoint1.y == this.endPoint2.y)
     }
 
     updatePath() {
         return new Promise<void>((resolve, reject) => {
-          this.path_value = "M" + this.endPoint1.x + "," + this.endPoint1.y + " Q" + this.curveCenter.x + " " + this.curveCenter.y + " " + this.endPoint2.x + "," + this.endPoint2.y;
-          resolve();
+            if(this.checkSelfLoop()){
+                this.path_value = "M" + (this.endPoint1.x-20) + "," + this.endPoint1.y + " Q" + this.curveCenter.x + " " + this.curveCenter.y + " " + (this.endPoint2.x+20) + "," + this.endPoint2.y;
+            }else{
+                this.path_value = "M" + this.endPoint1.x + "," + this.endPoint1.y + " Q" + this.curveCenter.x + " " + this.curveCenter.y + " " + this.endPoint2.x + "," + this.endPoint2.y;
+            }
+            resolve();
         });
     }
 
