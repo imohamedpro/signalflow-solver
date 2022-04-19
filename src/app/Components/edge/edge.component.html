@@ -26,6 +26,7 @@
                   (mousedown)="manager.mouseDownEdge(this.edge.id, $event)"/>
       
       <polygon    [attr.points]="edge.arrowPoints"
+                  [attr.transform]="edge.transform"
                   [ngClass]="(manager.state == 'addEdge') || (manager.state == 'move') ? 'pointed' : 'regular'"
                   (mousedown)="manager.showEdgeTangent(this.edge.id, $event)"
                   (contextmenu)="disableContext($event)"/>

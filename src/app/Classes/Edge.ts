@@ -11,6 +11,7 @@ export class Edge {
     gain: number;
     path_value: string;
     arrowPoints: string;
+    transform: string;
     isSelected: boolean;
     isDragging: boolean;
 
@@ -27,6 +28,7 @@ export class Edge {
         this.symbol = 'e' + id;
         this.path_value = "";
         this.arrowPoints ="";
+        this.transform = "";
         this.isSelected = false;
         this.isDragging = false;
         this.updatePath();
@@ -58,17 +60,22 @@ export class Edge {
         let pt = this.getMidPoint();
         let xOffset = this.endPoint2.x - this.endPoint1.x;
         let yOffset = this.endPoint2.y - this.endPoint1.y;
+        let angle = Math.atan2(this.endPoint2.y-this.endPoint1.y, this.endPoint2.x-this.endPoint1.x)*180/Math.PI;
         if(Math.abs(xOffset) > Math.abs(yOffset)){
             if(xOffset > 0){
                 this.arrowPoints = pt.x + "," + pt.y + " " + (pt.x-10) + "," + (pt.y-7) + " " + (pt.x-10) + "," + (pt.y+7);
+                this.transform = "rotate(" + angle + "," + pt.x + "," + pt.y + ")";
             }else{
-                this.arrowPoints = (pt.x-10) + "," + pt.y + " " + pt.x + "," + (pt.y-7) + " " + pt.x + "," + (pt.y+7);
+                this.arrowPoints = pt.x + "," + pt.y + " " + (pt.x+10) + "," + (pt.y-7) + " " + (pt.x+10) + "," + (pt.y+7);
+                this.transform = "rotate(" + (angle+180) + "," + pt.x + "," + pt.y + ")";
             }
         }else{
             if(yOffset > 0){
-                this.arrowPoints = (pt.x+7) + "," + pt.y + " " + (pt.x-7) + "," + pt.y + " " + (pt.x) + "," + (pt.y+10);
+                this.arrowPoints = pt.x + "," + pt.y + " " + (pt.x-10) + "," + (pt.y-7) + " " + (pt.x-10) + "," + (pt.y+7);
+                this.transform = "rotate(" + angle + "," + pt.x + "," + pt.y + ")";
             }else{
                 this.arrowPoints = pt.x + "," + pt.y + " " + (pt.x+7) + "," + (pt.y+10) + " " + (pt.x-7) + "," + (pt.y+10);
+                this.transform = "rotate(" + (angle+90) + "," + pt.x + "," + pt.y + ")";
             }
         }
     }
