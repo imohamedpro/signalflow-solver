@@ -33,12 +33,17 @@ export class EdgeComponent implements OnInit {
   // }
 
   triangleClick(e: MouseEvent){
-    console.log(e);
-    if(e.button == 0){
-      this.edge.isSelected = !this.edge.isSelected;
-    }
-    else if(e.button == 2){
-      // change from, to -> update arrow
+    if((this.manager.state == 'addEdge') || (this.manager.state == 'move')){
+      if(e.button == 0){
+        this.edge.isSelected = !this.edge.isSelected;
+      }
+      else if(e.button == 2){
+        // change from, to -> update arrow
+        let temp = this.edge.endPoint1;
+        this.edge.endPoint1 = this.edge.endPoint2;
+        this.edge.endPoint2 = temp;
+        this.edge.updatePath().then(() => this.edge.updateArrow());
+      }
     }
   }
 

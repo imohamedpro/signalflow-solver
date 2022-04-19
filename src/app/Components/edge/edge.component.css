@@ -1,4 +1,30 @@
 line {
-    stroke: black;
+    stroke: grey;
     stroke-width: 1;
+}
+
+circle {
+    stroke:#006600; 
+    fill:#00cc00; 
+    cursor: move;
+}
+
+path {
+    stroke: black; 
+    stroke-width: 3; 
+    fill: none;
+}
+
+polygon {
+    fill:red;
+    stroke:purple;
+    stroke-width:1;
+}
+
+.pointed {
+    cursor: pointer;
+}
+
+.regular {
+    cursor: auto;
 }
