@@ -15,6 +15,10 @@ export class ManagerService {
   nextNodeId!: number; // for test purposes (api should get the node id)
   answer!: string;
   state!: string;   //to get state from toolbar
+  initialClick!: Point;
+  isEdgeMoving: boolean = false;
+  isNodeMoving: boolean = false;
+  movingID!: number;
 
   constructor(controller: ControllerService) {
     this.edges = new Map<number, Edge>();
@@ -23,6 +27,8 @@ export class ManagerService {
     this.nextNodeId = 0;
     this.state = "";
     this.answer = 'Answer should be here';
+    this.initialClick = new Point(0,0);
+    this.movingID = -1;
   }
 
   createEdge(id: number, endPoint1: Point, endPoint2: Point, gain: number) {
@@ -73,5 +79,87 @@ export class ManagerService {
       this.selectedNode = null;
     }
   }
+
+  changeState(newState: string){
+    if(newState == "addNode" || newState == "delete"){
+      this.edges.forEach((values,keys) => values.isSelected = false);
+      this.isEdgeMoving = false;
+      this.isNodeMoving = false;
+      this.movingID = -1;
+    }
+    this.state = newState;
+  }
+
+  showEdgeTangent(id: number, e: MouseEvent){
+    let edge: any = this.edges.get(id);
+    if((this.state == 'addEdge') || (this.state == 'move')){
+      if(e.button == 0){
+        edge.isSelected = !edge.isSelected;
+      }
+      else if(e.button == 2){
+        // change from, to -> update arrow
+        let temp = edge.endPoint1;
+        edge.endPoint1 = edge.endPoint2;
+        edge.endPoint2 = temp;
+        edge.updatePath().then(() => edge.updateArrow());
+      }
+    }
+  }
+
+  mouseDownNode(id: number, e: MouseEvent){
+    console.log("Mouse Down Node")
+    if (e.button == 0 && this.state == "move") {
+      this.isEdgeMoving = false;
+      this.isNodeMoving = true;
+      this.movingID = id;
+      this.initialClick = new Point(e.clientX, e.clientY);
+    }
+  }
+
+  mouseDownEdge(id: number, e: MouseEvent){
+    if (e.button == 0 && (this.state == "addEdge" || this.state == "move")) {
+      let edge: any = this.edges.get(id);
+      this.isEdgeMoving = true;
+      this.isNodeMoving = false;
+      this.movingID = id;
+      edge.isDragging = true;
+      this.initialClick = new Point(e.clientX, e.clientY);
+    }
+  }
+
+  mouseMove(e: MouseEvent){
+    if(this.isEdgeMoving){
+      let edge: any = this.edges.get(this.movingID);
+      let offsetX = e.clientX - this.initialClick.x;
+      let offsetY = e.clientY - this.initialClick.y;
+      edge.curveCenter.x += offsetX;
+      edge.curveCenter.y += offsetY;
+      edge.updatePath().then(() => edge.updateArrow());
+      this.initialClick = new Point(e.clientX, e.clientY);
+    }else if(this.isNodeMoving){
+      let node: any = this.nodes.get(this.movingID);
+      let offsetX = e.clientX - this.initialClick.x;
+      let offsetY = e.clientY - this.initialClick.y;
+      node.center.x += offsetX;
+      node.center.y += offsetY;
+      this.initialClick = new Point(e.clientX, e.clientY);
+    }else{
+      e.stopPropagation();
+    }
+  }
+
+  mouseUp(e: MouseEvent){
+    if(this.isEdgeMoving){
+      let edge: any = this.edges.get(this.movingID);
+      edge.isDragging = false;
+    }else if(this.isNodeMoving){
+      //Node Movement
+    }
+    this.isEdgeMoving = false;
+    this.isNodeMoving = false;
+    this.movingID = -1;
+  }
+
+
 
 }

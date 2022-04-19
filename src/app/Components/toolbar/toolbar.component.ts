@@ -20,7 +20,7 @@ export class ToolbarComponent implements OnInit {
 
   emitAction(action: string) {
     this.state = action;
-    this.manager.state = action;
+    this.manager.changeState(action);
     this.actionEmitter.emit(action);
   }
 

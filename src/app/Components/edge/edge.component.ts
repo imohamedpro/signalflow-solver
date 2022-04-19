@@ -77,4 +77,8 @@ export class EdgeComponent implements OnInit {
     e.stopPropagation();
   }
 
+  disableContext(e: Event){
+    e.preventDefault();
+  }
+
 }

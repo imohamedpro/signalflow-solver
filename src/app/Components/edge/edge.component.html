@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)">
+<svg xmlns="http://www.w3.org/2000/svg">
       
       <line       *ngIf="edge.isSelected" 
                   [attr.x1]="edge.endPoint1.x" 
@@ -23,9 +23,10 @@
                   [attr.cx]='edge.curveCenter.x' 
                   [attr.cy]='edge.curveCenter.y' 
                   r='8' 
-                  (mousedown)="mouseDown($event)"/>
+                  (mousedown)="manager.mouseDownEdge(this.edge.id, $event)"/>
       
       <polygon    [attr.points]="edge.arrowPoints"
                   [ngClass]="(manager.state == 'addEdge') || (manager.state == 'move') ? 'pointed' : 'regular'"
-                  (mousedown)="triangleClick($event)"/>
+                  (mousedown)="manager.showEdgeTangent(this.edge.id, $event)"
+                  (contextmenu)="disableContext($event)"/>
 </svg>
