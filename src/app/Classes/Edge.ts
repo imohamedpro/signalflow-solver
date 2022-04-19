@@ -16,6 +16,7 @@ export class Edge {
         this.id = id;
         this.endPoint1 = endPoint1;
         this.endPoint2 = endPoint2;
+        this.checkSelfLoop();
         let yrange = ((this.endPoint1.y + this.endPoint2.y)/2 - 30);
         this.curveCenter = new Point((this.endPoint1.x + this.endPoint2.x)/2, Math.floor(Math.random() * yrange));
         this.gain = gain;
@@ -24,7 +25,15 @@ export class Edge {
         this.arrowPoints ="";
         this.isSelected = false;
         this.isDragging = false;
-        this.updatePath()
+        this.updatePath();
+    }
+
+    private checkSelfLoop(){
+        if((this.endPoint1.x == this.endPoint2.x) && (this.endPoint1.y == this.endPoint2.y)){
+            console.log("inside if");
+            this.endPoint1 = new Point(this.endPoint1.x-20, this.endPoint1.y);
+            this.endPoint2 = new Point(this.endPoint2.x+20, this.endPoint2.y);
+        }
     }
 
     updatePath() {
@@ -36,7 +45,6 @@ export class Edge {
 
     getMidPoint(){
         let path: any = document.getElementById("edge" + this.id);
-        console.log(path);
         let pathLength = Math.floor(path.getTotalLength());
         let pt = path.getPointAtLength(0.5 * pathLength);
         return new Point(Math.round(pt.x), Math.round(pt.y));
