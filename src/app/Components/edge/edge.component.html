@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)">
-      <line *ngIf="isSelected" [attr.x1]="edge.endPoint1.x" [attr.y1]="edge.endPoint1.y" [attr.x2]="rx" [attr.y2]="ry-70" stroke="black"/>
+      <line *ngIf="isSelected" [attr.x1]="edge.endPoint1.x" [attr.y1]="edge.endPoint1.y" [attr.x2]="rx" [attr.y2]="ry" stroke="black"/>
       <path [attr.id]="id" [attr.d]='path_value' style="stroke: #000000; stroke-width: 3; fill: none;"></path>
-      <line *ngIf="isSelected" [attr.x1]="edge.endPoint2.x" [attr.y1]="edge.endPoint2.y" [attr.x2]="rx" [attr.y2]="ry-70" stroke="black" style="cursor: pointer;" (mousedown)="triangleClick($event)"/>
-      <circle *ngIf="isSelected" [attr.cx]='rx' [attr.cy]='ry-70' r='8' style="stroke:#006600; fill:#00cc00; cursor: move;" (mousedown)="mouseDown($event)"/>
+      <line *ngIf="isSelected" [attr.x1]="edge.endPoint2.x" [attr.y1]="edge.endPoint2.y" [attr.x2]="rx" [attr.y2]="ry" stroke="black" style="cursor: pointer;" (mousedown)="triangleClick($event)"/>
+      <circle *ngIf="isSelected" [attr.cx]='rx' [attr.cy]='ry' r='8' style="stroke:#006600; fill:#00cc00; cursor: move;" (mousedown)="mouseDown($event)"/>
       <polygon [attr.points]="triangle_points" style="fill:black;stroke:purple;stroke-width:1;cursor: pointer;" (mousedown)="triangleClick($event)"/>
 </svg>

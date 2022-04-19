@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Point } from 'src/app/Classes/Point';
+import { ManagerService } from '../../Services/manager/manager.service';
 
 @Component({
   selector: '[edge]',
@@ -8,6 +9,7 @@ import { Point } from 'src/app/Classes/Point';
 })
 export class EdgeComponent implements OnInit {
   @Input() edge!: any;
+  manager: ManagerService;
   path_value!: string;
   triangle_points!: string;
   rx: number = 0;
@@ -21,13 +23,18 @@ export class EdgeComponent implements OnInit {
   initialClick!: Point;
   value: string = "";
   isSelected: boolean = false;
-  constructor() { }
+  
+  constructor(manager: ManagerService) { 
+    this.manager = manager;
+  }
 
   ngOnInit(): void {
-    this.id = "path" + this.edge.id;
+    this.id = "edge" + this.edge.id;
+    this.edge.updatePath().then(this.edge.updateArrow);
     this.value = "G" + this.edge.id;
     this.rx = (this.edge.endPoint1.x + this.edge.endPoint2.x)/2;
-    this.ry = (this.edge.endPoint1.y + this.edge.endPoint2.y)/2 - 50;
+    let yrange = ((this.edge.endPoint1.y + this.edge.endPoint2.y)/2 - 50);
+    this.ry = Math.floor(Math.random() * 2 * yrange) - yrange;
     this.updatePath().then(() => this.updateCircle());
   }
 
@@ -89,13 +96,11 @@ export class EdgeComponent implements OnInit {
     if (this.isDragging) {
       let offsetX = e.clientX - this.initialClick.x;
       let offsetY = e.clientY - this.initialClick.y;
-      this.cx += offsetX;
-      this.cy += offsetY;
       this.rx += offsetX;
       this.ry += offsetY;
       this.updateCircle();
-      this.updateTriangle();
       this.updatePath();
+      this.updateTriangle();
       this.initialClick = new Point(e.clientX, e.clientY);
     }
   }
