@@ -14,12 +14,14 @@ export class ManagerService {
   nextEdgeId!: number; // for test purposes (api should get the edge id)
   nextNodeId!: number; // for test purposes (api should get the node id)
   answer!: string;
+  state!: string;   //to get state from toolbar
 
   constructor(controller: ControllerService) {
     this.edges = new Map<number, Edge>();
     this.nodes = new Map<number, Node>();
     this.nextEdgeId = 0;
     this.nextNodeId = 0;
+    this.state = "";
     this.answer = 'Answer should be here';
   }
 
