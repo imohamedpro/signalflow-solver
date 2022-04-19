@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg">
-      
+
+      <!-- <text       [attr.x] = "(edge.endPoint1.x + edge.endPoint2.x + edge.curveCenter.x)/3 - 20"
+                  [attr.y] = "(edge.endPoint1.y + edge.endPoint2.y + edge.curveCenter.y)/3 - 20">{{edge.symbol}}</text> -->
+
       <line       *ngIf="edge.isSelected" 
                   [attr.x1]="edge.endPoint1.x" 
                   [attr.y1]="edge.endPoint1.y" 
@@ -10,6 +13,12 @@
       
       <path       [attr.id]="id" 
                   [attr.d]='edge.path_value' ></path>
+
+      <text dx="-10" dy="-10">
+            <textPath [attr.href]="'#'+id" startOffset="50%">
+                  {{edge.symbol}}
+            </textPath>
+      </text>
       
       <line       *ngIf="edge.isSelected" 
                   [attr.x1]="edge.endPoint2.x" 
