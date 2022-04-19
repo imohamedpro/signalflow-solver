@@ -31,13 +31,13 @@ export class ManagerService {
     this.movingID = -1;
   }
 
-  createEdge(id: number, fromNode: number, toNode: number, endPoint1: Point, endPoint2: Point, gain: number) {
+  createEdge(id: number, fromNode: number, toNode: number, endPoint1: Point, endPoint2: Point, gain: number): number {
     if(endPoint1.x < endPoint2.x){
       this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
     } else {
       this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
     }
-    ++this.nextEdgeId;
+    return this.nextEdgeId++;
   }
 
   createNode(center: Point) {
@@ -54,7 +54,9 @@ export class ManagerService {
       if(isNaN(gain) || gain == null || gain == ""){ 
         alert("Invalid input!");
       } else {
-        this.createEdge(this.nextEdgeId, this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
+        const id = this.createEdge(this.nextEdgeId, this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
+        this.selectedNode.addEdge(id);
+        node.addEdge(id);
       }
       this.selectedNode = null;
     }
@@ -151,6 +153,7 @@ export class ManagerService {
       let offsetY = e.clientY - this.initialClick.y;
       node.center.x += offsetX;
       node.center.y += offsetY;
+      this.updateEdges(this.movingID);
       this.initialClick = new Point(e.clientX, e.clientY);
     }else{
       e.stopPropagation();
@@ -168,6 +171,21 @@ export class ManagerService {
     this.isNodeMoving = false;
     this.movingID = -1;
   }
+
+  updateEdges(nodeID: number){
+    const node = this.nodes.get(nodeID);
+    if(node != undefined){
+      node.edges.forEach((edgeID) => {
+        const edge = this.edges.get(edgeID);
+        if(edge != undefined){
+          edge.updatePath();
+          edge.updateArrow();
+        }
+      })
+    }
+  }
+
+
 
 
 
