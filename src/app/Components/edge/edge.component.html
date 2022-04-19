@@ -3,6 +3,7 @@
       <input id="rename" (click)="avoidP($event)"  *ngIf="isSelected" type="text" [(ngModel)]="value" placeholder={{value}}>
 </div>
 
+<svg xmlns="http://www.w3.org/2000/svg" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)">
       <path [attr.id]="id" [attr.d]='path_value' style="stroke: #000000; stroke-width: 3; fill: none;"></path>
 
       <!-- <circle [attr.cx]='cx' [attr.cy]='cy' r='5' style="stroke:#006600; fill:#00cc00; cursor: move;" /> -->
