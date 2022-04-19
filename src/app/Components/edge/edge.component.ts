@@ -9,6 +9,7 @@ import { Point } from 'src/app/Classes/Point';
 export class EdgeComponent implements OnInit {
   @Input() edge!: any;
   path_value!: string;
+  triangle_points!: string;
   rx: number = 0;
   ry: number = 0;
   // sweepFlag: number = 0;
@@ -18,7 +19,6 @@ export class EdgeComponent implements OnInit {
   isDragging: boolean = false;
   id!: string;
   initialClick!: Point;
-  triangle_points!: string;
   value: string = "";
   isSelected: boolean = false;
   constructor() { }
@@ -26,6 +26,8 @@ export class EdgeComponent implements OnInit {
   ngOnInit(): void {
     this.id = "path" + this.edge.id;
     this.value = "G" + this.edge.id;
+    this.rx = (this.edge.endPoint1.x + this.edge.endPoint2.x)/2;
+    this.ry = (this.edge.endPoint1.y + this.edge.endPoint2.y)/2 - 50;
     this.updatePath().then(() => this.updateCircle());
   }
 
@@ -57,8 +59,18 @@ export class EdgeComponent implements OnInit {
       this.triangle_points = this.cx + "," + this.cy + " " + (this.cx - 10) + "," + (this.cy - 7) + " " + (this.cx - 10) + "," + (this.cy + 7);
   }
 
-  rightClick(e: MouseEvent) {
-    if (e.button == 1) {
+  // rightClick(e: MouseEvent) {
+  //   if (e.button == 1) {
+      
+  //   }
+  // }
+
+  triangleClick(e: MouseEvent){
+    console.log(e);
+    if(e.button == 0){
+      this.isSelected = !this.isSelected;
+    }
+    else if(e.button == 2){
       this.isLeftTriangle = !this.isLeftTriangle;
     }
   }
@@ -81,6 +93,7 @@ export class EdgeComponent implements OnInit {
       this.cy += offsetY;
       this.rx += offsetX;
       this.ry += offsetY;
+      this.updateCircle();
       this.updateTriangle();
       this.updatePath();
       this.initialClick = new Point(e.clientX, e.clientY);
