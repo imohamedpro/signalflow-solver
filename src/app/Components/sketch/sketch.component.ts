@@ -41,4 +41,8 @@ export class SketchComponent implements OnInit {
     }
   }
 
+  disableContext(e: Event){
+    e.preventDefault();
+  }
+
 }
