@@ -9,6 +9,10 @@ text {
     font-size: 15px;
 }
 
-text:hover {
-    cursor: default;
+.onMove {
+    cursor: move;
+}
+
+.onAddEdgeOrDelete {
+    cursor: pointer;
 }

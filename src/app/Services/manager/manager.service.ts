@@ -14,6 +14,7 @@ export class ManagerService {
   nextEdgeId!: number; // for test purposes (api should get the edge id)
   nextNodeId!: number; // for test purposes (api should get the node id)
   answer!: string;
+  oldState!: string;
   state!: string;   //to get state from toolbar
   initialClick!: Point;
   isEdgeMoving: boolean = false;
@@ -25,7 +26,8 @@ export class ManagerService {
     this.nodes = new Map<number, Node>();
     this.nextEdgeId = 0;
     this.nextNodeId = 0;
-    this.state = "";
+    this.oldState = '';
+    this.state = '';
     this.answer = 'Answer should be here';
     this.initialClick = new Point(0,0);
     this.movingID = -1;
@@ -190,8 +192,13 @@ export class ManagerService {
     }
   }
 
-
-
+  handleStateChange(){
+    if(this.oldState !== this.state) {
+      console.log("shit i am in");
+      this.oldState = this.state;
+      this.selectedNode = null;
+    }
+  }
 
 
 }
