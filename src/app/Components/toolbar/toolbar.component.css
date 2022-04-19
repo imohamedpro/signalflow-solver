@@ -1,16 +1,72 @@
-.title{
+.title {
     display: flex;
     justify-content: center;
     font-family: 'Courier New', monospace;
 }
 
-.container{
-    width: 100%;
+.container {
+    max-width: 35%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
 }
 
-button{
-    display: block;
+.notClicked {
+    float: left;
+    padding: 0.5em 1em;
+    border: 1px solid #d4d4d4;
+    font-size: 12px;
+    font-weight: bold;
+    color: #41719C;
+    outline: none;
+    background-color: #ececec;
+    background-clip: padding-box;
+    border-radius: 5px;
+}
+
+.clicked {
+    float: left;
+    padding: 0.5em 1em;
+    border: 1px solid #d4d4d4;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ececec;
+    outline: none;
+    background-color: #41719C;
+    background-clip: padding-box;
+    border-radius: 5px;
+}
+
+.notClicked:hover{
+    cursor: pointer;
+    color: #ececec;
+    background-color: #41719C;
+}
+
+.clear {
+    color: red;
+}
+
+.clear:hover {
+    color: #ececec;
+    background-color: red;
+}
+
+.addNode {
+    margin-right: -1px;
+    border-radius:5px 0px 0px 5px;
+}
+
+.addEdge {
+    border-radius:0px 5px 5px 0px;
+}
+
+.delete {
+    margin-right: -1px;
+    border-radius: 5px 0px 0px 5px;
+}
+
+.move {
+    border-radius: 0px 5px 5px 0px;
 }

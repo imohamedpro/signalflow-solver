@@ -11,24 +11,15 @@ export class ToolbarComponent implements OnInit {
   constructor(private controller: ControllerService) { }
 
   @Output() actionEmitter = new EventEmitter<string>();
+  state!: string;
 
   ngOnInit(): void {
+    this.state = "";
   }
 
   emitAction(action: string) {
+    this.state = action;
     this.actionEmitter.emit(action);
-  }
-
-  replay(){
-    this.controller.restart().subscribe();
-    this.actionEmitter.emit("replay");
-  }
-
-  isRunning(): boolean{
-    if(JSON.parse(sessionStorage.getItem('isRunning') as string) == true){
-      return true;
-    }
-    return false;
   }
 
 }

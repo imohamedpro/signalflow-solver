@@ -32,49 +32,49 @@ export class EdgeComponent implements OnInit {
   ngAfterViewInit() {
   }
 
-  updatePath(){
+  updatePath() {
     return new Promise<void>((resolve, reject) => {
-      this.path_value = "M" + this.edge.center1.x + "," + this.edge.center1.y + " Q" + this.rx + " " + this.ry + " " + this.edge.center2.x + "," + this.edge.center2.y;
+      this.path_value = "M" + this.edge.endPoint1.x + "," + this.edge.endPoint1.y + " Q" + this.rx + " " + this.ry + " " + this.edge.endPoint2.x + "," + this.edge.endPoint2.y;
       resolve();
     });
   }
 
-  updateCircle(){
-    let path : any = document.getElementById(this.id);
+  updateCircle() {
+    let path: any = document.getElementById(this.id);
     console.log(path);
     let pathLength = Math.floor(path.getTotalLength());
-    let pt = path.getPointAtLength(0.5*pathLength);
+    let pt = path.getPointAtLength(0.5 * pathLength);
     console.log(pt);
     this.cx = Math.round(pt.x);
     this.cy = Math.round(pt.y);
     this.updateTriangle();
   }
 
-  updateTriangle(){
-    if(this.isLeftTriangle)
-      this.triangle_points = this.cx + "," + this.cy + " " + (this.cx+10) + "," + (this.cy-7) + " " + (this.cx+10) + "," + (this.cy+7); 
+  updateTriangle() {
+    if (this.isLeftTriangle)
+      this.triangle_points = this.cx + "," + this.cy + " " + (this.cx + 10) + "," + (this.cy - 7) + " " + (this.cx + 10) + "," + (this.cy + 7);
     else
-      this.triangle_points = this.cx + "," + this.cy + " " + (this.cx-10) + "," + (this.cy-7) + " " + (this.cx-10) + "," + (this.cy+7); 
+      this.triangle_points = this.cx + "," + this.cy + " " + (this.cx - 10) + "," + (this.cy - 7) + " " + (this.cx - 10) + "," + (this.cy + 7);
   }
 
-  rightClick(e: MouseEvent){
-    if(e.button == 1){
+  rightClick(e: MouseEvent) {
+    if (e.button == 1) {
       this.isLeftTriangle = !this.isLeftTriangle;
     }
   }
 
-  mouseDown(e: MouseEvent){
-    if(e.button == 0){
+  mouseDown(e: MouseEvent) {
+    if (e.button == 0) {
       this.isDragging = true;
       this.initialClick = new Point(e.clientX, e.clientY);
     }
-    else if(e.button == 2){
+    else if (e.button == 2) {
       this.isLeftTriangle = !this.isLeftTriangle;
     }
   }
 
-  mouseMove(e: MouseEvent){
-    if(this.isDragging){
+  mouseMove(e: MouseEvent) {
+    if (this.isDragging) {
       let offsetX = e.clientX - this.initialClick.x;
       let offsetY = e.clientY - this.initialClick.y;
       this.cx += offsetX;
@@ -87,7 +87,7 @@ export class EdgeComponent implements OnInit {
     }
   }
 
-  mouseUp(e: MouseEvent){
+  mouseUp(e: MouseEvent) {
     console.log("isDragging = false")
     this.isDragging = false;
     this.updateCircle();

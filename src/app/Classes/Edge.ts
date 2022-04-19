@@ -1,14 +1,18 @@
 import { Point } from "./Point";
 
 export class Edge {
-    center1!: Point;
-    center2!: Point;
     id!: number;
+    symbol!: string;
+    endPoint1!: Point;
+    endPoint2!: Point;
+    gain!: number;
 
-    constructor(center1: Point, center2: Point, id: number){
-        this.center1 = center1;
-        this.center2 = center2;
+    constructor(id: number, endPoint1: Point, endPoint2: Point, gain: number) {
         this.id = id;
+        this.endPoint1 = endPoint1;
+        this.endPoint2 = endPoint2;
+        this.gain = gain;
+        this.symbol = 'e' + id;
     }
-    
+
 }

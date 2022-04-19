@@ -1,0 +1,14 @@
+circle {
+    stroke: #41719C;
+    stroke-width: 2;
+    fill: #5B9BD5;
+}
+
+text {
+    fill: white;
+    font-size: 15px;
+}
+
+text:hover {
+    cursor: default;
+}
