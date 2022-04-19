@@ -10,7 +10,7 @@ import { ControllerService } from '../controller/controller.service';
 export class ManagerService {
   edges!: Map<number, Edge>;
   nodes!: Map<number, Node>;
-  selectedNode!: Node | null;
+  selectedNode!: any;
   nextEdgeId!: number; // for test purposes (api should get the edge id)
   nextNodeId!: number; // for test purposes (api should get the node id)
   answer!: string;
@@ -31,11 +31,11 @@ export class ManagerService {
     this.movingID = -1;
   }
 
-  createEdge(id: number, endPoint1: Point, endPoint2: Point, gain: number) {
+  createEdge(id: number, fromNode: number, toNode: number, endPoint1: Point, endPoint2: Point, gain: number) {
     if(endPoint1.x < endPoint2.x){
-      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, endPoint1, endPoint2, gain));
+      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
     } else {
-      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, endPoint1, endPoint2, gain));
+      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
     }
     ++this.nextEdgeId;
   }
@@ -54,7 +54,7 @@ export class ManagerService {
       if(isNaN(gain) || gain == null || gain == ""){ 
         alert("Invalid input!");
       } else {
-        this.createEdge(this.nextEdgeId, this.selectedNode.center, node.center, gain);
+        this.createEdge(this.nextEdgeId, this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
       }
       this.selectedNode = null;
     }
@@ -98,12 +98,21 @@ export class ManagerService {
       }
       else if(e.button == 2){
         // change from, to -> update arrow
-        let temp = edge.endPoint1;
-        edge.endPoint1 = edge.endPoint2;
-        edge.endPoint2 = temp;
-        edge.updatePath().then(() => edge.updateArrow());
+        this.flipEdge(id);
+        //api call
       }
     }
+  }
+
+  flipEdge(id: number){
+    let edge: any = this.edges.get(id);
+    let temp = edge.endPoint1;
+    edge.endPoint1 = edge.endPoint2;
+    edge.endPoint2 = temp;
+    temp = edge.fromNode;
+    edge.fromNode = edge.toNode;
+    edge.toNode = edge.fromNode;
+    edge.updatePath().then(() => edge.updateArrow());
   }
 
   mouseDownNode(id: number, e: MouseEvent){

@@ -3,6 +3,8 @@ import { Point } from "./Point";
 export class Edge {
     id: number;
     symbol: string;
+    fromNode: number;
+    toNode: number;
     endPoint1: Point;
     endPoint2: Point;
     curveCenter: Point;
@@ -12,8 +14,10 @@ export class Edge {
     isSelected: boolean;
     isDragging: boolean;
 
-    constructor(id: number, endPoint1: Point, endPoint2: Point ,gain: number) {
+    constructor(id: number, fromNode: number, toNode: number , endPoint1: Point, endPoint2: Point ,gain: number) {
         this.id = id;
+        this.fromNode = fromNode;
+        this.toNode = toNode;
         this.endPoint1 = endPoint1;
         this.endPoint2 = endPoint2;
         this.checkSelfLoop();
