@@ -20,8 +20,8 @@ export class SketchComponent implements OnInit {
 
     if (this._state == 'clear') {
       this.manager.clear();
-    } else if (this.state == 'solve'){
-      
+    } else if (this._state == 'solve'){
+      this.manager.solve(null);
     }
 
   }
@@ -39,11 +39,11 @@ export class SketchComponent implements OnInit {
   handleClick(e: MouseEvent) {
     if (this._state == 'addNode') {
       this.manager.createNode(new Point(e.offsetX, e.offsetY));
-    }
+    } 
   }
 
   selectEdge(edge: Edge) {
-    if(this.state == 'delete') {
+    if(this._state == 'delete') {
       this.manager.deleteEdge(edge);
     }
   }
@@ -51,8 +51,10 @@ export class SketchComponent implements OnInit {
   selectNode(node: Node) {
     if (this._state == 'addEdge') {
       this.manager.select(node);
-    } else if (this.state == 'delete') {
+    } else if (this._state == 'delete') {
       this.manager.deleteNode(node);
+    } else if (this._state == 'solve') {
+      this.manager.solve(node);
     }
   }
 

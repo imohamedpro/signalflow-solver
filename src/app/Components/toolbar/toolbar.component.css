@@ -38,7 +38,7 @@
     border-radius: 5px;
 }
 
-.notClicked:hover{
+.notClicked:hover {
     cursor: pointer;
     color: #ececec;
     background-color: #41719C;
@@ -55,18 +55,18 @@
 
 .addNode {
     margin-right: -1px;
-    border-radius:5px 0px 0px 5px;
+    border-radius: 5px 0px 0px 5px;
 }
 
 .addEdge {
-    border-radius:0px 5px 5px 0px;
+    border-radius: 0px 5px 5px 0px;
 }
 
-.delete {
+.move {
     margin-right: -1px;
     border-radius: 5px 0px 0px 5px;
 }
 
-.move {
+.delete {
     border-radius: 0px 5px 5px 0px;
 }
