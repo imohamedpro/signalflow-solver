@@ -10,7 +10,7 @@ import { EdgeComponent } from './Components/edge/edge.component';
 import { FormsModule } from '@angular/forms';
 import { AnswerComponent } from './Components/answer/answer.component';
 import { SymbolsTableComponent } from './Components/symbols-table/symbols-table.component';
-
+import { KatexModule } from 'ng-katex';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,7 +25,8 @@ import { SymbolsTableComponent } from './Components/symbols-table/symbols-table.
   imports: [
     BrowserModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    KatexModule
   ],
   providers: [],
   bootstrap: [AppComponent]
