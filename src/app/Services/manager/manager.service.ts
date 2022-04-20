@@ -117,18 +117,18 @@ export class ManagerService {
   }
 
   changeState(newState: string) {
-    if (newState == "addNode" || newState == "delete") {
+    if (newState == "addNode" || newState == "delete" || newState == "solve") {
       this.edges.forEach((values, keys) => values.isSelected = false);
     }
-    if (this.state == "solve") {
+    if (newState != "solve") {
       this.sourceNode?.unmake();
       this.destinationNode?.unmake();
       this.sourceNode = null;
       this.destinationNode = null;
+      this.message = "";
     }
     this.state = newState;
     this.selectedNode = null;
-    this.message = "";
   }
 
   showEdgeTangent(id: number, e: MouseEvent) {
