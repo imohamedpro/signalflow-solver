@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http'
-import { Observable } from 'rxjs';
+import { Observable, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +47,7 @@ export class ControllerService {
   solve(inputNodeID: number, outputNodeID: number): Observable<string> {
     let queryParams = new HttpParams().append("inputNodeID", inputNodeID)
                                       .append("outputNodeID", outputNodeID);
-    return this.http.get<string>(this.apiUrl + "/result", { params: queryParams });
+    return this.http.get(this.apiUrl + "/result", {responseType: 'text',params: queryParams});
   }
 
   clear() {
