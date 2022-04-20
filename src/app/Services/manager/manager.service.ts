@@ -183,6 +183,9 @@ export class ManagerService {
       node.edges.forEach((edgeID) => {
         const edge = this.edges.get(edgeID);
         if(edge != undefined){
+          if(edge.isSelfLoop){
+            edge.curveCenter = new Point(edge.endPoint1.x+edge.selfRadius, edge.endPoint1.y+edge.selfRadius)
+          }
           edge.updatePath();
           edge.updateArrowText();
         }

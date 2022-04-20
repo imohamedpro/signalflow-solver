@@ -13,6 +13,8 @@ export class Edge {
     arrowPoints: string;
     transformArrow: string;
     transformText: string;
+    selfRadius!: number;
+    isSelfLoop: boolean;
     isSelected: boolean;
     isDragging: boolean;
 
@@ -23,7 +25,14 @@ export class Edge {
         this.endPoint1 = endPoint1;
         this.endPoint2 = endPoint2;
         let yrange = ((this.endPoint1.y + this.endPoint2.y)/2 - 30);
-        this.curveCenter = new Point((this.endPoint1.x + this.endPoint2.x)/2, Math.floor(Math.random() * yrange));
+        this.isSelfLoop = (this.endPoint1.x == this.endPoint2.x) && (this.endPoint1.y == this.endPoint2.y)
+        if(this.isSelfLoop){
+            this.curveCenter = new Point(this.endPoint1.x+20, this.endPoint2.y+20);
+            this.selfRadius = 20;
+        }
+        else{
+            this.curveCenter = new Point((this.endPoint1.x + this.endPoint2.x)/2, Math.floor(Math.random() * yrange));
+        }
         this.gain = gain;
         this.symbol = 'e' + id;
         this.path_value = "";
@@ -35,14 +44,15 @@ export class Edge {
         this.updatePath();
     }
 
-    private checkSelfLoop(): boolean{
-        return (this.endPoint1.x == this.endPoint2.x) && (this.endPoint1.y == this.endPoint2.y)
-    }
-
     updatePath() {
         return new Promise<void>((resolve, reject) => {
-            if(this.checkSelfLoop()){
-                this.path_value = "M" + (this.endPoint1.x-20) + "," + this.endPoint1.y + " Q" + this.curveCenter.x + " " + this.curveCenter.y + " " + (this.endPoint2.x+20) + "," + this.endPoint2.y;
+            if(this.isSelfLoop){
+                const x_diff = Math.abs(this.curveCenter.x-this.endPoint1.x);
+                const y_diff = Math.abs(this.curveCenter.y-this.endPoint1.y);
+                this.selfRadius = x_diff > y_diff ? x_diff : y_diff;
+                this.path_value = "M" + this.endPoint1.x + "," + this.endPoint1.y + " a " + this.selfRadius + " " + this.selfRadius + " 0 1 0 20 0"
+                
+                //this.path_value = "M" + (this.endPoint1.x-20) + "," + this.endPoint1.y + " Q" + this.curveCenter.x + " " + this.curveCenter.y + " " + (this.endPoint2.x+20) + "," + this.endPoint2.y;
             }else{
                 this.path_value = "M" + this.endPoint1.x + "," + this.endPoint1.y + " Q" + this.curveCenter.x + " " + this.curveCenter.y + " " + this.endPoint2.x + "," + this.endPoint2.y;
             }
