@@ -1,5 +1,5 @@
 <svg width='100%' height='100%' (click)='handleClick($event)' (mousemove)="movement.mouseMove($event)" (mouseup)="movement.mouseUp($event)" (contextmenu)="disableContext($event)" class='container'>
-
+    
     <defs>
         <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
             <path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" stroke-width="0.5" />
@@ -8,9 +8,11 @@
     
     <rect width="100%" height="100%" fill="url(#grid)" />
 
+    <text *ngIf="" x="1000" y="1000">test</text>
+
     <svg:g *ngFor='let edge of this.manager.edges | keyvalue'>
 
-        <svg:g [edge]='edge.value' edge />
+        <svg:g [edge]='edge.value' (click)='selectEdge(edge.value)' edge />
 
     </svg:g>
 

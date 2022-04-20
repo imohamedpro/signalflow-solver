@@ -12,52 +12,46 @@ export class ControllerService {
 
   config = { headers: new HttpHeaders().set('Content-Type', 'application/json') }
 
-  addNode() {
-    return this.http.get<number>(this.apiUrl + "/node/add", this.config)
+  addNode(): Observable<number> {
+    return this.http.get<number>(this.apiUrl + "/node/add", this.config);
   }
 
-  deleteNode(id: number) {
-    return this.http.put(this.apiUrl + "/node/delete", id, this.config)
+  deleteNode(nodeID: number) {
+    let queryParams = new HttpParams().append('nodeID', nodeID);
+    return this.http.delete(this.apiUrl + "/node/delete", { params: queryParams });
   }
 
-  addEdge(fromNode: number, toNode: number, gain: number) { 
-    let conf = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params:  new HttpParams().append("fromNodeID", fromNode)
-                               .append("toNodeID", toNode)
-                               .append("gain", gain)
-    }
-    return this.http.put<number>(this.apiUrl + "/edge/add", null, conf)
+  addEdge(fromNodeID: number, toNodeID: number, gain: number) {
+    let queryParams = new HttpParams().append("fromNodeID", fromNodeID)
+                                      .append("toNodeID", toNodeID)
+                                      .append("gain", gain);
+    return this.http.get<number>(this.apiUrl + "/edge/add", { params: queryParams });
   }
 
-  reverseEdge(id: number) {
-    return this.http.put(this.apiUrl + "/edge/reverse", id, this.config)
+  reverseEdge(edgeID: number) {
+    let queryParams = new HttpParams().append('edgeID', edgeID);
+    return this.http.put(this.apiUrl + "/edge/reverse", null, { params: queryParams });
   }
 
-  updateGain(id: number, gain: number){
-    let conf = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params:  new HttpParams().append("id", id)
-                               .append("gain", gain)
-    }
-    return this.http.put<number>(this.apiUrl + "/edge/gain", null, conf)
+  updateGain(edgeID: number, gain: number) {
+    let queryParams = new HttpParams().append("edgeID", edgeID)
+                                      .append("gain", gain);
+    return this.http.put(this.apiUrl + "/edge/gain", null, { params: queryParams });
   }
 
-  deleteEdge(id: number) {
-    return this.http.put(this.apiUrl + "/edge/delete", id, this.config)
+  deleteEdge(edgeID: number) {
+    let queryParams = new HttpParams().append("edgeID", edgeID);
+    return this.http.delete(this.apiUrl + "/edge/delete", { params: queryParams });
   }
 
-  solve(sourceID: number, destID: number) {
-    let params = new HttpParams().append("sourceID", sourceID).append("destID", destID);
-    let conf = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params: params
-    }
-    return this.http.get(this.apiUrl + "/result", conf)
+  solve(inputNodeID: number, outputNodeID: number): Observable<string> {
+    let queryParams = new HttpParams().append("inputNodeID", inputNodeID)
+                                      .append("outputNodeID", outputNodeID);
+    return this.http.get<string>(this.apiUrl + "/result", { params: queryParams });
   }
 
   clear() {
-    return this.http.put(this.apiUrl + "/clear", null, this.config)
+    return this.http.put(this.apiUrl + "/clear", null, this.config);
   }
 
 }
