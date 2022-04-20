@@ -1,3 +1,4 @@
+import { MovementService } from './../../Services/movement/movement.service';
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Point } from 'src/app/Classes/Point';
 import { ManagerService } from '../../Services/manager/manager.service';
@@ -10,11 +11,13 @@ import { ManagerService } from '../../Services/manager/manager.service';
 export class EdgeComponent implements OnInit {
   @Input() edge!: any;
   manager: ManagerService;
+  movement: MovementService;
   id!: string;
   initialClick!: Point;
 
-  constructor(manager: ManagerService) { 
+  constructor(manager: ManagerService, movement: MovementService) { 
     this.manager = manager;
+    this.movement = movement;
   }
 
   ngOnInit(): void {

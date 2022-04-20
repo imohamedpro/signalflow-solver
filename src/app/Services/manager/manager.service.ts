@@ -16,10 +16,6 @@ export class ManagerService {
   answer!: string;
   oldState!: string;
   state!: string;   //to get state from toolbar
-  initialClick!: Point;
-  isEdgeMoving: boolean = false;
-  isNodeMoving: boolean = false;
-  movingID!: number;
 
   constructor(private controller: ControllerService) {
     this.edges = new Map<number, Edge>();
@@ -28,8 +24,6 @@ export class ManagerService {
     //this.nextNodeId = 0;
     this.state = "";
     this.answer = 'Answer should be here';
-    this.initialClick = new Point(0,0);
-    this.movingID = -1;
   }
 
   createEdge(fromNode: number, toNode: number, endPoint1: Point, endPoint2: Point, gain: number){
@@ -40,13 +34,14 @@ export class ManagerService {
     // }
     // return this.nextEdgeId++;
     this.controller.addEdge(fromNode, toNode, gain).subscribe(id => {
-      this.edges.set(id, new Edge(id, fromNode, toNode, endPoint1, endPoint2, gain));
+      const edge = new Edge(id, fromNode, toNode, endPoint1, endPoint2, gain)
+      this.edges.set(id, edge);
       const node: any = this.nodes.get(toNode);
       if(this.selectedNode == node){
-        node.addEdge(id);
+        node.addEdge(edge);
       }else{
-        this.selectedNode.addEdge(id);
-        node.addEdge(id);
+        this.selectedNode.addEdge(edge);
+        node.addEdge(edge);
       }
       this.selectedNode = null;
     })
@@ -100,12 +95,10 @@ export class ManagerService {
   changeState(newState: string){
     if(newState == "addNode" || newState == "delete"){
       this.edges.forEach((values,keys) => values.isSelected = false);
-      this.isEdgeMoving = false;
-      this.isNodeMoving = false;
-      this.movingID = -1;
       this.selectedNode = null;
     }
     this.state = newState;
+    this.selectedNode = null;
   }
 
   showEdgeTangent(id: number, e: MouseEvent){
@@ -131,78 +124,4 @@ export class ManagerService {
     edge.updatePath().then(() => edge.updateArrowText());
     this.controller.reverseEdge(id).subscribe();
   }
-
-  mouseDownNode(id: number, e: MouseEvent){
-    console.log("Mouse Down Node")
-    console.log(this.nodes.get(id));
-    if (e.button == 0 && this.state == "move") {
-      this.isEdgeMoving = false;
-      this.isNodeMoving = true;
-      this.movingID = id;
-      this.initialClick = new Point(e.clientX, e.clientY);
-    }
-  }
-
-  mouseDownEdge(id: number, e: MouseEvent){
-    if (e.button == 0 && (this.state == "addEdge" || this.state == "move")) {
-      let edge: any = this.edges.get(id);
-      this.isEdgeMoving = true;
-      this.isNodeMoving = false;
-      this.movingID = id;
-      edge.isDragging = true;
-      this.initialClick = new Point(e.clientX, e.clientY);
-    }
-  }
-
-  mouseMove(e: MouseEvent){
-    if(this.isEdgeMoving){
-      let edge: any = this.edges.get(this.movingID);
-      let offsetX = e.clientX - this.initialClick.x;
-      let offsetY = e.clientY - this.initialClick.y;
-      edge.curveCenter.x += offsetX;
-      edge.curveCenter.y += offsetY;
-      edge.updatePath().then(() => edge.updateArrowText());
-      this.initialClick = new Point(e.clientX, e.clientY);
-    }else if(this.isNodeMoving){
-      let node: any = this.nodes.get(this.movingID);
-      let offsetX = e.clientX - this.initialClick.x;
-      let offsetY = e.clientY - this.initialClick.y;
-      node.center.x += offsetX;
-      node.center.y += offsetY;
-      this.updateEdges(this.movingID);
-      this.initialClick = new Point(e.clientX, e.clientY);
-    }else{
-      e.stopPropagation();
-    }
-  }
-
-  mouseUp(e: MouseEvent){
-    if(this.isEdgeMoving){
-      let edge: any = this.edges.get(this.movingID);
-      edge.isDragging = false;
-    }else if(this.isNodeMoving){
-      //Node Movement
-    }
-    this.isEdgeMoving = false;
-    this.isNodeMoving = false;
-    this.movingID = -1;
-  }
-
-  updateEdges(nodeID: number){
-    const node = this.nodes.get(nodeID);
-    if(node != undefined){
-      node.edges.forEach((edgeID) => {
-        const edge = this.edges.get(edgeID);
-        if(edge != undefined){
-          if(edge.isSelfLoop){
-            edge.curveCenter = new Point(edge.endPoint1.x+edge.selfRadius, edge.endPoint1.y+edge.selfRadius)
-          }
-          edge.updatePath();
-          edge.updateArrowText();
-        }
-      })
-    }
-  }
-
-
 }

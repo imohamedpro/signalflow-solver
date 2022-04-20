@@ -32,7 +32,7 @@
                   [attr.cx]='edge.curveCenter.x' 
                   [attr.cy]='edge.curveCenter.y' 
                   r='8' 
-                  (mousedown)="manager.mouseDownEdge(this.edge.id, $event)"/>
+                  (mousedown)="movement.mouseDownEdge(edge, $event)"/>
       
       <polygon    [attr.points]="edge.arrowPoints"
                   [attr.transform]="edge.transformArrow"
