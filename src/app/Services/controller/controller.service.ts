@@ -21,8 +21,8 @@ export class ControllerService {
     return this.http.delete<Array<number>>(this.apiUrl + "/node/delete", { params: queryParams });
   }
 
-  addEdge(gain: number) {
-    let queryParams = new HttpParams().append("gain", gain);
+  addEdge(fromNodeID: number, toNodeID: number, gain: number) {
+    let queryParams = new HttpParams().append("fromNodeID", fromNodeID).append("toNodeID", toNodeID).append("gain", gain);
     return this.http.put<number>(this.apiUrl + "/edge/add", { params: queryParams });
   }
 
