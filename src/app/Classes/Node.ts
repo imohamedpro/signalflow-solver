@@ -1,10 +1,11 @@
+import { Edge } from './Edge';
 import { Point } from "./Point";
 
 export class Node {
     id!: number;
     center!: Point;
     symbol!: string;
-    edges: number[];
+    edges: Edge[];
 
     constructor(id: number, center: Point) {
         this.id = id;
@@ -13,12 +14,12 @@ export class Node {
         this.edges = new Array();
     }
 
-    addEdge(id: number){
-        this.edges.push(id);
+    addEdge(edge: Edge){
+        this.edges.push(edge);
     }
 
-    removeEdge(id: number){
-        const index = this.edges.indexOf(id, 0);
+    removeEdge(edge: Edge){
+        const index = this.edges.indexOf(edge, 0);
         if (index > -1)
             this.edges.splice(index, 1);
     }

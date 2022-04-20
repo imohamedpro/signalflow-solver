@@ -16,9 +16,9 @@ export class ControllerService {
     return this.http.get<number>(this.apiUrl + "/node/add", this.config);
   }
 
-  deleteNode(nodeID: number): Observable<Array<number>> {
+  deleteNode(nodeID: number) {
     let queryParams = new HttpParams().append('nodeID', nodeID);
-    return this.http.delete<Array<number>>(this.apiUrl + "/node/delete", { params: queryParams });
+    return this.http.delete(this.apiUrl + "/node/delete", { params: queryParams });
   }
 
   addEdge(fromNodeID: number, toNodeID: number, gain: number) {
@@ -34,7 +34,8 @@ export class ControllerService {
   }
 
   updateGain(edgeID: number, gain: number) {
-    let queryParams = new HttpParams().append("edgeID", edgeID).append("gain", gain);
+    let queryParams = new HttpParams().append("edgeID", edgeID)
+                                      .append("gain", gain);
     return this.http.put(this.apiUrl + "/edge/gain", null, { params: queryParams });
   }
 

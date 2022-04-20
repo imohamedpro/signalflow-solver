@@ -1,3 +1,4 @@
+import { MovementService } from './../../Services/movement/movement.service';
 import { Component, Input, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Point } from 'src/app/Classes/Point';
 import { ManagerService } from '../../Services/manager/manager.service';
@@ -10,17 +11,19 @@ import { ManagerService } from '../../Services/manager/manager.service';
 export class EdgeComponent implements OnInit {
   @Input() edge!: any;
   manager: ManagerService;
+  movement: MovementService;
   id!: string;
   initialClick!: Point;
 
-  constructor(manager: ManagerService) { 
+  constructor(manager: ManagerService, movement: MovementService) { 
     this.manager = manager;
+    this.movement = movement;
   }
 
   ngOnInit(): void {
     this.id = "edge" + this.edge.id;
-    this.edge.updatePath().then(this.edge.updateArrow);
-    this.edge.updatePath().then(() => this.edge.updateArrow());
+    this.edge.updatePath().then(this.edge.updateArrowText);
+    this.edge.updatePath().then(() => this.edge.updateArrowText());
   }
 
   ngAfterViewInit() {
@@ -42,7 +45,7 @@ export class EdgeComponent implements OnInit {
         let temp = this.edge.endPoint1;
         this.edge.endPoint1 = this.edge.endPoint2;
         this.edge.endPoint2 = temp;
-        this.edge.updatePath().then(() => this.edge.updateArrow());
+        this.edge.updatePath().then(() => this.edge.updateArrowText());
       }
     }
   }
@@ -63,7 +66,7 @@ export class EdgeComponent implements OnInit {
       let offsetY = e.clientY - this.initialClick.y;
       this.edge.curveCenter.x += offsetX;
       this.edge.curveCenter.y += offsetY;
-      this.edge.updatePath().then(() => this.edge.updateArrow());
+      this.edge.updatePath().then(() => this.edge.updateArrowText());
       this.initialClick = new Point(e.clientX, e.clientY);
     }
   }

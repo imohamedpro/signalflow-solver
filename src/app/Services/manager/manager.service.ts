@@ -11,109 +11,107 @@ export class ManagerService {
   edges!: Map<number, Edge>;
   nodes!: Map<number, Node>;
   selectedNode!: any;
-  nextEdgeId!: number; // for test purposes (api should get the edge id)
-  nextNodeId!: number; // for test purposes (api should get the node id)
   answer!: string;
-  oldState!: string;
   state!: string;   //to get state from toolbar
-  initialClick!: Point;
-  isEdgeMoving: boolean = false;
-  isNodeMoving: boolean = false;
-  movingID!: number;
 
-  constructor(controller: ControllerService) {
+  constructor(private controller: ControllerService) {
     this.edges = new Map<number, Edge>();
     this.nodes = new Map<number, Node>();
-    this.nextEdgeId = 0;
-    this.nextNodeId = 0;
-    this.oldState = '';
-    this.state = '';
-    this.answer = 'Answer should be here';
-    this.initialClick = new Point(0,0);
-    this.movingID = -1;
   }
 
-  createEdge(id: number, fromNode: number, toNode: number, endPoint1: Point, endPoint2: Point, gain: number): number {
-    if(endPoint1.x < endPoint2.x){
-      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
-    } else {
-      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
-    }
-    return this.nextEdgeId++;
+
+  createEdge(fromNode: number, toNode: number, endPoint1: Point, endPoint2: Point, gain: number) {
+    this.controller.addEdge(fromNode, toNode, gain).subscribe(id => {
+      const edge = new Edge(id, fromNode, toNode, endPoint1, endPoint2, gain)
+      this.edges.set(id, edge);
+      const node: any = this.nodes.get(toNode);
+      if (this.selectedNode == node) {
+        node.addEdge(edge);
+      } else {
+        this.selectedNode.addEdge(edge);
+        node.addEdge(edge);
+      }
+      this.selectedNode = null;
+    });
   }
 
   createNode(center: Point) {
-    this.nodes.set(this.nextNodeId, new Node(this.nextNodeId, center));
-    ++this.nextNodeId;
+    this.controller.addNode().subscribe(id => {
+      this.nodes.set(id, new Node(id, center));
+    });
   }
 
   select(node: Node) {
-    if(this.selectedNode == null){
+    if (this.selectedNode == null) {
       this.selectedNode = node;
     } else {
       let gain: any;
       gain = prompt('please enter the gain:');
-      if(isNaN(gain) || gain == ""){ 
+      if (isNaN(gain) || gain == "") {
         alert("Invalid input!");
+        this.selectedNode = null;
       } else if (gain != null) {
-        const id = this.createEdge(this.nextEdgeId, this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
-        if(this.selectedNode == node){
-          node.addEdge(id);
-        }else{
-          this.selectedNode.addEdge(id);
-          node.addEdge(id);
-        }
+        this.createEdge(this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
       }
-      this.selectedNode = null;
     }
   }
 
-  editGain(edge: Edge){
+  editGain(edge: Edge) {
     let gain: any;
-    gain = prompt('please enter the new gain of '+ edge.symbol +' :');
-    if(isNaN(gain) || gain == ''){ 
+    gain = prompt('please enter the new gain of ' + edge.symbol + ' :');
+    if (isNaN(gain) || gain == '') {
       alert("Invalid input!");
     } else if (gain != null) {
       edge.gain = gain;
+      this.controller.updateGain(edge.id, gain).subscribe();
     }
+  }
+
+  deleteNode(node: Node) {
+    node.edges.forEach(edge => {
+      this.deleteEdge(edge);
+    });
+    this.controller.deleteNode(node.id).subscribe();
+    this.nodes.delete(node.id);
+  }
+
+  deleteEdge(edge: Edge) {
+    this.controller.deleteEdge(edge.id).subscribe();
+    this.nodes.get(edge.fromNode)?.removeEdge(edge);
+    this.nodes.get(edge.toNode)?.removeEdge(edge);
+    this.edges.delete(edge.id);
   }
 
   clear() {
-    if(confirm('Are you sure ?')){
+    if (confirm('Are you sure ?')) {
       this.edges.clear();
       this.nodes.clear();
-      this.nextEdgeId = 0;
-      this.nextNodeId = 0;
       this.selectedNode = null;
+      this.controller.clear().subscribe();
     }
   }
 
-  changeState(newState: string){
-    if(newState == "addNode" || newState == "delete"){
-      this.edges.forEach((values,keys) => values.isSelected = false);
-      this.isEdgeMoving = false;
-      this.isNodeMoving = false;
-      this.movingID = -1;
-      this.selectedNode = null;
+  changeState(newState: string) {
+    if (newState == "addNode" || newState == "delete") {
+      this.edges.forEach((values, keys) => values.isSelected = false);
     }
     this.state = newState;
+    this.selectedNode = null;
   }
 
-  showEdgeTangent(id: number, e: MouseEvent){
+  showEdgeTangent(id: number, e: MouseEvent) {
     let edge: any = this.edges.get(id);
-    if((this.state == 'addEdge') || (this.state == 'move')){
-      if(e.button == 0){
+    if ((this.state == 'addEdge') || (this.state == 'move')) {
+      if (e.button == 0) {
         edge.isSelected = !edge.isSelected;
       }
-      else if(e.button == 2){
-        // change from, to -> update arrow
+      else if (e.button == 2) {
         this.flipEdge(id);
-        //api call
       }
     }
   }
 
-  flipEdge(id: number){
+  flipEdge(id: number) {
     let edge: any = this.edges.get(id);
     let temp = edge.endPoint1;
     edge.endPoint1 = edge.endPoint2;
@@ -121,77 +119,7 @@ export class ManagerService {
     temp = edge.fromNode;
     edge.fromNode = edge.toNode;
     edge.toNode = temp;
-    edge.updatePath().then(() => edge.updateArrow());
+    edge.updatePath().then(() => edge.updateArrowText());
+    this.controller.reverseEdge(id).subscribe();
   }
-
-  mouseDownNode(id: number, e: MouseEvent){
-    console.log("Mouse Down Node")
-    console.log(this.nodes.get(id));
-    if (e.button == 0 && this.state == "move") {
-      this.isEdgeMoving = false;
-      this.isNodeMoving = true;
-      this.movingID = id;
-      this.initialClick = new Point(e.clientX, e.clientY);
-    }
-  }
-
-  mouseDownEdge(id: number, e: MouseEvent){
-    if (e.button == 0 && (this.state == "addEdge" || this.state == "move")) {
-      let edge: any = this.edges.get(id);
-      this.isEdgeMoving = true;
-      this.isNodeMoving = false;
-      this.movingID = id;
-      edge.isDragging = true;
-      this.initialClick = new Point(e.clientX, e.clientY);
-    }
-  }
-
-  mouseMove(e: MouseEvent){
-    if(this.isEdgeMoving){
-      let edge: any = this.edges.get(this.movingID);
-      let offsetX = e.clientX - this.initialClick.x;
-      let offsetY = e.clientY - this.initialClick.y;
-      edge.curveCenter.x += offsetX;
-      edge.curveCenter.y += offsetY;
-      edge.updatePath().then(() => edge.updateArrow());
-      this.initialClick = new Point(e.clientX, e.clientY);
-    }else if(this.isNodeMoving){
-      let node: any = this.nodes.get(this.movingID);
-      let offsetX = e.clientX - this.initialClick.x;
-      let offsetY = e.clientY - this.initialClick.y;
-      node.center.x += offsetX;
-      node.center.y += offsetY;
-      this.updateEdges(this.movingID);
-      this.initialClick = new Point(e.clientX, e.clientY);
-    }else{
-      e.stopPropagation();
-    }
-  }
-
-  mouseUp(e: MouseEvent){
-    if(this.isEdgeMoving){
-      let edge: any = this.edges.get(this.movingID);
-      edge.isDragging = false;
-    }else if(this.isNodeMoving){
-      //Node Movement
-    }
-    this.isEdgeMoving = false;
-    this.isNodeMoving = false;
-    this.movingID = -1;
-  }
-
-  updateEdges(nodeID: number){
-    const node = this.nodes.get(nodeID);
-    if(node != undefined){
-      node.edges.forEach((edgeID) => {
-        const edge = this.edges.get(edgeID);
-        if(edge != undefined){
-          edge.updatePath();
-          edge.updateArrow();
-        }
-      })
-    }
-  }
-
-
 }
