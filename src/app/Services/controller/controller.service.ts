@@ -9,93 +9,40 @@ export class ControllerService {
   private readonly apiUrl = "http://localhost:8082"
 
   constructor(private http: HttpClient) { }
-  sseOpen: boolean = false;
-  eventSource!: EventSource;
-
-  getServerSentEvent(): Observable<any> {
-    return new Observable(observer => {
-      this.eventSource = new EventSource(this.apiUrl + "/stream");
-      this.eventSource.addEventListener("Q", function (e) {
-        observer.next(e);
-      })
-      this.eventSource.addEventListener("M", function (e) {
-        observer.next(e);
-      })
-    })
-  }
-
-  closeEventSource() {
-    this.eventSource.close();
-  }
 
   config = { headers: new HttpHeaders().set('Content-Type', 'application/json') }
 
-  addMachine() {
-    return this.http.put<number>(this.apiUrl + "/machine/add", null, this.config)
+  addNode(): Observable<number> {
+    return this.http.put<number>(this.apiUrl + "/node/add", null, this.config)
   }
 
-  deleteMachine(id: number) {
-    return this.http.put(this.apiUrl + "/machine/delete", id, this.config)
+  deleteNode(nodeID: number): Observable<Array<number>> {
+    let queryParams = new HttpParams().append('nodeID', nodeID);
+    return this.http.delete<Array<number>>(this.apiUrl + "/node/delete", { params: queryParams });
   }
 
-  addQueue() {
-    return this.http.put<number>(this.apiUrl + "/queue/add", null, this.config)
+  addEdge(gain: number) {
+    let queryParams = new HttpParams().append("gain", gain);
+    return this.http.put<number>(this.apiUrl + "/edge/add", { params: queryParams });
   }
 
-  deleteQueue(id: number) {
-    return this.http.put(this.apiUrl + "/queue/delete", id, this.config)
+  editEdgeGain(edgeID: number, gain: number) {
+    let queryParams = new HttpParams().append("edgeID", edgeID).append("gain", gain);
+    return this.http.put<number>(this.apiUrl + "/edge/editGain", null, { params: queryParams });
   }
 
-  setStartQueue(id: number) {
-    return this.http.post(this.apiUrl + "/queue/start", id, this.config)
+  deleteEdge(edgeID: number) {
+    let queryParams = new HttpParams().append("edgeID", edgeID);
+    return this.http.delete(this.apiUrl + "/edge/delete", { params: queryParams });
   }
 
-  setInput(machineID: number, queueID: number) {
-    let params = new HttpParams().append("machineID", machineID).append("queueID", queueID);
-    let conf = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params: params
-    }
-    return this.http.put(this.apiUrl + "/set-input", null, conf)
+  solve(inputNodeID: number, outputNodeID: number): Observable<string> {
+    let queryParams = new HttpParams().append("inputNodeID", inputNodeID).append("outputNodeID", outputNodeID);
+    return this.http.get<string>(this.apiUrl + "/solve", { params: queryParams });
   }
 
-  setOutput(machineID: number, queueID: number) {
-    let params = new HttpParams().append("machineID", machineID).append("queueID", queueID);
-    let conf = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params: params
-    }
-    return this.http.put(this.apiUrl + "/set-output", null, conf)
-  }
-
-  removeInput(machineID: number, queueID: number) {
-    let params = new HttpParams().append("machineID", machineID).append("queueID", queueID);
-    let conf = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params: params
-    }
-    return this.http.put(this.apiUrl + "/remove/input", null, conf)
-  }
-
-  removeOutput(machineID: number) {
-    let params = new HttpParams().append("machineID", machineID);
-    let conf = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params: params
-    }
-    return this.http.put(this.apiUrl + "/remove/input", null, conf)
-  }
-
-  start(productsCount: number) {
-    return this.http.put(this.apiUrl + "/start", productsCount, this.config)
-  }
-
-  stop() {
-    return this.http.put(this.apiUrl + "/stop", null, this.config)
-  }
-
-  restart() {
-    return this.http.put(this.apiUrl + "/restart", null, this.config)
+  clear() {
+    return this.http.put(this.apiUrl + "/clear", null, this.config);
   }
 
 }
