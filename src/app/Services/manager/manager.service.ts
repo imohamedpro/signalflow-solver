@@ -14,6 +14,7 @@ export class ManagerService {
   //nextEdgeId!: number; // for test purposes (api should get the edge id)
   //nextNodeId!: number; // for test purposes (api should get the node id)
   answer!: string;
+  oldState!: string;
   state!: string;   //to get state from toolbar
   initialClick!: Point;
   isEdgeMoving: boolean = false;
@@ -65,10 +66,10 @@ export class ManagerService {
     } else {
       let gain: any;
       gain = prompt('please enter the gain:');
-      if(isNaN(gain) || gain == null || gain == ""){ 
+      if(isNaN(gain) || gain == ""){ 
         alert("Invalid input!");
         this.selectedNode = null;
-      } else {
+      } else if (gain != null) {
         this.createEdge(this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
       }
     }
@@ -77,9 +78,9 @@ export class ManagerService {
   editGain(edge: Edge){
     let gain: any;
     gain = prompt('please enter the new gain of '+ edge.symbol +' :');
-    if(isNaN(gain) || gain == null || gain == ""){ 
+    if(isNaN(gain) || gain == ''){ 
       alert("Invalid input!");
-    } else {
+    } else if (gain != null) {
       edge.gain = gain;
       this.controller.updateGain(edge.id, gain).subscribe();
     }
@@ -102,6 +103,7 @@ export class ManagerService {
       this.isEdgeMoving = false;
       this.isNodeMoving = false;
       this.movingID = -1;
+      this.selectedNode = null;
     }
     this.state = newState;
   }
@@ -201,9 +203,6 @@ export class ManagerService {
       })
     }
   }
-
-
-
 
 
 }

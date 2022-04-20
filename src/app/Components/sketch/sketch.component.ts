@@ -29,6 +29,7 @@ export class SketchComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   handleClick(e: MouseEvent) {
     if (this._state == 'addNode') {
       this.manager.createNode(new Point(e.offsetX, e.offsetY));
