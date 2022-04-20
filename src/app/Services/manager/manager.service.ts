@@ -11,8 +11,8 @@ export class ManagerService {
   edges!: Map<number, Edge>;
   nodes!: Map<number, Node>;
   selectedNode!: any;
-  nextEdgeId!: number; // for test purposes (api should get the edge id)
-  nextNodeId!: number; // for test purposes (api should get the node id)
+  //nextEdgeId!: number; // for test purposes (api should get the edge id)
+  //nextNodeId!: number; // for test purposes (api should get the node id)
   answer!: string;
   state!: string;   //to get state from toolbar
   initialClick!: Point;
@@ -23,15 +23,15 @@ export class ManagerService {
   constructor(private controller: ControllerService) {
     this.edges = new Map<number, Edge>();
     this.nodes = new Map<number, Node>();
-    this.nextEdgeId = 0;
-    this.nextNodeId = 0;
+    //this.nextEdgeId = 0;
+    //this.nextNodeId = 0;
     this.state = "";
     this.answer = 'Answer should be here';
     this.initialClick = new Point(0,0);
     this.movingID = -1;
   }
 
-  createEdge(id: number, fromNode: number, toNode: number, endPoint1: Point, endPoint2: Point, gain: number): any {
+  createEdge(fromNode: number, toNode: number, endPoint1: Point, endPoint2: Point, gain: number){
     // if(endPoint1.x < endPoint2.x){
     //   this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
     // } else {
@@ -40,7 +40,14 @@ export class ManagerService {
     // return this.nextEdgeId++;
     this.controller.addEdge(fromNode, toNode, gain).subscribe(id => {
       this.edges.set(id, new Edge(id, fromNode, toNode, endPoint1, endPoint2, gain));
-      return id;
+      const node: any = this.nodes.get(toNode);
+      if(this.selectedNode == node){
+        node.addEdge(id);
+      }else{
+        this.selectedNode.addEdge(id);
+        node.addEdge(id);
+      }
+      this.selectedNode = null;
     })
   }
 
@@ -60,16 +67,10 @@ export class ManagerService {
       gain = prompt('please enter the gain:');
       if(isNaN(gain) || gain == null || gain == ""){ 
         alert("Invalid input!");
+        this.selectedNode = null;
       } else {
-        let id: number = this.createEdge(this.nextEdgeId, this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
-        if(this.selectedNode == node){
-          node.addEdge(id);
-        }else{
-          this.selectedNode.addEdge(id);
-          node.addEdge(id);
-        }
+        this.createEdge(this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
       }
-      this.selectedNode = null;
     }
   }
 
@@ -88,8 +89,8 @@ export class ManagerService {
     if(confirm('Are you sure ?')){
       this.edges.clear();
       this.nodes.clear();
-      this.nextEdgeId = 0;
-      this.nextNodeId = 0;
+      // this.nextEdgeId = 0;
+      // this.nextNodeId = 0;
       this.selectedNode = null;
       this.controller.clear().subscribe();
     }
