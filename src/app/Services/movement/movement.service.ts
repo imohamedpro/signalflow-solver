@@ -9,13 +9,17 @@ import { Point } from 'src/app/Classes/Point';
 })
 export class MovementService {
 
-  constructor(private manager: ManagerService) { }
+  constructor(private manager: ManagerService) {
+    this.initialClick = new Point(0,0);
+    this.movingEdge = this.nullEdge;
+    this.movingNode = this.nullNode;
+   }
 
   nullNode: Node = new Node(-1, new Point(-1,-1));
   nullEdge: Edge = new Edge(-1,-1,-1,new Point(-1,-1), new Point(-1,-1), -1);
-  movingNode!: Node;
-  movingEdge!: Edge;
-  initialClick!: Point;
+  movingNode: Node;
+  movingEdge: Edge;
+  initialClick: Point;
 
   mouseDownNode(node: Node, e: MouseEvent){
     console.log("Mouse Down Node")
