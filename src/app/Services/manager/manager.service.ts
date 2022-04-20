@@ -71,9 +71,9 @@ export class ManagerService {
   }
 
   deleteNode(node: Node) {
-    node.edges.forEach(edge => {
-      this.deleteEdge(edge);
-    });
+    while(node.edges.length != 0) {
+      this.deleteEdge(node.edges[0]);
+    }
     this.controller.deleteNode(node.id).subscribe();
     this.nodes.delete(node.id);
   }
