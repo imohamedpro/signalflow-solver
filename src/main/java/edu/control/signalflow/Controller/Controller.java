@@ -19,9 +19,9 @@ public class Controller {
         return nextNodeID++;
     }
 
-    @PutMapping("/node/delete")
-    public void deleteNode(@RequestBody int id){
-        System.out.println("Deleting node with id " + id);
+    @DeleteMapping("/node/delete")
+    public void deleteNode(@RequestParam int nodeID){
+        System.out.println("Deleting node with id " + nodeID);
         //delete node with id
     }
 
@@ -29,7 +29,7 @@ public class Controller {
      * Takes edge data from front end
      * @return id for new edge
      */
-    @PutMapping("/edge/add")
+    @GetMapping("/edge/add")
     public int addEdge(@RequestParam int fromNodeID,
                        @RequestParam int toNodeID,
                        @RequestParam double gain
@@ -39,26 +39,27 @@ public class Controller {
     }
 
     @PutMapping("/edge/reverse")
-    public void reverseEdge(@RequestBody int id){
-        System.out.println("Reversing edge " + id);
+    public void reverseEdge(@RequestParam int edgeID){
+        System.out.println("Reversing edge " + edgeID);
         //reverse edge ends
     }
 
-    @PutMapping("/edge/delete")
-    public void deleteEdge(@RequestBody int id){
-        System.out.println("Deleting edge with id " + id);
+    @DeleteMapping ("/edge/delete")
+    public void deleteEdge(@RequestBody int edgeID){
+        System.out.println("Deleting edge with id " + edgeID);
         //delete edge with id
     }
 
     @PutMapping("/edge/gain")
-    public void updateEdgeGain(@RequestParam int id,
+    public void updateEdgeGain(@RequestParam int edgeID,
                                @RequestParam double gain){
-        System.out.println("Updating gain of edge " + id + " to " + gain);
+        System.out.println("Updating gain of edge " + edgeID + " to " + gain);
         //update gain
     }
 
     @GetMapping("/result")
-    public Object result(){
+    public Object result(@RequestParam int inputNodeID,
+                         @RequestParam int outputNodeID){
         System.out.println("Solving.. Getting result..");
         return null;
     }
