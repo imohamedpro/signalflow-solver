@@ -45,7 +45,7 @@ public class Controller {
     }
 
     @DeleteMapping ("/edge/delete")
-    public void deleteEdge(@RequestBody int edgeID){
+    public void deleteEdge(@RequestParam int edgeID){
         System.out.println("Deleting edge with id " + edgeID);
         //delete edge with id
     }
