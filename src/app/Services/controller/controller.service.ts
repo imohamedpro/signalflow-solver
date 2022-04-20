@@ -13,7 +13,7 @@ export class ControllerService {
   config = { headers: new HttpHeaders().set('Content-Type', 'application/json') }
 
   addNode(): Observable<number> {
-    return this.http.put<number>(this.apiUrl + "/node/add", null, this.config)
+    return this.http.get<number>(this.apiUrl + "/node/add", this.config);
   }
 
   deleteNode(nodeID: number): Observable<Array<number>> {
@@ -22,13 +22,20 @@ export class ControllerService {
   }
 
   addEdge(fromNodeID: number, toNodeID: number, gain: number) {
-    let queryParams = new HttpParams().append("fromNodeID", fromNodeID).append("toNodeID", toNodeID).append("gain", gain);
-    return this.http.put<number>(this.apiUrl + "/edge/add", { params: queryParams });
+    let queryParams = new HttpParams().append("fromNodeID", fromNodeID)
+                                      .append("toNodeID", toNodeID)
+                                      .append("gain", gain);
+    return this.http.get<number>(this.apiUrl + "/edge/add", { params: queryParams });
   }
 
-  editEdgeGain(edgeID: number, gain: number) {
+  reverseEdge(edgeID: number) {
+    let queryParams = new HttpParams().append('edgeID', edgeID);
+    return this.http.put(this.apiUrl + "/edge/reverse", null, { params: queryParams });
+  }
+
+  updateGain(edgeID: number, gain: number) {
     let queryParams = new HttpParams().append("edgeID", edgeID).append("gain", gain);
-    return this.http.put<number>(this.apiUrl + "/edge/editGain", null, { params: queryParams });
+    return this.http.put(this.apiUrl + "/edge/gain", null, { params: queryParams });
   }
 
   deleteEdge(edgeID: number) {
@@ -37,8 +44,9 @@ export class ControllerService {
   }
 
   solve(inputNodeID: number, outputNodeID: number): Observable<string> {
-    let queryParams = new HttpParams().append("inputNodeID", inputNodeID).append("outputNodeID", outputNodeID);
-    return this.http.get<string>(this.apiUrl + "/solve", { params: queryParams });
+    let queryParams = new HttpParams().append("inputNodeID", inputNodeID)
+                                      .append("outputNodeID", outputNodeID);
+    return this.http.get<string>(this.apiUrl + "/result", { params: queryParams });
   }
 
   clear() {
