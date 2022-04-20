@@ -95,7 +95,6 @@ export class ManagerService {
   changeState(newState: string){
     if(newState == "addNode" || newState == "delete"){
       this.edges.forEach((values,keys) => values.isSelected = false);
-      this.selectedNode = null;
     }
     this.state = newState;
     this.selectedNode = null;
