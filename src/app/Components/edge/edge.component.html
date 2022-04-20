@@ -14,7 +14,7 @@
       <path       [attr.id]="id" 
                   [attr.d]='edge.path_value' ></path>
 
-      <text dx="-10" dy="-10" class="noselect">
+      <text class="noselect" [attr.transform]="edge.transformText">
             <textPath [attr.href]="'#'+id" startOffset="50%">
                   {{edge.symbol}}
             </textPath>
@@ -35,7 +35,7 @@
                   (mousedown)="manager.mouseDownEdge(this.edge.id, $event)"/>
       
       <polygon    [attr.points]="edge.arrowPoints"
-                  [attr.transform]="edge.transform"
+                  [attr.transform]="edge.transformArrow"
                   [ngClass]="(manager.state == 'addEdge') || (manager.state == 'move') ? 'pointed' : 'regular'"
                   (mousedown)="manager.showEdgeTangent(this.edge.id, $event)"
                   (contextmenu)="disableContext($event)"/>

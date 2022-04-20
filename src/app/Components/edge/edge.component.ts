@@ -19,8 +19,8 @@ export class EdgeComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = "edge" + this.edge.id;
-    this.edge.updatePath().then(this.edge.updateArrow);
-    this.edge.updatePath().then(() => this.edge.updateArrow());
+    this.edge.updatePath().then(this.edge.updateArrowText);
+    this.edge.updatePath().then(() => this.edge.updateArrowText());
   }
 
   ngAfterViewInit() {
@@ -42,7 +42,7 @@ export class EdgeComponent implements OnInit {
         let temp = this.edge.endPoint1;
         this.edge.endPoint1 = this.edge.endPoint2;
         this.edge.endPoint2 = temp;
-        this.edge.updatePath().then(() => this.edge.updateArrow());
+        this.edge.updatePath().then(() => this.edge.updateArrowText());
       }
     }
   }
@@ -63,7 +63,7 @@ export class EdgeComponent implements OnInit {
       let offsetY = e.clientY - this.initialClick.y;
       this.edge.curveCenter.x += offsetX;
       this.edge.curveCenter.y += offsetY;
-      this.edge.updatePath().then(() => this.edge.updateArrow());
+      this.edge.updatePath().then(() => this.edge.updateArrowText());
       this.initialClick = new Point(e.clientX, e.clientY);
     }
   }

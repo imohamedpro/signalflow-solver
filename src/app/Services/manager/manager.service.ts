@@ -118,7 +118,7 @@ export class ManagerService {
     temp = edge.fromNode;
     edge.fromNode = edge.toNode;
     edge.toNode = temp;
-    edge.updatePath().then(() => edge.updateArrow());
+    edge.updatePath().then(() => edge.updateArrowText());
   }
 
   mouseDownNode(id: number, e: MouseEvent){
@@ -150,7 +150,7 @@ export class ManagerService {
       let offsetY = e.clientY - this.initialClick.y;
       edge.curveCenter.x += offsetX;
       edge.curveCenter.y += offsetY;
-      edge.updatePath().then(() => edge.updateArrow());
+      edge.updatePath().then(() => edge.updateArrowText());
       this.initialClick = new Point(e.clientX, e.clientY);
     }else if(this.isNodeMoving){
       let node: any = this.nodes.get(this.movingID);
@@ -184,7 +184,7 @@ export class ManagerService {
         const edge = this.edges.get(edgeID);
         if(edge != undefined){
           edge.updatePath();
-          edge.updateArrow();
+          edge.updateArrowText();
         }
       })
     }
