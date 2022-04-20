@@ -1,3 +1,4 @@
+import { MovementService } from './../../Services/movement/movement.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { Point } from '../../Classes/Point';
 import { Node } from '../../Classes/Node'
@@ -10,7 +11,8 @@ import { ManagerService } from '../../Services/manager/manager.service';
 })
 export class SketchComponent implements OnInit {
   _state!: string;
-  manager!: ManagerService;
+  manager: ManagerService;
+  movement: MovementService;
 
   @Input() set state(value: string) {
     this._state = value;
@@ -21,8 +23,9 @@ export class SketchComponent implements OnInit {
 
   }
 
-  constructor(manager: ManagerService) {
+  constructor(manager: ManagerService, movement: MovementService) {
     this.manager = manager;
+    this.movement = movement;
   }
 
 
