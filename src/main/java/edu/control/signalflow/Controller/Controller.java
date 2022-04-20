@@ -58,10 +58,12 @@ public class Controller {
     }
 
     @GetMapping("/result")
-    public Object result(@RequestParam int inputNodeID,
+    public String result(@RequestParam int inputNodeID,
                          @RequestParam int outputNodeID){
-        System.out.println("Solving.. Getting result..");
-        return null;
+        System.out.println("received input node: "+ inputNodeID);
+        System.out.println("received output node: " + outputNodeID);
+        //compute answer
+        return "test";
     }
 
     @PutMapping("/clear")
