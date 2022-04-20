@@ -1,6 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg">
+<<<<<<< HEAD
   <g (mousedown)="movement.mouseDownNode(this.node.id, $event)" [ngClass]="{'onMove': manager.state == 'move',
     'onAddEdgeOrDelete': manager.state == 'delete' || manager.state == 'addEdge'}">
+=======
+  <g (mousedown)="movement.mouseDownNode(node, $event)" [ngClass]="{'onMove': manager.state == 'move',
+  'onAddEdgeOrDelete': manager.state == 'delete' || manager.state == 'addEdge'}">
+>>>>>>> origin/master
     <circle [attr.cx]='node.center.x' [attr.cy]='node.center.y' r='20'></circle>
     <text [attr.x]='node.center.x' [attr.y]='node.center.y' alignment-baseline="middle" text-anchor="middle"
       class="noselect">{{node.symbol}}</text>
