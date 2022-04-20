@@ -20,7 +20,7 @@ export class ManagerService {
   isNodeMoving: boolean = false;
   movingID!: number;
 
-  constructor(controller: ControllerService) {
+  constructor(private controller: ControllerService) {
     this.edges = new Map<number, Edge>();
     this.nodes = new Map<number, Node>();
     this.nextEdgeId = 0;
@@ -31,18 +31,25 @@ export class ManagerService {
     this.movingID = -1;
   }
 
-  createEdge(id: number, fromNode: number, toNode: number, endPoint1: Point, endPoint2: Point, gain: number): number {
-    if(endPoint1.x < endPoint2.x){
-      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
-    } else {
-      this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
-    }
-    return this.nextEdgeId++;
+  createEdge(id: number, fromNode: number, toNode: number, endPoint1: Point, endPoint2: Point, gain: number): any {
+    // if(endPoint1.x < endPoint2.x){
+    //   this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
+    // } else {
+    //   this.edges.set(this.nextEdgeId, new Edge(this.nextEdgeId, fromNode, toNode, endPoint1, endPoint2, gain));
+    // }
+    // return this.nextEdgeId++;
+    this.controller.addEdge(fromNode, toNode, gain).subscribe(id => {
+      this.edges.set(id, new Edge(id, fromNode, toNode, endPoint1, endPoint2, gain));
+      return id;
+    })
   }
 
   createNode(center: Point) {
-    this.nodes.set(this.nextNodeId, new Node(this.nextNodeId, center));
-    ++this.nextNodeId;
+    this.controller.addNode().subscribe(id => {
+      this.nodes.set(id, new Node(id, center));
+    });
+    //this.nodes.set(this.nextNodeId, new Node(this.nextNodeId, center));
+    //++this.nextNodeId;
   }
 
   select(node: Node) {
@@ -54,7 +61,7 @@ export class ManagerService {
       if(isNaN(gain) || gain == null || gain == ""){ 
         alert("Invalid input!");
       } else {
-        const id = this.createEdge(this.nextEdgeId, this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
+        let id: number = this.createEdge(this.nextEdgeId, this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
         if(this.selectedNode == node){
           node.addEdge(id);
         }else{
@@ -73,6 +80,7 @@ export class ManagerService {
       alert("Invalid input!");
     } else {
       edge.gain = gain;
+      this.controller.updateGain(edge.id, gain).subscribe();
     }
   }
 
@@ -83,6 +91,7 @@ export class ManagerService {
       this.nextEdgeId = 0;
       this.nextNodeId = 0;
       this.selectedNode = null;
+      this.controller.clear().subscribe();
     }
   }
 
@@ -103,9 +112,7 @@ export class ManagerService {
         edge.isSelected = !edge.isSelected;
       }
       else if(e.button == 2){
-        // change from, to -> update arrow
         this.flipEdge(id);
-        //api call
       }
     }
   }
@@ -119,6 +126,7 @@ export class ManagerService {
     edge.fromNode = edge.toNode;
     edge.toNode = temp;
     edge.updatePath().then(() => edge.updateArrow());
+    this.controller.reverseEdge(id).subscribe();
   }
 
   mouseDownNode(id: number, e: MouseEvent){
