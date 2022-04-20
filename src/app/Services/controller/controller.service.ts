@@ -9,93 +9,55 @@ export class ControllerService {
   private readonly apiUrl = "http://localhost:8082"
 
   constructor(private http: HttpClient) { }
-  sseOpen: boolean = false;
-  eventSource!: EventSource;
-
-  getServerSentEvent(): Observable<any> {
-    return new Observable(observer => {
-      this.eventSource = new EventSource(this.apiUrl + "/stream");
-      this.eventSource.addEventListener("Q", function (e) {
-        observer.next(e);
-      })
-      this.eventSource.addEventListener("M", function (e) {
-        observer.next(e);
-      })
-    })
-  }
-
-  closeEventSource() {
-    this.eventSource.close();
-  }
 
   config = { headers: new HttpHeaders().set('Content-Type', 'application/json') }
 
-  addMachine() {
-    return this.http.put<number>(this.apiUrl + "/machine/add", null, this.config)
+  addNode() {
+    return this.http.get<number>(this.apiUrl + "/node/add", this.config)
   }
 
-  deleteMachine(id: number) {
-    return this.http.put(this.apiUrl + "/machine/delete", id, this.config)
+  deleteNode(id: number) {
+    return this.http.put(this.apiUrl + "/node/delete", id, this.config)
   }
 
-  addQueue() {
-    return this.http.put<number>(this.apiUrl + "/queue/add", null, this.config)
+  addEdge(fromNode: number, toNode: number, gain: number) { 
+    let conf = {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      params:  new HttpParams().append("fromNodeID", fromNode)
+                               .append("toNodeID", toNode)
+                               .append("gain", gain)
+    }
+    return this.http.put<number>(this.apiUrl + "/edge/add", null, conf)
   }
 
-  deleteQueue(id: number) {
-    return this.http.put(this.apiUrl + "/queue/delete", id, this.config)
+  reverseEdge(id: number) {
+    return this.http.put(this.apiUrl + "/edge/reverse", id, this.config)
   }
 
-  setStartQueue(id: number) {
-    return this.http.post(this.apiUrl + "/queue/start", id, this.config)
+  updateGain(id: number, gain: number){
+    let conf = {
+      headers: new HttpHeaders().set('Content-Type', 'application/json'),
+      params:  new HttpParams().append("id", id)
+                               .append("gain", gain)
+    }
+    return this.http.put<number>(this.apiUrl + "/edge/gain", null, conf)
   }
 
-  setInput(machineID: number, queueID: number) {
-    let params = new HttpParams().append("machineID", machineID).append("queueID", queueID);
+  deleteEdge(id: number) {
+    return this.http.put(this.apiUrl + "/edge/delete", id, this.config)
+  }
+
+  solve(sourceID: number, destID: number) {
+    let params = new HttpParams().append("sourceID", sourceID).append("destID", destID);
     let conf = {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
       params: params
     }
-    return this.http.put(this.apiUrl + "/set-input", null, conf)
+    return this.http.get(this.apiUrl + "/result", conf)
   }
 
-  setOutput(machineID: number, queueID: number) {
-    let params = new HttpParams().append("machineID", machineID).append("queueID", queueID);
-    let conf = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params: params
-    }
-    return this.http.put(this.apiUrl + "/set-output", null, conf)
-  }
-
-  removeInput(machineID: number, queueID: number) {
-    let params = new HttpParams().append("machineID", machineID).append("queueID", queueID);
-    let conf = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params: params
-    }
-    return this.http.put(this.apiUrl + "/remove/input", null, conf)
-  }
-
-  removeOutput(machineID: number) {
-    let params = new HttpParams().append("machineID", machineID);
-    let conf = {
-      headers: new HttpHeaders().set('Content-Type', 'application/json'),
-      params: params
-    }
-    return this.http.put(this.apiUrl + "/remove/input", null, conf)
-  }
-
-  start(productsCount: number) {
-    return this.http.put(this.apiUrl + "/start", productsCount, this.config)
-  }
-
-  stop() {
-    return this.http.put(this.apiUrl + "/stop", null, this.config)
-  }
-
-  restart() {
-    return this.http.put(this.apiUrl + "/restart", null, this.config)
+  clear() {
+    return this.http.put(this.apiUrl + "/clear", null, this.config)
   }
 
 }
