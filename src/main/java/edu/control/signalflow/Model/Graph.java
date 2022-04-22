@@ -22,6 +22,15 @@ public class Graph {
         for(int i=0; i<vertex.edges.size(); i++){
             vertex.edges.remove(vertex.edges.get(i));
         }
+        for(Vertex v: this.vertices){
+            Iterator<Edge> i = v.edges.iterator();
+            while(i.hasNext()){
+                Edge e = i.next();
+                if(vertex.equals(e.destination)){
+                    i.remove();
+                }
+            }
+        }
         vertices.remove(vertex);
     }
 
@@ -43,7 +52,7 @@ public class Graph {
             edge.id = edgeID ++;
         }
         catch (NullPointerException e) {
-            System.out.print("Caught the NullPointerException");
+            System.out.println("Caught the NullPointerException");
         }
     }
 
@@ -165,7 +174,7 @@ public class Graph {
 class Test {
     public static void main(String[] args) {
         Graph graph = new Graph();
-        for(int i=0; i<4; i++){
+        for(int i=0; i<7; i++){
             graph.addVertex();
         }
 //        graph.addEdge();
@@ -175,11 +184,16 @@ class Test {
         // }
 
         graph.addEdge(1, 2, 1);
-        graph.addEdge(1, 3, 1);
         graph.addEdge(2, 3, 1);
-        graph.addEdge(2, 4, 1);
         graph.addEdge(3, 2, 1);
         graph.addEdge(3, 4, 1);
+        graph.addEdge(4, 5, 1);
+        graph.addEdge(5, 4, 1);
+        graph.addEdge(5, 6, 1);
+        graph.addEdge(5, 6, 1);
+        graph.addEdge(6, 4, 1);
+        graph.addEdge(6, 7, 1);
+        
         // graph.addEdge(1, 2, 5);
         // graph.addEdge(2, 3, 5);
         // graph.addEdge(3, 4, 5);
