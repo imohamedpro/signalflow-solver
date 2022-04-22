@@ -79,7 +79,7 @@ public class LoopsFinder {
         }
     }
 
-    public void getLoops(){
+    public List<Path> getLoops(){
         int n = g.vertices.size();
         for(int i = 1; i < n; i++){
             b = new HashMap<Integer, List<Vertex>>();
@@ -93,6 +93,12 @@ public class LoopsFinder {
             circuit(s);
             g.removeVertex(s.id);
         }
+        List<Path> loops = new ArrayList<Path>();
+        int i = 0;
+        for(List<Edge> l: this.loops){
+            loops.add(new Path(l, ++i));
+        }
+        return loops;
 
     }
 }

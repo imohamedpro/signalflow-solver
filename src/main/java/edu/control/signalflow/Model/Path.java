@@ -14,6 +14,7 @@ public class Path {
         this.id = id;
         this.gain = 0;
         this.edges = edges;
+        vertcies = new HashSet<Integer>();
         for(Edge e: edges){
             vertcies.add(e.source.id);
         }

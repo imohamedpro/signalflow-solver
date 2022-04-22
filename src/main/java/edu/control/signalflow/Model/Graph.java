@@ -1,12 +1,12 @@
 package edu.control.signalflow.Model;
-import java.util.HashSet;
-
+import edu.control.signalflow.Services.SignalFlowCalculator;
 
 import java.util.*;
 
 public class Graph {
     int vertexID=1, edgeID=1;
     List<Vertex> vertices = new ArrayList<>();
+    // List<List<Edge>> paths;
 
     public void addVertex(){
         Vertex vertex = new Vertex();
@@ -109,31 +109,32 @@ public class Graph {
     public void getPaths () {
         Vertex start = vertices.get(0);
         Vertex end = vertices.get(vertices.size()-1);
-        ArrayList<Vertex> pathList = new ArrayList<>();
+        Stack<Edge> pathList = new Stack<Edge>();
         HashSet<Vertex> visitedVertices = new HashSet<>();
         getAllPaths(start, end, pathList, visitedVertices);
-        printAllPaths();
+        // printAllPaths();
     }
 
-    private void printAllPaths(){
-        System.out.println("Created Path:");
-        for(ArrayList<Vertex> list:this.allPaths){
-            for(Vertex i:list){
-                System.out.print(i.id+"  ");
-            }   System.out.println();
-        }
+    // private void printAllPaths(){
+    //     System.out.println("Created Path:");
+    //     for(ArrayList<Edge> list:this.allPaths){
+    //         System.out.println(list.toString());
+    //         // for(Edge i:list){
+    //         //     System.out.print(i.toString());
+    //         // }   System.out.println();
+    //     }
 
-    }
+    // }
 
-    ArrayList<ArrayList<Vertex>> allPaths = new ArrayList<>();
+    ArrayList<Path> allPaths = new ArrayList<>();
 
-    public void getAllPaths (Vertex start, Vertex end, ArrayList<Vertex> pathList, HashSet<Vertex> visitedVertices) {
-        pathList.add(start);
+    public void getAllPaths (Vertex start, Vertex end, Stack<Edge> pathList, HashSet<Vertex> visitedVertices) {
+        // pathList.push(start);
         if(start.equals(end)) {
-            ArrayList<Vertex> finalPath = new ArrayList<>(pathList);
+            ArrayList<Edge> finalPath = new ArrayList<Edge>(pathList);
 //            Collections.copy(finalPath, pathList);
-            this.allPaths.add(finalPath);
-            pathList.remove(start);
+            this.allPaths.add(new Path(finalPath, this.allPaths.size()));
+            // pathList.pop();
             return;
         }
 
@@ -141,12 +142,16 @@ public class Graph {
 
         for(Edge i: start.edges){
             if(!visitedVertices.contains(i.destination)) {
+                pathList.push(i);
                 getAllPaths(i.destination, end, pathList, visitedVertices);
+                pathList.pop();
             }
         }
         visitedVertices.remove(start);
-        pathList.remove(start);
+        // pathList.remove(start);
     }
+
+
     public Graph clone(){
         Graph clone = new Graph();
         for(Vertex v: this.vertices){
@@ -161,10 +166,44 @@ public class Graph {
         return clone;
     }
 
-    public List<List<Edge>> getLoops(){
-        LoopsFinder lf = new LoopsFinder(this.clone());
-        lf.getLoops();
-        return lf.loops;
+    // private void dfs(Vertex v, HashSet<Integer> visited, Stack<Edge> edges, List<Path> paths, int destination){
+    //     if(v.id == destination){
+    //         paths.add(new Path(edges, paths.size()));
+    //         System.out.println(edges.toString());
+    //         return;
+    //     }
+    //     for(Edge e: v.edges){
+    //         if(!visited.contains(e.id)){
+    //             visited.add(e.id);
+    //             edges.push(e);
+    //             dfs(e.destination, visited, edges, paths, destination);
+    //             edges.pop();
+    //         }
+    //     }
+    // }
+    // public List<Path> getPaths(int source, int destination){
+    //     List<Path> paths = new ArrayList<Path>();
+    //     Stack<Edge> edges = new Stack<Edge>();
+    //     HashSet<Integer> visited = new HashSet<Integer>();
+    //     Vertex src = getVertexFromID(source);
+    //     dfs(src, visited, edges, paths, destination);
+        
+    //     return paths;
+    // }
+
+    public List<Path> getLoops(){
+        return new LoopsFinder(this.clone()).getLoops();
+    }
+
+    public void signalFlow(){
+        SignalFlowCalculator sf = new SignalFlowCalculator();
+        this.getPaths();
+        // List<Path> paths = new ArrayList<Path>();
+        // int id = 0;
+        // for(List<Edge> e: this.allPaths){
+        //     paths.add(new Path(e, ++id));
+        // }
+        sf.compute(this.allPaths, getLoops());
     }
 
 }
@@ -218,7 +257,8 @@ class Test {
 //        graph.addVertex();
 //        graph.print();
 
-        graph.getLoops();
+        // graph.getLoops();
+        graph.signalFlow();
 
     }
 }
