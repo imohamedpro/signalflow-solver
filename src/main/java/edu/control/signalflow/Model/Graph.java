@@ -1,5 +1,4 @@
 package edu.control.signalflow.Model;
-import java.lang.reflect.Array;
 import java.util.HashSet;
 
 
@@ -139,7 +138,25 @@ public class Graph {
         visitedVertices.remove(start);
         pathList.remove(start);
     }
+    public Graph clone(){
+        Graph clone = new Graph();
+        for(Vertex v: this.vertices){
+            clone.addVertex();
+        }
+        for(Vertex v: this.vertices){
+            for(Edge e: v.edges){
+                clone.addEdge(e.source.id, e.destination.id, e.gain);
+            }
+        }
 
+        return clone;
+    }
+
+    public List<List<Edge>> getLoops(){
+        LoopsFinder lf = new LoopsFinder(this.clone());
+        lf.getLoops();
+        return lf.loops;
+    }
 
 }
 
@@ -148,31 +165,37 @@ public class Graph {
 class Test {
     public static void main(String[] args) {
         Graph graph = new Graph();
-        for(int i=0; i<8; i++){
+        for(int i=0; i<4; i++){
             graph.addVertex();
         }
 //        graph.addEdge();
-        for(int i=0; i<graph.vertices.size(); i++){
-            Vertex vertex = graph.vertices.get(i);
-            System.out.println(vertex.id);
-        }
+        // for(int i=0; i<graph.vertices.size(); i++){
+        //     Vertex vertex = graph.vertices.get(i);
+        //     System.out.println(vertex.id);
+        // }
 
-        graph.addEdge(1, 2, 5);
-        graph.addEdge(2, 3, 5);
-        graph.addEdge(3, 4, 5);
-        graph.addEdge(4, 5, 5);
-        graph.addEdge(5, 6, 5);
-        graph.addEdge(6, 7, 5);
-        graph.addEdge(7, 8, 5);
-        graph.addEdge(2, 4, 5);
-        graph.addEdge(2, 7, 5);
-        graph.addEdge(7, 5, 5);
-        graph.addEdge(7, 7, 5);
-        graph.addEdge(7, 6, 5);
-        graph.addEdge(6, 5, 5);
-        graph.addEdge(5, 4, 5);
-        graph.addEdge(4, 3, 5);
-        graph.addEdge(3, 2, 5);
+        graph.addEdge(1, 2, 1);
+        graph.addEdge(1, 3, 1);
+        graph.addEdge(2, 3, 1);
+        graph.addEdge(2, 4, 1);
+        graph.addEdge(3, 2, 1);
+        graph.addEdge(3, 4, 1);
+        // graph.addEdge(1, 2, 5);
+        // graph.addEdge(2, 3, 5);
+        // graph.addEdge(3, 4, 5);
+        // graph.addEdge(4, 5, 5);
+        // graph.addEdge(5, 6, 5);
+        // graph.addEdge(6, 7, 5);
+        // graph.addEdge(7, 8, 5);
+        // graph.addEdge(2, 4, 5);
+        // graph.addEdge(2, 7, 5);
+        // graph.addEdge(7, 5, 5);
+        // graph.addEdge(7, 7, 5);
+        // graph.addEdge(7, 6, 5);
+        // graph.addEdge(6, 5, 5);
+        // graph.addEdge(5, 4, 5);
+        // graph.addEdge(4, 3, 5);
+        // graph.addEdge(3, 2, 5);
 
 
 //        graph.print();
@@ -181,7 +204,7 @@ class Test {
 //        graph.addVertex();
 //        graph.print();
 
-        graph.getPaths();
+        graph.getLoops();
 
     }
 }

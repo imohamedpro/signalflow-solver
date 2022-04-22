@@ -1,5 +1,7 @@
 package edu.control.signalflow.Model;
 
+import java.util.Objects;
+
 public class Edge {
     int id;
     double gain;
@@ -9,4 +11,21 @@ public class Edge {
     public String toString(){
         return "e" + id;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this)
+            return true;
+        if (!(o instanceof Edge)) {
+            return false;
+        }
+        Edge edge = (Edge) o;
+        return id == edge.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }
