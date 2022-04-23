@@ -22,8 +22,9 @@ public class Controller {
      */
     @GetMapping ("/node/add")
     public int addNode(){
-        System.out.println("Adding new node with id " + (nextNodeID));
-        return this.graph.addVertex();
+        int id = this.graph.addVertex();
+        System.out.println("Adding new node with id " + (id));
+        return id;
     }
 
     @DeleteMapping("/node/delete")
@@ -42,8 +43,9 @@ public class Controller {
                        @RequestParam int toNodeID,
                        @RequestParam double gain
                         ){
-        System.out.println("Adding new edge from" + fromNodeID + ", to " + toNodeID + ", gain = " + gain + ", with id " + (nextEdgeID));
-        return this.graph.addEdge(fromNodeID, toNodeID, gain);
+        int id = this.graph.addEdge(fromNodeID, toNodeID, gain);
+        System.out.println("Adding new edge from" + fromNodeID + ", to " + toNodeID + ", gain = " + gain + ", with id " + (id));
+        return id;
     }
 
     @PutMapping("/edge/reverse")

@@ -14,8 +14,8 @@ public class Graph {
     public Graph(){
         vertices = new HashMap<Integer, Vertex>();
         edges = new HashMap<Integer, Edge>();
-        edgeID = 1;
-        vertexID = 1;
+        edgeID = 0;
+        vertexID = 0;
     }
     // List<List<Edge>> paths;
 
