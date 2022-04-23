@@ -88,10 +88,11 @@ public class LoopsFinder {
             for(Vertex v: g.vertices.values()){
                 b.put(v.id, new ArrayList<Vertex>());
             }
-
-            s = g.vertices.get(0);
-            circuit(s);
-            g.removeVertex(s.id);
+            s = g.vertices.get(i);
+            if(s != null){
+                circuit(s);
+                g.removeVertex(s.id);
+            }
         }
         List<Path> loops = new ArrayList<Path>();
         int i = 0;
