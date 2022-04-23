@@ -3,10 +3,8 @@ package edu.control.signalflow.Model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.Stack;
 
 public class LoopsFinder {
@@ -23,20 +21,10 @@ public class LoopsFinder {
         loops = new ArrayList<List<Edge>>();
         stack = new Stack<Edge>();
     }
-    private ArrayList<Vertex> getSSC(){
-        ArrayList<Vertex> ssc = new ArrayList<Vertex>();
-
-        return ssc;
-    }
 
     private boolean circuit(Vertex v){
         boolean f = false;
-        // Stack<Vertex> stack = new Stack<Vertex>();
-        // List<Edge> edges = new ArrayList<Edge>();
         blocked.add(v.id);
-        // if(edge != null){
-        //     stack.push(edge);
-        // }
         for(Edge e: v.edges){
             Vertex w = e.destination;
             if(w.equals(s)){
@@ -56,10 +44,6 @@ public class LoopsFinder {
             for(Edge e: v.edges){
                 Vertex w = e.destination;
                 List<Vertex> list = b.get(w.id);
-                // if(list == null){
-                //     list = new ArrayList<Vertex>();
-                //     b.put(w.id, list);
-                // }
                 if(!list.contains(v)){
                     list.add(v);
                 }
@@ -82,7 +66,6 @@ public class LoopsFinder {
     }
 
     public List<Path> getLoops(){
-        int n = g.vertices.size();
         List<Vertex> vertcies = new LinkedList<Vertex>(g.vertices.values());
         for(Vertex u: vertcies){
             b = new HashMap<Integer, List<Vertex>>();
@@ -91,12 +74,9 @@ public class LoopsFinder {
             for(Vertex v: g.vertices.values()){
                 b.put(v.id, new ArrayList<Vertex>());
             }
-            // s = j.next();
-            // if(s != null){
             s = u;
             circuit(s);
             g.removeVertex(s.id);
-            // }
         }
         List<Path> loops = new ArrayList<Path>();
         int i = 0;
