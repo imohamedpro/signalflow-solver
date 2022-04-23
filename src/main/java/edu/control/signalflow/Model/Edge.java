@@ -11,7 +11,7 @@ public class Edge {
 
     @Override
     public String toString(){
-        return "e" + Subscript.convert(id);
+        return "e_{" + id + "}";
     }
 
     @Override

@@ -141,7 +141,7 @@ class Result{
         this.paths = new LinkedList<Pair>();
         for(Path p: paths){
             Pair pair = new Pair();
-            pair.str = p.toString() + ": " + p.edgesToString();
+            pair.str = p.toString() + ":\\ " + p.edgesToString();
             pair.val = p.calculateGain();
             this.paths.add(pair);
         }
@@ -150,7 +150,7 @@ class Result{
         this.loops = new LinkedList<Pair>();
         for(Path l: loops){
             Pair pair = new Pair();
-            pair.str = l.toString() + ": " + l.edgesToString();
+            pair.str = l.toString() + ":\\ " + l.edgesToString();
             pair.val = l.calculateGain();
             this.loops.add(pair);
         }
@@ -162,9 +162,9 @@ class Result{
         for(int i = 1; i < determinant.size(); i++){
             List<NonTouching> l = determinant.get(i);
             if(l.size() > 0){
-                String str =  i + "-non touching loops:\n";
+                String str =  i + "-non\\ touching\\ loops:\\\\";
                 for(NonTouching nt: l){
-                    str += nt.toString() + ", ";
+                    str += nt.toString() + ",\\ ";
                 }
                 str = str.substring(0, str.length() - 2);
                 this.nonTouchingLoops.put(i, str);
@@ -202,20 +202,38 @@ class Result{
                 }
             }
         }
+        if(pair.str.equals("1")){
+            pair.str = "";
+        }
         return pair;
     }
 
     public void stringfyDeltas(HashMap<Integer, List<NonTouching>> determinant, List<HashMap<Integer, List<NonTouching>>> subDeterminant){
         this.deltas = new LinkedList<Pair>();
-        this.deltas.add(calculateDelta(determinant));
+        Pair p = calculateDelta(determinant);
+        if(p.str.isBlank()){
+            p.str = "\\Delta";
+        }else{
+            p.str = "\\Delta" + " = {" + p.str + "}";
+        }
+        
+        this.deltas.add(p);
+        int i = 1;
         for(HashMap<Integer, List<NonTouching>> map: subDeterminant){
-            this.deltas.add(calculateDelta(map));
+            p = calculateDelta(map);
+            if(p.str.isBlank()){
+                p.str = "\\Delta_" + i;
+            }else{
+                p.str = "\\Delta_" + i + " = {" + p.str + "}";
+            }
+            this.deltas.add(p);
+            i++;
         }
     }
 
     public void stringfyTF(){
         this.transferFunction = new Pair();
-        this.transferFunction.str = "(";
+        this.transferFunction.str = "{";
         this.transferFunction.val = 0.0;
 
         Iterator<Pair> path = this.paths.iterator();
@@ -230,11 +248,11 @@ class Result{
             }else{
                 first = false;
             }
-            this.transferFunction.str += iPath.str.split(":")[0] + "(" + iDelta.str + ")";
+            this.transferFunction.str += iPath.str.split(":")[0] + iDelta.str.split(" =")[0];
             this.transferFunction.val += iPath.val * iDelta.val;
         }
 
-        this.transferFunction.str += ") / " + determinant.str;
+        this.transferFunction.str += "} \\over " +  "{" + determinant.str.split(" =")[0] + "}";
         this.transferFunction.val /= determinant.val;
         // System.out.println(this.transferFunction.str + " = " + this.transferFunction.val);
     }
@@ -342,30 +360,35 @@ public class SignalFlowCalculator {
         res.stringfyDeltas(determinant, subDeterminant);
         res.stringfyTF();
         System.out.println("Paths:");
+        finalResult += "Forward\\ Paths:\\\\";
         for(Pair p: res.paths){
             String str = p.str + " = " + p.val;
-            finalResult += str + "\n";
+            finalResult += str + "\\\\";
             System.out.println(str);
         }
         System.out.println("Loops:");
+        finalResult += "Loops:\\\\";
         for(Pair p: res.loops){
             String str = p.str + " = " + p.val;
-            finalResult += str + "\n";
+            finalResult += str + "\\\\";
             System.out.println(str);
         }
         System.out.println("Non Touching Loops:");
+        finalResult += "Non\\ Touching\\ Loops:\\\\";
         for(Entry<Integer, String> e: res.nonTouchingLoops.entrySet()){
             String str = e.getValue();
-            finalResult += str + "\n";
+            finalResult += str + "\\\\";
             System.out.println(str);
         }
         System.out.println("deltas:");
+        finalResult += "Deltas:\\\\";
         for(Pair p: res.deltas){
+            // String s = p.str.split("= ")[1].replaceAll("{|}", "");
             String str = p.str + " = " + p.val;
-            finalResult += str + "\n";
+            finalResult += str + "\\\\";
             System.out.println(str);
         }
-        String str = "Tf: " + res.transferFunction.str + " = " + res.transferFunction.val;
+        String str = "Overall\\ Transfer\\ Function: {" + res.transferFunction.str + "} = " + res.transferFunction.val;
         finalResult += str;
         System.out.println(str);
         return finalResult;

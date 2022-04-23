@@ -7,7 +7,7 @@ import edu.control.signalflow.Services.Subscript;
 
 public class Path {
     private int id;
-    private String idStr;
+    // private String idStr;
     private double gain;
     private String representation;
     boolean loop;
@@ -15,7 +15,7 @@ public class Path {
     public HashSet<Integer> vertcies;
     public Path(List<Edge> edges, int id){
         this.id = id;
-        this.idStr = Subscript.convert(id);
+        // this.idStr = Subscript.convert(id);
         this.gain = 1;
         this.edges = edges;
         vertcies = new HashSet<Integer>();
@@ -42,7 +42,7 @@ public class Path {
     }
     @Override
     public String toString(){
-        return loop? "L" + idStr: "P" + idStr; 
+        return loop? "L_{" + id + "}": "P_{" + id + "}"; 
     }
     public String edgesToString(){
         if(representation == null){

@@ -16,7 +16,7 @@ public class Vertex {
 
     @Override
     public String toString(){
-        return "v" + Subscript.convert(id);
+        return "v_{" + id + "}";
     }
     @Override
     public boolean equals(Object o) {
