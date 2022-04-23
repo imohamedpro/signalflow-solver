@@ -85,7 +85,7 @@ public class LoopsFinder {
             b = new HashMap<Integer, List<Vertex>>();
             blocked = new HashSet<Integer>();
 
-            for(Vertex v: g.vertices){
+            for(Vertex v: g.vertices.values()){
                 b.put(v.id, new ArrayList<Vertex>());
             }
 

@@ -9,47 +9,56 @@ import java.util.*;
 
 public class Graph {
     int vertexID, edgeID;
-    List<Vertex> vertices;
+    HashMap<Integer, Vertex> vertices;
     HashMap<Integer, Edge> edges;
     public Graph(){
-        vertices = new ArrayList<Vertex>();
+        vertices = new HashMap<Integer, Vertex>();
         edges = new HashMap<Integer, Edge>();
         edgeID = 1;
         vertexID = 1;
     }
     // List<List<Edge>> paths;
 
-    public void addVertex(){
+    public int addVertex(){
         Vertex vertex = new Vertex();
-        vertex.id = vertexID ++;
-        vertices.add(vertex);
+        vertex.id = vertexID++;
+        vertices.put(vertex.id, vertex);
+        return vertex.id;
     }
 
     public void removeVertex(int vertexID){
         /*
             To be implemented: removing all incident edges
         */
-        Vertex vertex = getVertexFromID(vertexID);
-        for(int i=0; i<vertex.edges.size(); i++){
-            vertex.edges.remove(vertex.edges.get(i));
+        Vertex vertex = this.vertices.remove(vertexID);
+        // for(int i=0; i<vertex.edges.size(); i++){
+        //     vertex.edges.remove(vertex.edges.get(i));
+        // }
+        List<Edge> edgeList = new LinkedList<Edge>(vertex.edges);
+        for(Edge e: edgeList){
+            this.removeEdge(e);
         }
-        for(Vertex v: this.vertices){
-            Iterator<Edge> i = v.edges.iterator();
-            while(i.hasNext()){
-                Edge e = i.next();
-                if(vertex.equals(e.destination)){
-                    i.remove();
-                }
+        for(Vertex v: this.vertices.values()){
+            // Iterator<Edge> i = v.edges.iterator();
+            edgeList = new LinkedList<Edge>(v.edges);
+            for(Edge e: edgeList){
+                this.removeEdge(e);
             }
+            // while(i.hasNext()){
+            //     Edge e = i.next();
+            //     if(vertex.equals(e.destination)){
+            //         i.remove();
+            //     }
+            // }
         }
-        vertices.remove(vertex);
+        // vertices.remove(vertex);
     }
 
     /*
     Approach:
     Each vertex has a list of edges incident "from it"
      */
-    public void addEdge(int srcID, int destID, double gain){
+    public int addEdge(int srcID, int destID, double gain){
         Edge edge = new Edge();
         Vertex src = getVertexFromID(srcID);
         Vertex dest = getVertexFromID(destID);
@@ -66,6 +75,7 @@ public class Graph {
         catch (NullPointerException e) {
             System.out.println("Caught the NullPointerException");
         }
+        return edge.id;
     }
 
     public void deleteEdge(int edgeID){
@@ -80,6 +90,18 @@ public class Graph {
             }
         }
         System.out.println("Edge not found!");
+    }
+
+    public void reverseEdge(int edgeID){
+        Edge e = this.edges.get(edgeID);
+        Vertex temp = e.source;
+        e.source = e.destination;
+        e.destination = temp;
+    }
+
+    public void updateGain(int edgeID, double gain){
+        Edge e = this.edges.get(edgeID);
+        e.gain = gain;
     }
 
     public List<Vertex> allPaths () {
@@ -106,7 +128,7 @@ public class Graph {
     }
 
     public void print(){
-        for (Vertex vertex : vertices) {
+        for (Vertex vertex : vertices.values()) {
             System.out.println("Vertex " + vertex.id + ": ");
 
             for (int j = 0; j < vertex.edges.size(); j++) {
@@ -169,10 +191,10 @@ public class Graph {
 
     public Graph clone(){
         Graph clone = new Graph();
-        for(Vertex v: this.vertices){
+        for(Vertex v: this.vertices.values()){
             clone.addVertex();
         }
-        for(Vertex v: this.vertices){
+        for(Vertex v: this.vertices.values()){
             for(Edge e: v.edges){
                 clone.addEdge(e.source.id, e.destination.id, e.gain);
             }

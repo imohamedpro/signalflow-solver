@@ -12,8 +12,8 @@ public class Controller {
     int nextNodeID;
     public Controller(){
         this.graph = new Graph();
-        nextEdgeID = 0;
-        nextNodeID = 0;
+        nextEdgeID = 1;
+        nextNodeID = 1;
     }
 
     /**
@@ -23,8 +23,7 @@ public class Controller {
     @GetMapping ("/node/add")
     public int addNode(){
         System.out.println("Adding new node with id " + (nextNodeID));
-        this.graph.addVertex();
-        return nextNodeID++;
+        return this.graph.addVertex();
     }
 
     @DeleteMapping("/node/delete")
@@ -44,13 +43,13 @@ public class Controller {
                        @RequestParam double gain
                         ){
         System.out.println("Adding new edge from" + fromNodeID + ", to " + toNodeID + ", gain = " + gain + ", with id " + (nextEdgeID));
-        this.graph.addEdge(fromNodeID, toNodeID, gain);
-        return nextEdgeID++;
+        return this.graph.addEdge(fromNodeID, toNodeID, gain);
     }
 
     @PutMapping("/edge/reverse")
     public void reverseEdge(@RequestParam int edgeID){
         System.out.println("Reversing edge " + edgeID);
+        this.graph.reverseEdge(edgeID);
         //reverse edge ends
     }
 
@@ -58,7 +57,7 @@ public class Controller {
     public void deleteEdge(@RequestParam int edgeID){
         System.out.println("Deleting edge with id " + edgeID);
         //delete edge with id
-        this.graph.removeEdge(edge);
+        this.graph.deleteEdge(edgeID);
     }
 
     @PutMapping("/edge/gain")
@@ -66,7 +65,7 @@ public class Controller {
                                @RequestParam double gain){
         System.out.println("Updating gain of edge " + edgeID + " to " + gain);
         //update gain
-        // this.graph
+        this.graph.updateGain(edgeID, gain);
     }
 
     @GetMapping("/result")
