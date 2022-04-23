@@ -11,7 +11,7 @@ export class ManagerService {
   edges!: Map<number, Edge>;
   nodes!: Map<number, Node>;
   selectedNode!: any;
-  answer: string = "x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}";
+  answer: string = "x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a} \\\\ x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}";
   state!: string;   //to get state from toolbar
   message!: string;
   sourceNode!: any;
