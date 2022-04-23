@@ -9,13 +9,13 @@ import edu.control.signalflow.Model.Path;
 public class NonTouching{
     List<Path> loops;
     HashSet<Integer> vertcies;
-    boolean valid;
-    NonTouching(){
+    public boolean valid;
+    public NonTouching(){
         loops = new LinkedList<Path>();
         vertcies = new HashSet<Integer>();
         valid = false;
     }
-    boolean touches(Path path){
+    public boolean touches(Path path){
         for(int x: path.vertcies){
             if(vertcies.contains(x)){
                 return true;
@@ -23,7 +23,7 @@ public class NonTouching{
         }
         return false;
     }
-    void add(Path path){
+    public void add(Path path){
         valid = true;
         if(!touches(path)){
             loops.add(path);

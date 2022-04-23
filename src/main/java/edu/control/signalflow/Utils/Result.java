@@ -9,8 +9,6 @@ import java.util.Map.Entry;
 import edu.control.signalflow.Model.Path;
 
 public class Result{
-
-    // List<Pair> pathStr, loopStr, deltaStr;
     public List<Pair> paths;
     public List<Pair> loops;
     public List<Pair> deltas;
@@ -135,7 +133,6 @@ public class Result{
 
         this.transferFunction.str += "} \\over " +  "{" + determinant.str.split(" =")[0] + "}";
         this.transferFunction.val /= determinant.val;
-        // System.out.println(this.transferFunction.str + " = " + this.transferFunction.val);
     }
 
     public String generateResult(){
@@ -169,7 +166,6 @@ public class Result{
         System.out.println("deltas:");
         finalResult += "Deltas:\\\\";
         for(Pair p: this.deltas){
-            // String s = p.str.split("= ")[1].replaceAll("{|}", "");
             String str = p.str + " = " + p.val;
             finalResult += str + "\\\\";
             System.out.println(str);
