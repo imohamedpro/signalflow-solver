@@ -25,6 +25,12 @@ public class Graph {
         vertices.put(vertex.id, vertex);
         return vertex.id;
     }
+    public int addVertex(int id){
+        Vertex vertex = new Vertex();
+        vertex.id = id;
+        vertices.put(vertex.id, vertex);
+        return vertex.id;
+    }
 
     public void removeVertex(int vertexID){
         /*
@@ -72,7 +78,27 @@ public class Graph {
             edge.gain = gain;
 //          Each vertex has a list of edges incident "from it"
             src.edges.add(edge);
-            edge.id = edgeID ++;
+            edge.id = edgeID++;
+            edges.put(edge.id, edge);
+        }
+        catch (NullPointerException e) {
+            System.out.println("Caught the NullPointerException");
+        }
+        return edge.id;
+    }
+
+    public int addEdge(int srcID, int destID, double gain, int id){
+        Edge edge = new Edge();
+        Vertex src = vertices.get(srcID);
+        Vertex dest = vertices.get(destID);
+//      Initializing the new edge values:
+        try {
+            edge.source = src;
+            edge.destination = dest;
+            edge.gain = gain;
+//          Each vertex has a list of edges incident "from it"
+            src.edges.add(edge);
+            edge.id = id;
             edges.put(edge.id, edge);
         }
         catch (NullPointerException e) {
@@ -198,7 +224,7 @@ public class Graph {
     public Graph clone(){
         Graph clone = new Graph();
         for(Vertex v: this.vertices.values()){
-            clone.addVertex();
+            clone.addVertex(v.id);
         }
         // for(Vertex v: this.vertices.values()){
         //     for(Edge e: v.edges){
