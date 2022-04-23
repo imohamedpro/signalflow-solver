@@ -366,20 +366,25 @@ public class SignalFlowCalculator {
             finalResult += str + "\\\\";
             System.out.println(str);
         }
-        System.out.println("Loops:");
-        finalResult += "Loops:\\\\";
-        for(Pair p: res.loops){
-            String str = p.str + " = " + p.val;
-            finalResult += str + "\\\\";
-            System.out.println(str);
+        if(res.loops.size() > 0){
+            System.out.println("Loops:");
+            finalResult += "Loops:\\\\";
+            for(Pair p: res.loops){
+                String str = p.str + " = " + p.val;
+                finalResult += str + "\\\\";
+                System.out.println(str);
+            }
+            if(res.nonTouchingLoops.size() > 0){
+                System.out.println("Non Touching Loops:");
+                finalResult += "Non\\ Touching\\ Loops:\\\\";
+                for(Entry<Integer, String> e: res.nonTouchingLoops.entrySet()){
+                    String str = e.getValue();
+                    finalResult += str + "\\\\";
+                    System.out.println(str);
+                }
+            }
         }
-        System.out.println("Non Touching Loops:");
-        finalResult += "Non\\ Touching\\ Loops:\\\\";
-        for(Entry<Integer, String> e: res.nonTouchingLoops.entrySet()){
-            String str = e.getValue();
-            finalResult += str + "\\\\";
-            System.out.println(str);
-        }
+
         System.out.println("deltas:");
         finalResult += "Deltas:\\\\";
         for(Pair p: res.deltas){
