@@ -2,7 +2,6 @@ package edu.control.signalflow.Model;
 
 import java.util.Objects;
 
-import edu.control.signalflow.Services.Subscript;
 
 public class Edge {
     int id;

@@ -1,6 +1,5 @@
 package edu.control.signalflow.Model;
 import edu.control.signalflow.Services.SignalFlowCalculator;
-import edu.control.signalflow.Services.Subscript;
 
 import java.io.File;
 import java.io.FileWriter;

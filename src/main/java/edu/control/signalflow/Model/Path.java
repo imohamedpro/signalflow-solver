@@ -3,7 +3,6 @@ package edu.control.signalflow.Model;
 import java.util.HashSet;
 import java.util.List;
 
-import edu.control.signalflow.Services.Subscript;
 
 public class Path {
     private int id;
