@@ -10,14 +10,16 @@ public class Graph {
     int vertexID, edgeID;
     HashMap<Integer, Vertex> vertices;
     HashMap<Integer, Edge> edges;
+
+    private ArrayList<Path> allPaths = new ArrayList<>();
+    private HashSet<Edge> visitedEdges = new HashSet<>();
+
     public Graph(){
         vertices = new HashMap<Integer, Vertex>();
         edges = new HashMap<Integer, Edge>();
         edgeID = 0;
         vertexID = 0;
     }
-    // List<List<Edge>> paths;
-
     public int addVertex(){
         Vertex vertex = new Vertex();
         vertex.id = vertexID++;
@@ -33,18 +35,14 @@ public class Graph {
 
     public void removeVertex(int vertexID){
         /*
-            To be implemented: removing all incident edges
+            To be implemented: removing all incident edges: done
         */
         Vertex vertex = this.vertices.remove(vertexID);
-        // for(int i=0; i<vertex.edges.size(); i++){
-        //     vertex.edges.remove(vertex.edges.get(i));
-        // }
         List<Edge> edgeList = new LinkedList<Edge>(vertex.edges);
         for(Edge e: edgeList){
             this.removeEdge(e);
         }
         for(Vertex v: this.vertices.values()){
-            // Iterator<Edge> i = v.edges.iterator();
             edgeList = new LinkedList<Edge>(v.edges);
             for(Edge e: edgeList){
                 if(vertex.equals(e.destination)){
@@ -52,14 +50,7 @@ public class Graph {
 
                 }
             }
-            // while(i.hasNext()){
-            //     Edge e = i.next();
-            //     if(vertex.equals(e.destination)){
-            //         i.remove();
-            //     }
-            // }
         }
-        // vertices.remove(vertex);
     }
 
     /*
@@ -135,29 +126,6 @@ public class Graph {
         e.gain = gain;
     }
 
-    public List<Vertex> allPaths () {
-        List<Vertex> list = new ArrayList<>();
-        
-
-        return list;
-    }
-
-    private Vertex getVertexFromID(int id){
-        int l = 0, r = vertices.size() - 1, m=0;
-
-        while (l <= r) {
-            m = l + (r-l)/2;
-            if (vertices.get(m).id == id)
-                return vertices.get(m);
-
-            if (vertices.get(m).id < id)
-                l = m + 1;
-            else
-                r = m - 1;
-        }
-        return vertices.get(m);
-    }
-
     public void print(){
         for (Vertex vertex : vertices.values()) {
             System.out.println("Vertex " + vertex.id + ": ");
@@ -171,7 +139,7 @@ public class Graph {
         }
     }
 
-    HashSet<Edge> visitedEdges = new HashSet<>();
+    
 
 
     public void getPaths (int sourceID, int destinationID) {
@@ -194,15 +162,11 @@ public class Graph {
 
     // }
 
-    ArrayList<Path> allPaths = new ArrayList<>();
 
     public void getAllPaths (Vertex start, Vertex end, Stack<Edge> pathList, HashSet<Vertex> visitedVertices) {
-        // pathList.push(start);
         if(start.equals(end)) {
             ArrayList<Edge> finalPath = new ArrayList<Edge>(pathList);
-//            Collections.copy(finalPath, pathList);
             this.allPaths.add(new Path(finalPath, 1 + this.allPaths.size()));
-            // pathList.pop();
             return;
         }
 
@@ -216,7 +180,6 @@ public class Graph {
             }
         }
         visitedVertices.remove(start);
-        // pathList.remove(start);
     }
 
 
@@ -225,41 +188,11 @@ public class Graph {
         for(Vertex v: this.vertices.values()){
             clone.addVertex(v.id);
         }
-        // for(Vertex v: this.vertices.values()){
-        //     for(Edge e: v.edges){
-        //         clone.addEdge(e.source.id, e.destination.id, e.gain);
-        //     }
-        // }
         for(Edge e: this.edges.values()){
             clone.addEdge(e.source.id, e.destination.id, e.gain);
         }
         return clone;
     }
-
-    // private void dfs(Vertex v, HashSet<Integer> visited, Stack<Edge> edges, List<Path> paths, int destination){
-    //     if(v.id == destination){
-    //         paths.add(new Path(edges, paths.size()));
-    //         System.out.println(edges.toString());
-    //         return;
-    //     }
-    //     for(Edge e: v.edges){
-    //         if(!visited.contains(e.id)){
-    //             visited.add(e.id);
-    //             edges.push(e);
-    //             dfs(e.destination, visited, edges, paths, destination);
-    //             edges.pop();
-    //         }
-    //     }
-    // }
-    // public List<Path> getPaths(int source, int destination){
-    //     List<Path> paths = new ArrayList<Path>();
-    //     Stack<Edge> edges = new Stack<Edge>();
-    //     HashSet<Integer> visited = new HashSet<Integer>();
-    //     Vertex src = getVertexFromID(source);
-    //     dfs(src, visited, edges, paths, destination);
-        
-    //     return paths;
-    // }
 
     public List<Path> getLoops(){
         return new LoopsFinder(this.clone()).getLoops();
@@ -268,11 +201,6 @@ public class Graph {
     public String signalFlow(int sourcID, int destinationID){
         SignalFlowCalculator sf = new SignalFlowCalculator();
         this.getPaths(sourcID, destinationID);
-        // List<Path> paths = new ArrayList<Path>();
-        // int id = 0;
-        // for(List<Edge> e: this.allPaths){
-        //     paths.add(new Path(e, ++id));
-        // }
         return sf.compute(this.allPaths, getLoops());
     }
 

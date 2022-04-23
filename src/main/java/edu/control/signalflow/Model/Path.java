@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Path {
     private int id;
-    // private String idStr;
     private double gain;
     private String representation;
     boolean loop;
@@ -14,7 +13,6 @@ public class Path {
     public HashSet<Integer> vertcies;
     public Path(List<Edge> edges, int id){
         this.id = id;
-        // this.idStr = Subscript.convert(id);
         this.gain = 1;
         this.edges = edges;
         vertcies = new HashSet<Integer>();
