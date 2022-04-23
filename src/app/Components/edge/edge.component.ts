@@ -22,7 +22,6 @@ export class EdgeComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = "edge" + this.edge.id;
-    this.edge.updatePath().then(this.edge.updateArrowText);
     this.edge.updatePath().then(() => this.edge.updateArrowText());
   }
 
