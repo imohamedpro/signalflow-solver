@@ -23,8 +23,8 @@ export class ControllerService {
 
   addEdge(fromNodeID: number, toNodeID: number, gain: number) {
     let queryParams = new HttpParams().append("fromNodeID", fromNodeID)
-                                      .append("toNodeID", toNodeID)
-                                      .append("gain", gain);
+      .append("toNodeID", toNodeID)
+      .append("gain", gain);
     return this.http.get<number>(this.apiUrl + "/edge/add", { params: queryParams });
   }
 
@@ -35,7 +35,7 @@ export class ControllerService {
 
   updateGain(edgeID: number, gain: number) {
     let queryParams = new HttpParams().append("edgeID", edgeID)
-                                      .append("gain", gain);
+      .append("gain", gain);
     return this.http.put(this.apiUrl + "/edge/gain", null, { params: queryParams });
   }
 
@@ -46,8 +46,8 @@ export class ControllerService {
 
   solve(inputNodeID: number, outputNodeID: number): Observable<string> {
     let queryParams = new HttpParams().append("inputNodeID", inputNodeID)
-                                      .append("outputNodeID", outputNodeID);
-    return this.http.get<string>(this.apiUrl + "/result", { params: queryParams });
+      .append("outputNodeID", outputNodeID);
+    return this.http.get(this.apiUrl + "/result", { responseType: 'text', params: queryParams });
   }
 
   clear() {

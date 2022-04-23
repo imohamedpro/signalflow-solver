@@ -13,6 +13,9 @@ export class ManagerService {
   selectedNode!: any;
   answer: string = "x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}";
   state!: string;   //to get state from toolbar
+  message!: string;
+  sourceNode!: any;
+  destinationNode!: any;
 
   constructor(private controller: ControllerService) {
     this.edges = new Map<number, Edge>();
@@ -68,9 +71,9 @@ export class ManagerService {
   }
 
   deleteNode(node: Node) {
-    node.edges.forEach(edge => {
-      this.deleteEdge(edge);
-    });
+    while(node.edges.length != 0) {
+      this.deleteEdge(node.edges[0]);
+    }
     this.controller.deleteNode(node.id).subscribe();
     this.nodes.delete(node.id);
   }
@@ -82,18 +85,47 @@ export class ManagerService {
     this.edges.delete(edge.id);
   }
 
+  solve(node: any) {
+    if (this.nodes.size >= 2) {
+      if (node == null) {
+        this.message = "please choose source node";
+      } else if (this.sourceNode == null) {
+        this.message = "please choose destination node";
+        this.sourceNode = node;
+        this.sourceNode.makeSource();
+      } else if (this.destinationNode == null) {
+        this.message = "";
+        this.destinationNode = node;
+        this.destinationNode.makeDestination();
+        this.controller.solve(this.sourceNode.id, this.destinationNode.id).subscribe(answer => {
+          this.answer = answer;
+        });
+      }
+    }
+  }
+
   clear() {
     if (confirm('Are you sure ?')) {
       this.edges.clear();
       this.nodes.clear();
       this.selectedNode = null;
+      this.message = "";
+      this.sourceNode = null;
+      this.destinationNode = null;
       this.controller.clear().subscribe();
     }
   }
 
   changeState(newState: string) {
-    if (newState == "addNode" || newState == "delete") {
+    if (newState == "addNode" || newState == "delete" || newState == "solve") {
       this.edges.forEach((values, keys) => values.isSelected = false);
+    }
+    if (newState != "solve") {
+      this.sourceNode?.unmake();
+      this.destinationNode?.unmake();
+      this.sourceNode = null;
+      this.destinationNode = null;
+      this.message = "";
     }
     this.state = newState;
     this.selectedNode = null;
