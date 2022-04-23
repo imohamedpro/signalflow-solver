@@ -8,8 +8,15 @@ import java.util.*;
 
 
 public class Graph {
-    int vertexID=1, edgeID=1;
-    List<Vertex> vertices = new ArrayList<>();
+    int vertexID, edgeID;
+    List<Vertex> vertices;
+    HashMap<Integer, Edge> edges;
+    public Graph(){
+        vertices = new ArrayList<Vertex>();
+        edges = new HashMap<Integer, Edge>();
+        edgeID = 1;
+        vertexID = 1;
+    }
     // List<List<Edge>> paths;
 
     public void addVertex(){
@@ -54,13 +61,17 @@ public class Graph {
 //          Each vertex has a list of edges incident "from it"
             src.edges.add(edge);
             edge.id = edgeID ++;
+            edges.put(edge.id, edge);
         }
         catch (NullPointerException e) {
             System.out.println("Caught the NullPointerException");
         }
     }
 
-    public void removeEdge(Edge edge) {
+    public void deleteEdge(int edgeID){
+        removeEdge(this.edges.remove(edgeID));
+    }
+    private void removeEdge(Edge edge) {
         Vertex vertex = edge.source;
         for(int i=0; i<vertex.edges.size(); i++){
             if(vertex.edges.get(i)==edge){

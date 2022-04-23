@@ -6,47 +6,84 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin()
 public class Controller {
-    Graph graph = new Graph();
+    Graph graph;
+    //Dummy variables for testing controller
+    int nextEdgeID;
+    int nextNodeID;
+    public Controller(){
+        this.graph = new Graph();
+        nextEdgeID = 0;
+        nextNodeID = 0;
+    }
 
     /**
      * Takes a node data from front end
-     * @param node node to be added
      * @return id for new node
      */
-    @PutMapping("/node/add")
-    public int addNode(@RequestBody Object node){
-        graph.addVertex();
-        return 0;
-    }
-
-    /**
-     * Takes a path data from front end
-     * @param path
-     * @return id for new path
-     */
-    @PutMapping("/path/add")
-    public int addPath(@RequestBody Object path){
-
-        return 0;
+    @GetMapping ("/node/add")
+    public int addNode(){
+        System.out.println("Adding new node with id " + (nextNodeID));
+        this.graph.addVertex();
+        return nextNodeID++;
     }
 
     @DeleteMapping("/node/delete")
-    public void deleteNode(@RequestParam int id){
+    public void deleteNode(@RequestParam int nodeID){
+        System.out.println("Deleting node with id " + nodeID);
         //delete node with id
+        this.graph.removeVertex(nodeID);
     }
 
-    @DeleteMapping("/path/delete")
-    public void deletePath(@RequestParam int id){
-        //delete path with id
+    /**
+     * Takes edge data from front end
+     * @return id for new edge
+     */
+    @GetMapping("/edge/add")
+    public int addEdge(@RequestParam int fromNodeID,
+                       @RequestParam int toNodeID,
+                       @RequestParam double gain
+                        ){
+        System.out.println("Adding new edge from" + fromNodeID + ", to " + toNodeID + ", gain = " + gain + ", with id " + (nextEdgeID));
+        this.graph.addEdge(fromNodeID, toNodeID, gain);
+        return nextEdgeID++;
     }
 
-    @PostMapping("/data")
-    public void data(@RequestBody Object data){
-        //table data
+    @PutMapping("/edge/reverse")
+    public void reverseEdge(@RequestParam int edgeID){
+        System.out.println("Reversing edge " + edgeID);
+        //reverse edge ends
+    }
+
+    @DeleteMapping ("/edge/delete")
+    public void deleteEdge(@RequestParam int edgeID){
+        System.out.println("Deleting edge with id " + edgeID);
+        //delete edge with id
+        this.graph.removeEdge(edge);
+    }
+
+    @PutMapping("/edge/gain")
+    public void updateEdgeGain(@RequestParam int edgeID,
+                               @RequestParam double gain){
+        System.out.println("Updating gain of edge " + edgeID + " to " + gain);
+        //update gain
+        // this.graph
     }
 
     @GetMapping("/result")
-    public Object result(){
-        return null;
+    public String result(@RequestParam int inputNodeID,
+                         @RequestParam int outputNodeID){
+        System.out.println("received input node: "+ inputNodeID);
+        System.out.println("received output node: " + outputNodeID);
+        //compute answer
+        
+        return this.graph.signalFlow();
+    }
+
+    @PutMapping("/clear")
+    public void clear(){
+        this.graph = new Graph();
+        System.out.println("Clearing..");
+        nextEdgeID = 0;
+        nextNodeID = 0;
     }
 }
