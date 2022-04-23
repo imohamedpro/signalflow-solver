@@ -89,10 +89,10 @@ public class LoopsFinder {
                 b.put(v.id, new ArrayList<Vertex>());
             }
             s = g.vertices.get(i);
-            if(s != null){
+            // if(s != null){
                 circuit(s);
                 g.removeVertex(s.id);
-            }
+            // }
         }
         List<Path> loops = new ArrayList<Path>();
         int i = 0;

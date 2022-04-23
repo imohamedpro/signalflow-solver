@@ -143,9 +143,9 @@ public class Graph {
     HashSet<Edge> visitedEdges = new HashSet<>();
 
 
-    public void getPaths () {
-        Vertex start = vertices.get(0);
-        Vertex end = vertices.get(vertices.size()-1);
+    public void getPaths (int sourceID, int destinationID) {
+        Vertex start = vertices.get(sourceID);
+        Vertex end = vertices.get(destinationID);
         Stack<Edge> pathList = new Stack<Edge>();
         HashSet<Vertex> visitedVertices = new HashSet<>();
         getAllPaths(start, end, pathList, visitedVertices);
@@ -232,9 +232,9 @@ public class Graph {
         return new LoopsFinder(this.clone()).getLoops();
     }
 
-    public String signalFlow(){
+    public String signalFlow(int sourcID, int destinationID){
         SignalFlowCalculator sf = new SignalFlowCalculator();
-        this.getPaths();
+        this.getPaths(sourcID, destinationID);
         // List<Path> paths = new ArrayList<Path>();
         // int id = 0;
         // for(List<Edge> e: this.allPaths){
@@ -250,7 +250,7 @@ public class Graph {
 class Test {
     public static void main(String[] args) throws Exception {
         Graph graph = new Graph();
-        for(int i=0; i<7; i++){
+        for(int i=0; i<8; i++){
             graph.addVertex();
         }
 //        graph.addEdge();
@@ -270,23 +270,37 @@ class Test {
         // graph.addEdge(6, 4, 1);
         // graph.addEdge(6, 7, 1);
         
-        graph.addEdge(1, 2, 5);
-        graph.addEdge(2, 3, 5);
-        graph.addEdge(3, 4, 5);
-        graph.addEdge(4, 5, 5);
-        graph.addEdge(5, 6, 5);
-        graph.addEdge(6, 7, 5);
-        graph.addEdge(7, 8, 5);
-        graph.addEdge(2, 4, 5);
-        graph.addEdge(2, 7, 5);
-        graph.addEdge(7, 5, 5);
-        graph.addEdge(7, 7, 5);
-        graph.addEdge(7, 6, 5);
-        graph.addEdge(6, 5, 5);
-        graph.addEdge(5, 4, 5);
-        graph.addEdge(4, 3, 5);
-        graph.addEdge(3, 2, 5);
+        graph.addEdge(0, 1, 1);
+        graph.addEdge(1, 2, 1);
+        graph.addEdge(2, 3, 1);
+        graph.addEdge(3, 4, 1);
+        graph.addEdge(0, 5, 1);
+        graph.addEdge(5, 6, 1);
+        graph.addEdge(6, 7, 1);
+        graph.addEdge(7, 4, 1);
+        graph.addEdge(2, 1, -1);
+        graph.addEdge(3, 2, -1);
+        graph.addEdge(6, 5, -1);
+        graph.addEdge(7, 6, -1);
 
+
+
+        // graph.addEdge(1, 2, 5);
+        // graph.addEdge(2, 3, 5);
+        // graph.addEdge(3, 4, 5);
+        // graph.addEdge(4, 5, 5);
+        // graph.addEdge(5, 6, 5);
+        // graph.addEdge(6, 7, 5);
+        // graph.addEdge(7, 8, 5);
+        // graph.addEdge(2, 4, 5);
+        // graph.addEdge(2, 7, 5);
+        // graph.addEdge(7, 5, 5);
+        // graph.addEdge(7, 7, 5);
+        // graph.addEdge(7, 6, 5);
+        // graph.addEdge(6, 5, 5);
+        // graph.addEdge(5, 4, 5);
+        // graph.addEdge(4, 3, 5);
+        // graph.addEdge(3, 2, 5);
 
 //        graph.print();
 //        graph.removeVertex(4);
@@ -299,7 +313,7 @@ class Test {
         // System.out.println("\n\n\n" + graph.signalFlow());
         File fp =  new File("test.txt");
         FileWriter fw = new FileWriter(fp);
-        fw.write(graph.signalFlow());
+        fw.write(graph.signalFlow(0, 4));
         fw.close();
 
 

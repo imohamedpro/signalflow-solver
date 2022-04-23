@@ -77,7 +77,7 @@ public class Controller {
         System.out.println("received output node: " + outputNodeID);
         //compute answer
         
-        return this.graph.signalFlow();
+        return this.graph.signalFlow(inputNodeID, outputNodeID);
     }
 
     @PutMapping("/clear")

@@ -1,1 +1,1 @@
-Forward\ Paths:\\Loops:\\Non\ Touching\ Loops:\\Deltas:\\\Delta = 1.0\\Overall\ Transfer\ Function: {{} \over {\Delta}} = 0.0
+Forward\ Paths:\\P_{1}:\ e_{0}, e_{1}, e_{2}, e_{3} = 1.0\\P_{2}:\ e_{4}, e_{5}, e_{6}, e_{7} = 1.0\\Loops:\\L_{1}:\ e_{2}, e_{4} = 1.0\\Non\ Touching\ Loops:\\1-non\ touching\ loops:\\L_{1},\\Deltas:\\\Delta = {1 - (L_{1})} = 0.0\\\Delta_1 = 1.0\\\Delta_2 = 1.0\\Overall\ Transfer\ Function: {{P_{1}\Delta_1 + P_{2}\Delta_2} \over {\Delta}} = Infinity
