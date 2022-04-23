@@ -222,33 +222,33 @@ class Test {
         //     System.out.println(vertex.id);
         // }
 
-        graph.addEdge(1, 2, 1);
-        graph.addEdge(2, 3, 1);
-        graph.addEdge(3, 2, 1);
-        graph.addEdge(3, 4, 1);
-        graph.addEdge(4, 5, 1);
-        graph.addEdge(5, 4, 1);
-        graph.addEdge(5, 6, 1);
-        graph.addEdge(5, 6, 1);
-        graph.addEdge(6, 4, 1);
-        graph.addEdge(6, 7, 1);
+        // graph.addEdge(1, 2, 1);
+        // graph.addEdge(2, 3, 1);
+        // graph.addEdge(3, 2, 1);
+        // graph.addEdge(3, 4, 1);
+        // graph.addEdge(4, 5, 1);
+        // graph.addEdge(5, 4, 1);
+        // graph.addEdge(5, 6, 1);
+        // graph.addEdge(5, 6, 1);
+        // graph.addEdge(6, 4, 1);
+        // graph.addEdge(6, 7, 1);
         
-        // graph.addEdge(1, 2, 5);
-        // graph.addEdge(2, 3, 5);
-        // graph.addEdge(3, 4, 5);
-        // graph.addEdge(4, 5, 5);
-        // graph.addEdge(5, 6, 5);
-        // graph.addEdge(6, 7, 5);
-        // graph.addEdge(7, 8, 5);
-        // graph.addEdge(2, 4, 5);
-        // graph.addEdge(2, 7, 5);
-        // graph.addEdge(7, 5, 5);
-        // graph.addEdge(7, 7, 5);
-        // graph.addEdge(7, 6, 5);
-        // graph.addEdge(6, 5, 5);
-        // graph.addEdge(5, 4, 5);
-        // graph.addEdge(4, 3, 5);
-        // graph.addEdge(3, 2, 5);
+        graph.addEdge(1, 2, 5);
+        graph.addEdge(2, 3, 5);
+        graph.addEdge(3, 4, 5);
+        graph.addEdge(4, 5, 5);
+        graph.addEdge(5, 6, 5);
+        graph.addEdge(6, 7, 5);
+        graph.addEdge(7, 8, 5);
+        graph.addEdge(2, 4, 5);
+        graph.addEdge(2, 7, 5);
+        graph.addEdge(7, 5, 5);
+        graph.addEdge(7, 7, 5);
+        graph.addEdge(7, 6, 5);
+        graph.addEdge(6, 5, 5);
+        graph.addEdge(5, 4, 5);
+        graph.addEdge(4, 3, 5);
+        graph.addEdge(3, 2, 5);
 
 
 //        graph.print();

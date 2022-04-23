@@ -12,7 +12,7 @@ public class Path {
     public HashSet<Integer> vertcies;
     public Path(List<Edge> edges, int id){
         this.id = id;
-        this.gain = 0;
+        this.gain = 1;
         this.edges = edges;
         vertcies = new HashSet<Integer>();
         for(Edge e: edges){
@@ -42,6 +42,7 @@ public class Path {
     }
     public String edgesToString(){
         if(representation == null){
+            representation = "";
             for(Edge e: edges){
                 this.representation += e.toString() + ", ";
             }
