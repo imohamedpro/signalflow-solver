@@ -3,8 +3,11 @@ package edu.control.signalflow.Model;
 import java.util.HashSet;
 import java.util.List;
 
+import edu.control.signalflow.Services.Subscript;
+
 public class Path {
     private int id;
+    private String idStr;
     private double gain;
     private String representation;
     boolean loop;
@@ -12,6 +15,7 @@ public class Path {
     public HashSet<Integer> vertcies;
     public Path(List<Edge> edges, int id){
         this.id = id;
+        this.idStr = Subscript.convert(id);
         this.gain = 1;
         this.edges = edges;
         vertcies = new HashSet<Integer>();
@@ -38,7 +42,7 @@ public class Path {
     }
     @Override
     public String toString(){
-        return loop? "L" + id: "P" + id; 
+        return loop? "L" + idStr: "P" + idStr; 
     }
     public String edgesToString(){
         if(representation == null){

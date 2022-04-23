@@ -2,6 +2,8 @@ package edu.control.signalflow.Model;
 
 import java.util.Objects;
 
+import edu.control.signalflow.Services.Subscript;
+
 public class Edge {
     int id;
     double gain;
@@ -9,7 +11,7 @@ public class Edge {
 
     @Override
     public String toString(){
-        return "e" + id;
+        return "e" + Subscript.convert(id);
     }
 
     @Override

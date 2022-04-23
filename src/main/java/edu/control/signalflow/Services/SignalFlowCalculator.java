@@ -326,7 +326,8 @@ public class SignalFlowCalculator {
     //     List<List<NonTouching>> subDeterminant = new LinkedList<List<NonTouching>>();
     //     for()
     // }
-    public void compute(List<Path> paths, List<Path> loops){
+    public String compute(List<Path> paths, List<Path> loops){
+        String finalResult = "";
         HashMap<Integer, List<NonTouching>> determinant = FindNonTouching(loops);
         // List<List<NonTouching>> determinant = calculateDeterminant(nonTouching, null);
         List<HashMap<Integer, List<NonTouching>>> subDeterminant = new ArrayList<HashMap<Integer, List<NonTouching>>>();
@@ -342,23 +343,31 @@ public class SignalFlowCalculator {
         res.stringfyTF();
         System.out.println("Paths:");
         for(Pair p: res.paths){
-            System.out.println(p.str + " = " + p.val);
+            String str = p.str + " = " + p.val;
+            finalResult += str + "\n";
+            System.out.println(str);
         }
         System.out.println("Loops:");
         for(Pair p: res.loops){
-            System.out.println(p.str + " = " + p.val);
+            String str = p.str + " = " + p.val;
+            finalResult += str + "\n";
+            System.out.println(str);
         }
         System.out.println("Non Touching Loops:");
         for(Entry<Integer, String> e: res.nonTouchingLoops.entrySet()){
-            System.out.println(e.getValue());
+            String str = e.getValue();
+            finalResult += str + "\n";
+            System.out.println(str);
         }
         System.out.println("deltas:");
         for(Pair p: res.deltas){
-            System.out.println(p.str + " = " + p.val);
+            String str = p.str + " = " + p.val;
+            finalResult += str + "\n";
+            System.out.println(str);
         }
-        System.out.println("Tf: " + res.transferFunction.str + " = " + res.transferFunction.val);
-
-        
-
+        String str = "Tf: " + res.transferFunction.str + " = " + res.transferFunction.val;
+        finalResult += str;
+        System.out.println(str);
+        return finalResult;
     }
 } 

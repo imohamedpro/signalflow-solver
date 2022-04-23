@@ -1,7 +1,11 @@
 package edu.control.signalflow.Model;
 import edu.control.signalflow.Services.SignalFlowCalculator;
+import edu.control.signalflow.Services.Subscript;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.util.*;
+
 
 public class Graph {
     int vertexID=1, edgeID=1;
@@ -133,7 +137,7 @@ public class Graph {
         if(start.equals(end)) {
             ArrayList<Edge> finalPath = new ArrayList<Edge>(pathList);
 //            Collections.copy(finalPath, pathList);
-            this.allPaths.add(new Path(finalPath, this.allPaths.size()));
+            this.allPaths.add(new Path(finalPath, 1 + this.allPaths.size()));
             // pathList.pop();
             return;
         }
@@ -195,7 +199,7 @@ public class Graph {
         return new LoopsFinder(this.clone()).getLoops();
     }
 
-    public void signalFlow(){
+    public String signalFlow(){
         SignalFlowCalculator sf = new SignalFlowCalculator();
         this.getPaths();
         // List<Path> paths = new ArrayList<Path>();
@@ -203,7 +207,7 @@ public class Graph {
         // for(List<Edge> e: this.allPaths){
         //     paths.add(new Path(e, ++id));
         // }
-        sf.compute(this.allPaths, getLoops());
+        return sf.compute(this.allPaths, getLoops());
     }
 
 }
@@ -211,7 +215,7 @@ public class Graph {
 
 
 class Test {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         Graph graph = new Graph();
         for(int i=0; i<7; i++){
             graph.addVertex();
@@ -258,7 +262,13 @@ class Test {
 //        graph.print();
 
         // graph.getLoops();
-        graph.signalFlow();
+        // String x = Subscript.convert(12345);
+        // System.out.println("\n\n\n" + graph.signalFlow());
+        File fp =  new File("test.txt");
+        FileWriter fw = new FileWriter(fp);
+        fw.write(graph.signalFlow());
+        fw.close();
+
 
     }
 }
