@@ -3,6 +3,8 @@ package edu.control.signalflow.Model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Stack;
@@ -81,17 +83,19 @@ public class LoopsFinder {
 
     public List<Path> getLoops(){
         int n = g.vertices.size();
-        for(int i = 1; i < n; i++){
+        List<Vertex> vertcies = new LinkedList<Vertex>(g.vertices.values());
+        for(Vertex u: vertcies){
             b = new HashMap<Integer, List<Vertex>>();
             blocked = new HashSet<Integer>();
 
             for(Vertex v: g.vertices.values()){
                 b.put(v.id, new ArrayList<Vertex>());
             }
-            s = g.vertices.get(i);
+            // s = j.next();
             // if(s != null){
-                circuit(s);
-                g.removeVertex(s.id);
+            s = u;
+            circuit(s);
+            g.removeVertex(s.id);
             // }
         }
         List<Path> loops = new ArrayList<Path>();

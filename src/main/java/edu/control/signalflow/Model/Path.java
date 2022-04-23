@@ -33,7 +33,7 @@ public class Path {
         return false;
     }
     public double calculateGain(){
-        if(this.gain == 0){
+        if(this.gain == 1){
             for(Edge e: edges){
                 this.gain *= e.gain;
             }

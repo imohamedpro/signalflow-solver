@@ -42,7 +42,10 @@ public class Graph {
             // Iterator<Edge> i = v.edges.iterator();
             edgeList = new LinkedList<Edge>(v.edges);
             for(Edge e: edgeList){
-                this.removeEdge(e);
+                if(vertex.equals(e.destination)){
+                    this.removeEdge(e);
+
+                }
             }
             // while(i.hasNext()){
             //     Edge e = i.next();
@@ -60,8 +63,8 @@ public class Graph {
      */
     public int addEdge(int srcID, int destID, double gain){
         Edge edge = new Edge();
-        Vertex src = getVertexFromID(srcID);
-        Vertex dest = getVertexFromID(destID);
+        Vertex src = vertices.get(srcID);
+        Vertex dest = vertices.get(destID);
 //      Initializing the new edge values:
         try {
             edge.source = src;
