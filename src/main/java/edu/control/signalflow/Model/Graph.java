@@ -94,9 +94,12 @@ public class Graph {
 
     public void reverseEdge(int edgeID){
         Edge e = this.edges.get(edgeID);
+        e.source.edges.remove(e);
+        e.destination.edges.add(e);
         Vertex temp = e.source;
         e.source = e.destination;
         e.destination = temp;
+
     }
 
     public void updateGain(int edgeID, double gain){
@@ -194,12 +197,14 @@ public class Graph {
         for(Vertex v: this.vertices.values()){
             clone.addVertex();
         }
-        for(Vertex v: this.vertices.values()){
-            for(Edge e: v.edges){
-                clone.addEdge(e.source.id, e.destination.id, e.gain);
-            }
+        // for(Vertex v: this.vertices.values()){
+        //     for(Edge e: v.edges){
+        //         clone.addEdge(e.source.id, e.destination.id, e.gain);
+        //     }
+        // }
+        for(Edge e: this.edges.values()){
+            clone.addEdge(e.source.id, e.destination.id, e.gain);
         }
-
         return clone;
     }
 
