@@ -11,8 +11,8 @@ public class Graph {
     HashMap<Integer, Vertex> vertices;
     HashMap<Integer, Edge> edges;
 
-    private ArrayList<Path> allPaths = new ArrayList<>();
-    private HashSet<Edge> visitedEdges = new HashSet<>();
+    private ArrayList<Path> allPaths;
+    // private HashSet<Edge> visitedEdges = new HashSet<>();
 
     public Graph(){
         vertices = new HashMap<Integer, Vertex>();
@@ -143,6 +143,7 @@ public class Graph {
 
 
     public void getPaths (int sourceID, int destinationID) {
+        this.allPaths = new ArrayList<>();
         Vertex start = vertices.get(sourceID);
         Vertex end = vertices.get(destinationID);
         Stack<Edge> pathList = new Stack<Edge>();
