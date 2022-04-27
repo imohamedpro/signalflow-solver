@@ -1,10 +1,12 @@
 .container {
-    position: absolute;
-    width: 300px;
-    height: 300px;
+    position: relative;
+    width: 20%;
+    /* height: 70%; */
     overflow: auto;
-    left: 55%;
-    top: 17%;
+    /* left: 80%; */
+    /* top: 17%; */
+    text-align: center;
+    margin: 0 auto;
 }
 
 table {

@@ -1,4 +1,4 @@
 <app-toolbar (actionEmitter)="changeState($event)"></app-toolbar>
-<app-sketch [state]='data'></app-sketch>
-<app-answer></app-answer>
+<app-sketch [state]='data' style="width: 75% !important;position: relative;width: 100%;margin: 0 auto;float: left;"></app-sketch>
 <app-symbols-table></app-symbols-table>
+<app-answer *ngIf="manager.answer!=''" ></app-answer>

@@ -1,3 +1,4 @@
+import { ManagerService } from 'src/app/Services/manager/manager.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   data!: string;
-  constructor() { }
+  manager: ManagerService;
+  constructor(manager: ManagerService) { 
+    this.manager = manager;
+  }
 
   ngOnInit(): void {
   }

@@ -11,7 +11,7 @@ export class ManagerService {
   edges!: Map<number, Edge>;
   nodes!: Map<number, Node>;
   selectedNode!: any;
-  answer: string = "x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a} \\\\ x = {-b \\pm \\sqrt{b^2-4ac} \\over 2a}";
+  answer: string = "";
   state!: string;   //to get state from toolbar
   message!: string;
   sourceNode!: any;
@@ -110,6 +110,7 @@ export class ManagerService {
       this.nodes.clear();
       this.selectedNode = null;
       this.message = "";
+      this.answer = "";
       this.sourceNode = null;
       this.destinationNode = null;
       this.controller.clear().subscribe();
