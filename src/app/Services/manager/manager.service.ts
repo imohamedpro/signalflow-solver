@@ -53,7 +53,9 @@ export class ManagerService {
       if (isNaN(gain) || gain == "") {
         alert("Invalid input!");
         this.selectedNode = null;
-      } else if (gain != null) {
+      } else if (gain == null) {
+        this.selectedNode = null;
+      } else {
         this.createEdge(this.selectedNode.id, node.id, this.selectedNode.center, node.center, gain);
       }
     }

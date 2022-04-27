@@ -12,7 +12,7 @@
                   stroke-dasharray="4"/>
       
       <path       [attr.id]="id" 
-                  [attr.d]='edge.path_value' ></path>
+                  [attr.d]='edge.path_value' [ngClass]="(manager.state == 'delete') ? 'pointed' : 'regular'" ></path>
 
       <text class="noselect" [attr.transform]="edge.transformText">
             <textPath [attr.href]="'#'+id" startOffset="50%">
@@ -36,7 +36,7 @@
       
       <polygon    [attr.points]="edge.arrowPoints"
                   [attr.transform]="edge.transformArrow"
-                  [ngClass]="(manager.state == 'addEdge') || (manager.state == 'move') || (manager.state == 'delete')? 'pointed' : 'regular'"
+                  [ngClass]="(manager.state == 'addEdge') || (manager.state == 'move') || (manager.state == 'delete') ? 'pointed' : 'regular'"
                   (mousedown)="manager.showEdgeTangent(this.edge.id, $event)"
                   (contextmenu)="disableContext($event)"/>
 </svg>
