@@ -36,7 +36,7 @@
       
       <polygon    [attr.points]="edge.arrowPoints"
                   [attr.transform]="edge.transformArrow"
-                  [ngClass]="(manager.state == 'addEdge') || (manager.state == 'move') ? 'pointed' : 'regular'"
+                  [ngClass]="(manager.state == 'addEdge') || (manager.state == 'move') || (manager.state == 'delete')? 'pointed' : 'regular'"
                   (mousedown)="manager.showEdgeTangent(this.edge.id, $event)"
                   (contextmenu)="disableContext($event)"/>
 </svg>
