@@ -93,7 +93,7 @@ export class ManagerService {
         this.message = "please choose destination node";
         this.sourceNode = node;
         this.sourceNode.makeSource();
-      } else if (this.destinationNode == null) {
+      } else if (this.destinationNode == null && this.sourceNode != node) {
         this.message = "";
         this.destinationNode = node;
         this.destinationNode.makeDestination();

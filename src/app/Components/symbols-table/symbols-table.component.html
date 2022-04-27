@@ -11,7 +11,9 @@
             <tr *ngFor="let edge of this.manager?.edges | keyvalue; let i = index;">
                 <td>{{i + 1}}</td>
                 <td>{{edge.value.symbol}}</td>
-                <td>{{edge.value.gain}}<span class="material-icons" (click)='this.manager.editGain(edge.value)'>edit</span></td>
+                <td>{{edge.value.gain}}</td>
+                <td><span class="material-icons" title="edit {{edge.value.symbol}} value"
+                        (click)='this.manager.editGain(edge.value)'>edit</span></td>
             </tr>
         </tbody>
     </table>

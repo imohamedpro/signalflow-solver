@@ -1,8 +1,9 @@
 .container {
     position: relative;
-    width: 20%;
-    /* height: 70%; */
+    max-height: 68vh;
+    max-width: 45vh;
     overflow: auto;
+    /* height: 70%; */
     /* left: 80%; */
     /* top: 17%; */
     text-align: center;
@@ -11,7 +12,7 @@
 
 table {
     border-collapse: collapse;
-    width: 100%;
+    width: 95%;
     text-align: center;
 }
 
@@ -25,8 +26,8 @@ thead {
 }
 
 .material-icons{
-    position: absolute;
-    margin-top: -3px;
+    /*position: absolute;
+    margin-top: -3px;*/
     color: #41719C;
 }
 
